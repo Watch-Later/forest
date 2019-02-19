@@ -88,8 +88,8 @@ namespace forest {
 			handler(root->key, root->value);
 		}
 		void breadth_first_traversal(AVLTreeNode * root, Handler handler) {
-			std::queue <AVLTreeNode *> queue;
 			if (!root) return;
+			std::queue <AVLTreeNode *> queue;
 			queue.push(root);
 			while (!queue.empty()) {
 				AVLTreeNode * current{ queue.front() };

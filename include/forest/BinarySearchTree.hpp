@@ -104,12 +104,12 @@ namespace forest {
 
 	private:
 		BinarySearchTreeNode * minimum(BinarySearchTreeNode * root) {
-			if (root == nullptr) return nullptr;
+			if (!root) return nullptr;
 			while (root->left) root = root->left;
 			return root;
 		}
 		BinarySearchTreeNode * maximum(BinarySearchTreeNode * root) {
-			if (root == nullptr) return nullptr;
+			if (!root) return nullptr;
 			while (root->right) root = root->right;
 			return root;
 		}
