@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.10...3.13)
 
-project(forest LANGUAGES CXX VERSION 10.1.5)
+project(forest LANGUAGES CXX VERSION 10.1.6)
 
 set(CMAKE_CXX_STANDARD 14)
 
