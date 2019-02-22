@@ -26,7 +26,10 @@
 #include <catch2/catch.hpp>
 #include <forest/BinarySearchTree.hpp>
 
-SCENARIO("Test Binary Search Tree") {
+SCENARIO (
+"Test Binary Search Tree"
+)
+ {
 	GIVEN("A Binary Search Tree") {
 		forest::BinarySearchTree<int, int> BinarySearchTree;
 		WHEN("The Binary Search Tree is empty") {

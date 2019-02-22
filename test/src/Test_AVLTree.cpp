@@ -26,7 +26,10 @@
 #include <catch2/catch.hpp>
 #include <forest/AVLTree.hpp>
 
-SCENARIO("Test AVL Tree") {
+SCENARIO (
+"Test AVL Tree"
+)
+ {
 	GIVEN("An AVL Tree") {
 		forest::AVLTree<int, int> AVLTree;
 		WHEN("The AVL Tree is empty") {

@@ -45,3 +45,7 @@ $ buck run example:BinarySearchTree
 $ buck run example:KDTree
 $ buck run example:QuadTree
 ```
+
+## Credits
+
+- Icon made by Freepik from www.flaticon.com
