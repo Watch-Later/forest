@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.10...3.13)
 
-project(forest LANGUAGES CXX VERSION 10.1.5)
+project(forest LANGUAGES CXX VERSION 10.1.6)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -39,7 +39,7 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
         DESTINATION include
         FILES_MATCHING PATTERN "*.hpp")
 
-set(CPACK_PACKAGE_NAME "forest")
+set(CPACK_PACKAGE_ICON "forest.svg")
 set(CPACK_PACKAGE_VENDOR "George Fotopoulos")
 set(CPACK_PACKAGE_CONTACT "xorz57@protonmail.com")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Template Library of Tree Data Structures")

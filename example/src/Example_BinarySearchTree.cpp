@@ -26,7 +26,8 @@
 #include <iostream>
 #include <string>
 
-int main() {
+int main()
+{
 	forest::BinarySearchTree<int, std::string> BinarySearchTree;
 
 	BinarySearchTree.insert(2, "Thor");
@@ -38,21 +39,24 @@ int main() {
 	BinarySearchTree.insert(45, "Heimdall");
 
 	std::cout << "pre_order_traversal()" << std::endl;
-	BinarySearchTree.pre_order_traversal([](auto key, auto & value) {
+	BinarySearchTree.pre_order_traversal([](auto key, auto& value)
+	{
 		value += ".";
 		std::cout << key << "->" << value << std::endl;
 	});
 	std::cout << std::endl;
 
 	std::cout << "in_order_traversal()" << std::endl;
-	BinarySearchTree.in_order_traversal([](auto key, auto & value) {
+	BinarySearchTree.in_order_traversal([](auto key, auto& value)
+	{
 		value += ".";
 		std::cout << key << "->" << value << std::endl;
 	});
 	std::cout << std::endl;
 
 	std::cout << "post_order_traversal()" << std::endl;
-	BinarySearchTree.post_order_traversal([](auto key, auto & value) {
+	BinarySearchTree.post_order_traversal([](auto key, auto& value)
+	{
 		value += ".";
 		std::cout << key << "->" << value << std::endl;
 	});
@@ -63,28 +67,34 @@ int main() {
 
 	std::cout << "search(3)" << " = ";
 	auto result = BinarySearchTree.search(3);
-	if (result) {
+	if (result)
+	{
 		std::cout << "Found" << std::endl;
 	}
-	else {
+	else
+	{
 		std::cout << "Not Found" << std::endl;
 	}
 
 	std::cout << "minimum()" << " = ";
 	auto min = BinarySearchTree.minimum();
-	if (min) {
+	if (min)
+	{
 		std::cout << min->key << std::endl;
 	}
-	else {
+	else
+	{
 		std::cout << "Not Found" << std::endl;
 	}
 
 	std::cout << "maximum()" << " = ";
 	auto max = BinarySearchTree.maximum();
-	if (max) {
+	if (max)
+	{
 		std::cout << max->key << std::endl;
 	}
-	else {
+	else
+	{
 		std::cout << "Not Found" << std::endl;
 	}
 
