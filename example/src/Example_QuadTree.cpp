@@ -24,8 +24,6 @@
 
 #include <forest/QuadTree.hpp>
 #include <iostream>
-#include <array>
-#include <vector>
 
 int main()
 {
