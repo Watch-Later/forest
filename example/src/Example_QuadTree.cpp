@@ -29,7 +29,7 @@
 
 int main()
 {
-	forest::QuadTree < float, 2 > QuadTree({{0, 0}, {10, 10}})
+	forest::QuadTree < float, 2 > QuadTree({ {0, 0}, {10, 10} });
 
 	for (float i = -5; i < 5; ++i)
 	{

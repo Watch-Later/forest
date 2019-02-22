@@ -27,7 +27,7 @@
 
 int main()
 {
-	forest::KDTree < float, 4 > KDTree
+	forest::KDTree < float, 4 > KDTree;
 
 	forest::KDTree < float, 4 > ::Points
 	points{
