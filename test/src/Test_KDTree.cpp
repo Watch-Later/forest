@@ -26,7 +26,10 @@
 #include <catch2/catch.hpp>
 #include <forest/KDTree.hpp>
 
-SCENARIO("Test KD Tree") {
+SCENARIO (
+"Test KD Tree"
+)
+ {
 	GIVEN("A KD Tree") {
 		forest::KDTree<float, 2> KDTree;
 		WHEN("The KD Tree is empty") {

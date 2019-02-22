@@ -26,7 +26,10 @@
 #include <catch2/catch.hpp>
 #include <forest/QuadTree.hpp>
 
-SCENARIO("Test Quad Tree") {
+SCENARIO (
+"Test Quad Tree"
+)
+ {
 	GIVEN("A Quad Tree") {
 		forest::QuadTree<float, 2> QuadTree({ {0, 0 }, { 10, 10 } });
 		WHEN("The Quad Tree is empty") {
