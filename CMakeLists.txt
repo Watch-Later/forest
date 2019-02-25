@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.10...3.13)
+﻿cmake_minimum_required(VERSION 3.1...3.13)
 
 project(forest LANGUAGES CXX VERSION 10.1.6)
 
