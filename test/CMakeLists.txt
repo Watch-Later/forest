@@ -2,32 +2,15 @@ cmake_minimum_required(VERSION 3.1...3.13)
 
 project(forest_test LANGUAGES CXX)
 
-if(CMAKE_COMPILER_IS_GNUCC)
-  if(ENABLE_COVERAGE)
-    add_compile_options(--coverage -O0)
-  endif()
-endif()
-
 add_executable(Test_AVLTree "src/Test_AVLTree.cpp")
-target_link_libraries(Test_AVLTree Catch2 forest)
-
 add_executable(Test_BinarySearchTree "src/Test_BinarySearchTree.cpp")
-target_link_libraries(Test_BinarySearchTree Catch2 forest)
-
 add_executable(Test_KDTree "src/Test_KDTree.cpp")
-target_link_libraries(Test_KDTree Catch2 forest)
-
 add_executable(Test_QuadTree "src/Test_QuadTree.cpp")
-target_link_libraries(Test_QuadTree Catch2 forest)
 
-if(CMAKE_COMPILER_IS_GNUCC)
-  if(ENABLE_COVERAGE)
-    target_link_libraries(Test_AVLTree --coverage)
-	target_link_libraries(Test_BinarySearchTree --coverage)
-	target_link_libraries(Test_KDTree --coverage)
-	target_link_libraries(Test_QuadTree --coverage)
-  endif()
-endif()
+target_link_libraries(Test_AVLTree Catch2 forest)
+target_link_libraries(Test_BinarySearchTree Catch2 forest)
+target_link_libraries(Test_KDTree Catch2 forest)
+target_link_libraries(Test_QuadTree Catch2 forest)
 
 add_test(AVLTree Test_AVLTree)
 add_test(BinarySearchTree Test_BinarySearchTree)
