@@ -113,6 +113,6 @@ before_install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON
+  - cmake .. -DCMAKE_BUILD_TYPE=Release -DFOREST_BUILD_TESTS=ON
   - make -j2
   - ctest
