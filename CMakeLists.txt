@@ -8,15 +8,23 @@ option(BUILD_EXAMPLES OFF)
 option(BUILD_TESTS OFF)
 
 if(MSVC)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:10000000") # 10 MB
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:10000000") # 10 MB
 endif()
 
 add_library(forest INTERFACE)
 target_include_directories(forest INTERFACE ${CMAKE_SOURCE_DIR}/include)
 
 if(FOREST_BUILD_TESTS)
+  #################
+  # Catch Library #
+  #################
+
   add_library(Catch2 INTERFACE)
   target_include_directories(Catch2 INTERFACE ${CMAKE_SOURCE_DIR}/vendor/catchorg/Catch2/single_include)
+
+  ################
+  # Enable CTest #
+  ################
 
   enable_testing()
 
@@ -30,7 +38,7 @@ endif()
 if(FOREST_BUILD_BENCHMARKS)
   set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Suppressing Google Benchmark's Tests" FORCE)
 
-  add_subdirectory(vendor/google/benchmark)
+  add_subdirectory("vendor/google/benchmark")
 
   add_subdirectory("benchmark")
 endif()
