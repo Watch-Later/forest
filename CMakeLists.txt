@@ -1,51 +1,70 @@
 ﻿cmake_minimum_required(VERSION 3.1...3.13)
 
-project(forest LANGUAGES CXX VERSION 10.1.6)
+project(forest LANGUAGES CXX VERSION 10.1.7)
 
 set(CMAKE_CXX_STANDARD 14)
 
-option(BUILD_EXAMPLES OFF)
-option(BUILD_TESTS OFF)
+###############################################################################
+# CMake Options
+###############################################################################
+
+option(FOREST_BUILD_EXAMPLES OFF)
+option(FOREST_BUILD_TESTS OFF)
+
+###############################################################################
+# Increase Stack on Windows
+###############################################################################
 
 if(MSVC)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:10000000") # 10 MB
 endif()
 
+###############################################################################
+# Add Library
+###############################################################################
+
 add_library(forest INTERFACE)
 target_include_directories(forest INTERFACE ${CMAKE_SOURCE_DIR}/include)
 
-if(FOREST_BUILD_TESTS)
-  #################
-  # Catch Library #
-  #################
+###############################################################################
+# Build Tests
+###############################################################################
 
+if(FOREST_BUILD_TESTS)
   add_library(Catch2 INTERFACE)
   target_include_directories(Catch2 INTERFACE ${CMAKE_SOURCE_DIR}/vendor/catchorg/Catch2/single_include)
-
-  ################
-  # Enable CTest #
-  ################
-
-  enable_testing()
-
   add_subdirectory("test")
 endif()
+
+###############################################################################
+# Build Examples
+###############################################################################
 
 if(FOREST_BUILD_EXAMPLES)
   add_subdirectory("example")
 endif()
 
+###############################################################################
+# Build Benchmarks
+###############################################################################
+
 if(FOREST_BUILD_BENCHMARKS)
   set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Suppressing Google Benchmark's Tests" FORCE)
-
   add_subdirectory("vendor/google/benchmark")
-
   add_subdirectory("benchmark")
 endif()
+
+###############################################################################
+# Install Library
+###############################################################################
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
         DESTINATION include
         FILES_MATCHING PATTERN "*.hpp")
+
+###############################################################################
+# CPack
+###############################################################################
 
 set(CPACK_PACKAGE_ICON "forest.svg")
 set(CPACK_PACKAGE_VENDOR "George Fotopoulos")
