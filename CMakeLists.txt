@@ -24,6 +24,7 @@ endif()
 ###############################################################################
 
 add_library(forest INTERFACE)
+add_library(forest::forest ALIAS forest)
 target_include_directories(forest INTERFACE ${CMAKE_SOURCE_DIR}/include)
 
 ###############################################################################
@@ -33,7 +34,7 @@ target_include_directories(forest INTERFACE ${CMAKE_SOURCE_DIR}/include)
 if(FOREST_BUILD_TESTS)
   add_library(Catch2 INTERFACE)
   target_include_directories(Catch2 INTERFACE ${CMAKE_SOURCE_DIR}/vendor/catchorg/Catch2/single_include)
-  add_subdirectory("test")
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
 endif()
 
 ###############################################################################
@@ -41,7 +42,7 @@ endif()
 ###############################################################################
 
 if(FOREST_BUILD_EXAMPLES)
-  add_subdirectory("example")
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/example)
 endif()
 
 ###############################################################################
@@ -50,8 +51,8 @@ endif()
 
 if(FOREST_BUILD_BENCHMARKS)
   set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Suppressing Google Benchmark's Tests" FORCE)
-  add_subdirectory("vendor/google/benchmark")
-  add_subdirectory("benchmark")
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/google/benchmark)
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/benchmark)
 endif()
 
 ###############################################################################
