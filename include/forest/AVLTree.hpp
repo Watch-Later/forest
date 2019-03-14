@@ -10,10 +10,6 @@ namespace forest {
 template <typename Key, typename Value>
 class AVLTree {
  public:
-  using Keys = std::vector<Key>;
-  using Values = std::vector<Value>;
-  using Pair = std::pair<Key, Value>;
-  using Pairs = std::initializer_list<Pair>;
   using Callback = std::function<void(const Key &, Value &)>;
 
  private:
@@ -33,9 +29,7 @@ class AVLTree {
 
    public:
     AVLTreeNode() = default;
-
     AVLTreeNode(const Key &KEY, const Value &VALUE) : key(KEY), value(VALUE) {}
-
     AVLTreeNode(const AVLTreeNode &) = delete;
     AVLTreeNode(AVLTreeNode &&) = delete;
     AVLTreeNode &operator=(const AVLTreeNode &) = delete;
@@ -187,11 +181,8 @@ class AVLTree {
         root->mRight = Remove(root->mRight, min->key);
       }
     }
-
     if (!root) return nullptr;
-
     root->mHeight = std::max(Height(root->mLeft), Height(root->mRight)) + 1;
-
     if (Balance(root) > 1) {
       if (Balance(root->mLeft) >= 0) {
         return RotateRight(root);
@@ -206,7 +197,6 @@ class AVLTree {
       root->mRight = RotateRight(root->mRight);
       return RotateLeft(root);
     }
-
     return root;
   }
 
@@ -234,13 +224,6 @@ class AVLTree {
 
  public:
   AVLTree() = default;
-
-  explicit AVLTree(Pairs pairs) {
-    for (auto pair : pairs) {
-      Insert(pair.first, pair.second);
-    }
-  }
-
   AVLTree(const AVLTree &) = delete;
   AVLTree(AVLTree &&) = delete;
   AVLTree &operator=(const AVLTree &) = delete;

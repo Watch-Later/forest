@@ -11,30 +11,6 @@ SCENARIO("Test AVL Tree") {
       THEN("Test maximum()") { REQUIRE(AVLTree.Maximum() == nullptr); }
       THEN("Test minimum()") { REQUIRE(AVLTree.Minimum() == nullptr); }
       THEN("Test search(555)") { REQUIRE(AVLTree.Search(555) == nullptr); }
-      THEN("Test pre_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.PreOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.empty() == true);
-      }
-      THEN("Test in_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.InOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.empty() == true);
-      }
-      THEN("Test post_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.PostOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.empty() == true);
-      }
-      THEN("Test BreadthFirstTraversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.BreadthFirstTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.empty() == true);
-      }
       THEN("Test clear()") {
         AVLTree.Clear();
         REQUIRE(AVLTree.Height() == 0);
@@ -66,30 +42,6 @@ SCENARIO("Test AVL Tree") {
         auto result = AVLTree.Search(3);
         REQUIRE(result != nullptr);
         REQUIRE(result->key == 3);
-      }
-      THEN("Test pre_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.PreOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 7);
-      }
-      THEN("Test in_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.InOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 7);
-      }
-      THEN("Test post_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.PostOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 7);
-      }
-      THEN("Test BreadthFirstTraversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.BreadthFirstTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 7);
       }
       THEN("Test remove(4)") {
         AVLTree.Remove(4);
@@ -131,30 +83,6 @@ SCENARIO("Test AVL Tree") {
         REQUIRE(AVLTree.Height() == 4);
         REQUIRE(AVLTree.Size() == 9);
       }
-      THEN("Test pre_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.PreOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 10);
-      }
-      THEN("Test in_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.InOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 10);
-      }
-      THEN("Test post_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.PostOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 10);
-      }
-      THEN("Test BreadthFirstTraversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.BreadthFirstTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 10);
-      }
       THEN("Test clear()") {
         AVLTree.Clear();
         REQUIRE(AVLTree.Height() == 0);
@@ -182,30 +110,6 @@ SCENARIO("Test AVL Tree") {
         auto result = AVLTree.Search(3);
         REQUIRE(result != nullptr);
         REQUIRE(result->key == 3);
-      }
-      THEN("Test pre_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.PreOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 10);
-      }
-      THEN("Test in_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.InOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 10);
-      }
-      THEN("Test post_order_traversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.PostOrderTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 10);
-      }
-      THEN("Test BreadthFirstTraversal()") {
-        forest::AVLTree<int, int>::Keys results;
-        AVLTree.BreadthFirstTraversal(
-            [&](const int &key, int &value) { results.push_back(key); });
-        REQUIRE(results.size() == 10);
       }
       THEN("Test remove(6)") {
         AVLTree.Remove(6);
