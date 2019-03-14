@@ -166,7 +166,7 @@ class AVLTree {
       } else {
         AVLTreeNode *min{Minimum(root->mRight)};
         *root = *min;
-        root->mRight = Remove(root->mRight, min);
+        root->mRight = Remove(root->mRight, *min);
       }
     }
     if (!root) return nullptr;

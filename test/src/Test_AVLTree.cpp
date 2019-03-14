@@ -85,7 +85,7 @@ SCENARIO("Test AVL Tree") {
     }
     WHEN("Nodes are inserted in ascending order") {
       for (int i = 0; i < 10; ++i) {
-        AVLTree.Insert(Node(i, 0));
+        AVLTree.Insert(Node(i, ""));
       }
       THEN("Test Size()") { REQUIRE(AVLTree.Size() == 10); }
       THEN("Test Height()") { REQUIRE(AVLTree.Height() == 4); }
@@ -119,7 +119,7 @@ SCENARIO("Test AVL Tree") {
     }
     WHEN("Nodes are inserted in descending order") {
       for (int i = 9; i >= 0; --i) {
-        AVLTree.Insert(Node(i, 0));
+        AVLTree.Insert(Node(i, ""));
       }
       THEN("Test Size()") { REQUIRE(AVLTree.Size() == 10); }
       THEN("Test Height()") { REQUIRE(AVLTree.Height() == 4); }
