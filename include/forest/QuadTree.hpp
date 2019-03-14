@@ -53,8 +53,8 @@ class QuadTree {
 
     // bool contains(const Point & point) const {
     //	for (int i = 0; i < 2; ++i) {
-    //		if (!(point[i] >= origin[i] - transform[i] && point[i] <= origin[i] +
-    //transform[i])) { 			return false;
+    //		if (!(point[i] >= origin[i] - transform[i] && point[i] <= origin[i]
+    //+ transform[i])) { 			return false;
     //		}
     //	}
     //	return true;
@@ -68,7 +68,8 @@ class QuadTree {
 
     // bool intersects(const Range & other) const {
     //	for (int i = 0; i < 2; ++i) {
-    //		if (!(origin[i] - transform[i] <= other.origin[i] + other.transform[i]
+    //		if (!(origin[i] - transform[i] <= other.origin[i] +
+    //other.transform[i]
     //&& origin[i] + transform[i] >= other.origin[i] - other.transform[i])) {
     //			return false;
     //		}

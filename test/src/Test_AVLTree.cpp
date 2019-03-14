@@ -105,12 +105,12 @@ SCENARIO("Test AVL Tree") {
         REQUIRE(result != nullptr);
         REQUIRE(result->GetKey() == 3);
       }
-      //THEN("Test Remove(3)") {
-      //  AVLTree.Remove(3);
-      //  REQUIRE(AVLTree.Search(3) == nullptr);
-      //  REQUIRE(AVLTree.Height() == 4);
-      //  REQUIRE(AVLTree.Size() == 9);
-      //}
+       THEN("Test Remove(3)") {
+        AVLTree.Remove(3);
+        REQUIRE(AVLTree.Search(3) == nullptr);
+        REQUIRE(AVLTree.Height() == 4);
+        REQUIRE(AVLTree.Size() == 9);
+      }
       THEN("Test Clear()") {
         AVLTree.Clear();
         REQUIRE(AVLTree.Height() == 0);
@@ -139,7 +139,7 @@ SCENARIO("Test AVL Tree") {
         REQUIRE(result != nullptr);
         REQUIRE(result->GetKey() == 3);
       }
-      //THEN("Test Remove(6)") {
+      // THEN("Test Remove(6)") {
       //  AVLTree.Remove(6);
       //  REQUIRE(AVLTree.Search(6) == nullptr);
       //  REQUIRE(AVLTree.Height() == 4);

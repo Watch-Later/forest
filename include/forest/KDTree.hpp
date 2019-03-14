@@ -225,7 +225,8 @@ class KDTree {
     return root;
   }
 
-  void query(const KDTreeNode *root, const Range &range, const Callback callback) {
+  void query(const KDTreeNode *root, const Range &range,
+             const Callback callback) {
     if (!root) return;
     if (range.contains(root->point)) {
       callback(root->point);

@@ -32,7 +32,7 @@ class Node : public forest::AVLTreeNodeBase<Node> {
 bool operator<(const Node& lhs, int rhs) { return lhs.key < rhs; }
 bool operator<(int lhs, const Node& rhs) { return lhs < rhs.key; }
 
-static void BM_AVLTree_Create_Average_Case(benchmark::State &state) {
+static void BM_AVLTree_Create_Average_Case(benchmark::State& state) {
   std::uniform_int_distribution<> dis(0, static_cast<int>(state.range(0)));
   forest::AVLTree<Node> AVLTree;
   for (auto _ : state) {
@@ -50,7 +50,7 @@ BENCHMARK(BM_AVLTree_Create_Average_Case)
     ->Range(1, 1 << 20)
     ->Complexity(benchmark::oNLogN);
 
-static void BM_AVLTree_Search_Average_Case(benchmark::State &state) {
+static void BM_AVLTree_Search_Average_Case(benchmark::State& state) {
   std::uniform_int_distribution<> dis(0, static_cast<int>(state.range(0)));
   forest::AVLTree<Node> AVLTree;
   for (int i = 0; i < state.range(0); ++i) {
@@ -66,7 +66,7 @@ BENCHMARK(BM_AVLTree_Search_Average_Case)
     ->Range(1, 1 << 20)
     ->Complexity(benchmark::oLogN);
 
-static void BM_AVLTree_Minimum_Average_Case(benchmark::State &state) {
+static void BM_AVLTree_Minimum_Average_Case(benchmark::State& state) {
   std::uniform_int_distribution<> dis(0, static_cast<int>(state.range(0)));
   forest::AVLTree<Node> AVLTree;
   for (int i = 0; i < state.range(0); ++i) {
@@ -82,7 +82,7 @@ BENCHMARK(BM_AVLTree_Minimum_Average_Case)
     ->Range(1, 1 << 20)
     ->Complexity(benchmark::o1);
 
-static void BM_AVLTree_Maximum_Average_Case(benchmark::State &state) {
+static void BM_AVLTree_Maximum_Average_Case(benchmark::State& state) {
   std::uniform_int_distribution<> dis(0, static_cast<int>(state.range(0)));
   forest::AVLTree<Node> AVLTree;
   for (int i = 0; i < state.range(0); ++i) {
