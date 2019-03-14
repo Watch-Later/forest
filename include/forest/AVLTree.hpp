@@ -1,27 +1,3 @@
-/*
-    MIT License
-
-    Copyright(c) 2017 George Fotopoulos
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files(the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions :
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
-*/
-
 #pragma once
 
 #include <algorithm>
@@ -31,317 +7,280 @@
 #include <utility>
 
 namespace forest {
-    template <typename Key, typename Value>
-    class AVLTree {
-    public:
-        using Keys = std::vector<Key>;
-        using Values = std::vector<Value>;
-        using Pair = std::pair<Key, Value>;
-        using Pairs = std::initializer_list<Pair>;
-        using Handler = std::function<void(const Key &, Value &)>;
+template <typename Key, typename Value>
+class AVLTree {
+ public:
+  using Keys = std::vector<Key>;
+  using Values = std::vector<Value>;
+  using Pair = std::pair<Key, Value>;
+  using Pairs = std::initializer_list<Pair>;
+  using Callback = std::function<void(const Key &, Value &)>;
 
-    private:
-        class AVLTreeNode {
-            friend class AVLTree;
+ private:
+  class AVLTreeNode {
+    friend class AVLTree;
 
-        private:
-            AVLTreeNode *left{ nullptr };
-            AVLTreeNode *right{ nullptr };
+   private:
+    AVLTreeNode *mLeft{nullptr};
+    AVLTreeNode *mRight{nullptr};
 
-        private:
-            unsigned height{ 1 };
+   private:
+    unsigned mHeight{1};
 
-        public:
-            Key key;
-            Value value;
+   public:
+    Key key;
+    Value value;
 
-        public:
-            AVLTreeNode() = default;
+   public:
+    AVLTreeNode() = default;
 
-            AVLTreeNode(const Key &KEY, const Value &VALUE) : key(KEY), value(VALUE) {
-            }
+    AVLTreeNode(const Key &KEY, const Value &VALUE) : key(KEY), value(VALUE) {}
 
-            AVLTreeNode(const AVLTreeNode &) = delete;
-            AVLTreeNode(AVLTreeNode &&) = delete;
-            AVLTreeNode &operator=(const AVLTreeNode &) = delete;
-            AVLTreeNode &operator=(AVLTreeNode &&) = delete;
-            ~AVLTreeNode() = default;
-        };
+    AVLTreeNode(const AVLTreeNode &) = delete;
+    AVLTreeNode(AVLTreeNode &&) = delete;
+    AVLTreeNode &operator=(const AVLTreeNode &) = delete;
+    AVLTreeNode &operator=(AVLTreeNode &&) = delete;
+    ~AVLTreeNode() = default;
+  };
 
-    private:
-        AVLTreeNode *tree_root{ nullptr };
+ private:
+  AVLTreeNode *mRoot{nullptr};
 
-    private:
-        void pre_order_traversal(AVLTreeNode *root, Handler handler) {
-            if (!root) return;
-            handler(root->key, root->value);
-            pre_order_traversal(root->left, handler);
-            pre_order_traversal(root->right, handler);
-        }
+ private:
+  void PreOrderTraversal(AVLTreeNode *root, Callback callback) {
+    if (!root) return;
+    callback(root->key, root->value);
+    PreOrderTraversal(root->mLeft, callback);
+    PreOrderTraversal(root->mRight, callback);
+  }
 
-        void in_order_traversal(AVLTreeNode * root, Handler handler) {
-            if (!root) return;
-            in_order_traversal(root->left, handler);
-            handler(root->key, root->value);
-            in_order_traversal(root->right, handler);
-        }
+  void InOrderTraversal(AVLTreeNode *root, Callback callback) {
+    if (!root) return;
+    InOrderTraversal(root->mLeft, callback);
+    callback(root->key, root->value);
+    InOrderTraversal(root->mRight, callback);
+  }
 
-        void post_order_traversal(AVLTreeNode * root, Handler handler) {
-            if (!root) return;
-            post_order_traversal(root->left, handler);
-            post_order_traversal(root->right, handler);
-            handler(root->key, root->value);
-        }
+  void PostOrderTraversal(AVLTreeNode *root, Callback callback) {
+    if (!root) return;
+    PostOrderTraversal(root->mLeft, callback);
+    PostOrderTraversal(root->mRight, callback);
+    callback(root->key, root->value);
+  }
 
-        void breadth_first_traversal(AVLTreeNode * root, Handler handler) {
-            if (!root) return;
-            std::queue<AVLTreeNode *> queue;
-            queue.push(root);
-            while (!queue.empty()) {
-                AVLTreeNode *current{ queue.front() };
-                handler(current->key, current->value);
-                queue.pop();
-                if (current->left) queue.push(current->left);
-                if (current->right) queue.push(current->right);
-            }
-        }
+  void BreadthFirstTraversal(AVLTreeNode *root, Callback callback) {
+    if (!root) return;
+    std::queue<AVLTreeNode *> queue;
+    queue.push(root);
+    while (!queue.empty()) {
+      AVLTreeNode *current{queue.front()};
+      callback(current->key, current->value);
+      queue.pop();
+      if (current->mLeft) queue.push(current->mLeft);
+      if (current->mRight) queue.push(current->mRight);
+    }
+  }
 
-    private:
-        AVLTreeNode *minimum(AVLTreeNode * root) {
-            if (!root) return nullptr;
-            while (root->left) root = root->left;
-            return root;
-        }
+ private:
+  AVLTreeNode *Minimum(AVLTreeNode *root) {
+    if (!root) return nullptr;
+    while (root->mLeft) root = root->mLeft;
+    return root;
+  }
 
-        AVLTreeNode *maximum(AVLTreeNode * root) {
-            if (!root) return nullptr;
-            while (root->right) root = root->right;
-            return root;
-        }
+  AVLTreeNode *Maximum(AVLTreeNode *root) {
+    if (!root) return nullptr;
+    while (root->mRight) root = root->mRight;
+    return root;
+  }
 
-    private:
-        int balance(const AVLTreeNode * root) {
-            if (!root) return 0;
-            return height(root->left) - height(root->right);
-        }
+ private:
+  int Balance(const AVLTreeNode *root) {
+    if (!root) return 0;
+    return Height(root->mLeft) - Height(root->mRight);
+  }
 
-    private:
-        unsigned height(const AVLTreeNode * root) {
-            if (!root) return 0;
-            return root->height;
-        }
+ private:
+  unsigned Height(const AVLTreeNode *root) {
+    if (!root) return 0;
+    return root->mHeight;
+  }
 
-        unsigned size(const AVLTreeNode * root) {
-            if (!root) return 0;
-            return size(root->left) + size(root->right) + 1;
-        }
+  unsigned Size(const AVLTreeNode *root) {
+    if (!root) return 0;
+    return Size(root->mLeft) + Size(root->mRight) + 1;
+  }
 
-    private:
-        AVLTreeNode *rotate_right(AVLTreeNode * root) {
-            AVLTreeNode *pivot{ root->left };
-            AVLTreeNode *orphan{ pivot->right };
+ private:
+  AVLTreeNode *RotateRight(AVLTreeNode *root) {
+    AVLTreeNode *pivot{root->mLeft};
+    AVLTreeNode *orphan{pivot->mRight};
+    pivot->mRight = root;
+    root->mLeft = orphan;
+    root->mHeight = std::max(Height(root->mLeft), Height(root->mRight)) + 1;
+    pivot->mHeight = std::max(Height(pivot->mLeft), Height(pivot->mRight)) + 1;
+    return pivot;
+  }
 
-            pivot->right = root;
-            root->left = orphan;
+  AVLTreeNode *RotateLeft(AVLTreeNode *root) {
+    AVLTreeNode *pivot{root->mRight};
+    AVLTreeNode *orphan{pivot->mLeft};
+    pivot->mLeft = root;
+    root->mRight = orphan;
+    root->mHeight = std::max(Height(root->mLeft), Height(root->mRight)) + 1;
+    pivot->mHeight = std::max(Height(pivot->mLeft), Height(pivot->mRight)) + 1;
+    return pivot;
+  }
 
-            root->height = std::max(height(root->left), height(root->right)) + 1;
-            pivot->height = std::max(height(pivot->left), height(pivot->right)) + 1;
+ private:
+  AVLTreeNode *Insert(AVLTreeNode *root, const Key &key, const Value &value) {
+    if (!root) return new AVLTreeNode(key, value);
+    if (key < root->key)
+      root->mLeft = Insert(root->mLeft, key, value);
+    else if (key > root->key)
+      root->mRight = Insert(root->mRight, key, value);
+    root->mHeight = std::max(Height(root->mLeft), Height(root->mRight)) + 1;
+    if (Balance(root) > 1) {
+      if (key < root->mLeft->key) {
+        return RotateRight(root);
+      }
+      if (key > root->mLeft->key) {
+        root->mLeft = RotateLeft(root->mLeft);
+        return RotateRight(root);
+      }
+    } else if (Balance(root) < -1) {
+      if (key > root->mRight->key) {
+        return RotateLeft(root);
+      }
+      if (key < root->mRight->key) {
+        root->mRight = RotateRight(root->mRight);
+        return RotateLeft(root);
+      }
+    }
+    return root;
+  }
 
-            return pivot;
-        }
+  AVLTreeNode *Remove(AVLTreeNode *root, const Key &key) {
+    if (!root) return nullptr;
+    if (key < root->key)
+      root->mLeft = Remove(root->mLeft, key);
+    else if (key > root->key)
+      root->mRight = Remove(root->mRight, key);
+    else {
+      if (!root->mLeft && !root->mRight) {
+        delete root;
+        root = nullptr;
+      } else if (!root->mLeft) {
+        AVLTreeNode *tmp{root};
+        root = root->mRight;
+        delete tmp;
+        tmp = nullptr;
+      } else if (!root->mRight) {
+        AVLTreeNode *tmp{root};
+        root = root->mLeft;
+        delete tmp;
+        tmp = nullptr;
+      } else {
+        AVLTreeNode *min{Minimum(root->mRight)};
+        root->key = min->key;
+        root->value = min->value;
+        root->mRight = Remove(root->mRight, min->key);
+      }
+    }
 
-        AVLTreeNode *rotate_left(AVLTreeNode * root) {
-            AVLTreeNode *pivot{ root->right };
-            AVLTreeNode *orphan{ pivot->left };
+    if (!root) return nullptr;
 
-            pivot->left = root;
-            root->right = orphan;
+    root->mHeight = std::max(Height(root->mLeft), Height(root->mRight)) + 1;
 
-            root->height = std::max(height(root->left), height(root->right)) + 1;
-            pivot->height = std::max(height(pivot->left), height(pivot->right)) + 1;
+    if (Balance(root) > 1) {
+      if (Balance(root->mLeft) >= 0) {
+        return RotateRight(root);
+      }
+      root->mLeft = RotateLeft(root->mLeft);
+      return RotateRight(root);
+    }
+    if (Balance(root) < -1) {
+      if (Balance(root->mRight) <= 0) {
+        return RotateLeft(root);
+      }
+      root->mRight = RotateRight(root->mRight);
+      return RotateLeft(root);
+    }
 
-            return pivot;
-        }
+    return root;
+  }
 
-    private:
-        AVLTreeNode *insert(AVLTreeNode * root, const Key & key, const Value & value) {
-            if (!root) return new AVLTreeNode(key, value);
-            if (key < root->key) root->left = insert(root->left, key, value);
-            else if (key > root->key) root->right = insert(root->right, key, value);
+  AVLTreeNode *Search(AVLTreeNode *root, const Key &key) {
+    while (root) {
+      if (key > root->key) {
+        root = root->mRight;
+      } else if (key < root->key) {
+        root = root->mLeft;
+      } else {
+        return root;
+      }
+    }
+    return nullptr;
+  }
 
-            root->height = std::max(height(root->left), height(root->right)) + 1;
+ private:
+  void Clear(AVLTreeNode *root) {
+    if (!root) return;
+    if (root->mLeft) Clear(root->mLeft);
+    if (root->mRight) Clear(root->mRight);
+    delete root;
+    root = nullptr;
+  }
 
-            if (balance(root) > 1) {
-                if (key < root->left->key) {
-                    return rotate_right(root);
-                }
-                if (key > root->left->key) {
-                    root->left = rotate_left(root->left);
-                    return rotate_right(root);
-                }
-            }
-            else if (balance(root) < -1) {
-                if (key > root->right->key) {
-                    return rotate_left(root);
-                }
-                if (key < root->right->key) {
-                    root->right = rotate_right(root->right);
-                    return rotate_left(root);
-                }
-            }
+ public:
+  AVLTree() = default;
 
-            return root;
-        }
+  explicit AVLTree(Pairs pairs) {
+    for (auto pair : pairs) {
+      Insert(pair.first, pair.second);
+    }
+  }
 
-        AVLTreeNode *remove(AVLTreeNode * root, const Key & key) {
-            if (!root) return nullptr;
-            if (key < root->key) root->left = remove(root->left, key);
-            else if (key > root->key) root->right = remove(root->right, key);
-            else {
-                if (!root->left && !root->right) {
-                    delete root;
-                    root = nullptr;
-                }
-                else if (!root->left) {
-                    AVLTreeNode *tmp{ root };
-                    root = root->right;
-                    delete tmp;
-                    tmp = nullptr;
-                }
-                else if (!root->right) {
-                    AVLTreeNode *tmp{ root };
-                    root = root->left;
-                    delete tmp;
-                    tmp = nullptr;
-                }
-                else {
-                    AVLTreeNode *min{ minimum(root->right) };
-                    root->key = min->key;
-                    root->value = min->value;
-                    root->right = remove(root->right, min->key);
-                    //AVLTreeNode * max{ maximum(root->left) };
-                    //root->key = max->key;
-                    //root->value = max->value;
-                    //root->left = remove(root->left, max->key);
-                }
-            }
+  AVLTree(const AVLTree &) = delete;
+  AVLTree(AVLTree &&) = delete;
+  AVLTree &operator=(const AVLTree &) = delete;
+  AVLTree &operator=(AVLTree &&) = delete;
 
-            if (!root) return nullptr;
+  ~AVLTree() { Clear(); }
 
-            root->height = std::max(height(root->left), height(root->right)) + 1;
+ public:
+  void PreOrderTraversal(Callback callback) {
+    PreOrderTraversal(mRoot, callback);
+  }
+  void InOrderTraversal(Callback callback) {
+    InOrderTraversal(mRoot, callback);
+  }
+  void PostOrderTraversal(Callback callback) {
+    PostOrderTraversal(mRoot, callback);
+  }
+  void BreadthFirstTraversal(Callback callback) {
+    BreadthFirstTraversal(mRoot, callback);
+  }
 
-            if (balance(root) > 1) {
-                if (balance(root->left) >= 0) {
-                    return rotate_right(root);
-                }
-                root->left = rotate_left(root->left);
-                return rotate_right(root);
-            }
-            if (balance(root) < -1) {
-                if (balance(root->right) <= 0) {
-                    return rotate_left(root);
-                }
-                root->right = rotate_right(root->right);
-                return rotate_left(root);
-            }
+ public:
+  AVLTreeNode *Minimum() { return Minimum(mRoot); }
+  AVLTreeNode *Maximum() { return Maximum(mRoot); }
 
-            return root;
-        }
+ public:
+  unsigned Height() { return Height(mRoot); }
+  unsigned Size() { return Size(mRoot); }
 
-        AVLTreeNode *search(AVLTreeNode * root, const Key & key) {
-            while (root) {
-                if (key > root->key) {
-                    root = root->right;
-                }
-                else if (key < root->key) {
-                    root = root->left;
-                }
-                else {
-                    return root;
-                }
-            }
-            return nullptr;
-        }
+ public:
+  void Insert(const Key &key, const Value &value) {
+    mRoot = Insert(mRoot, key, value);
+  }
+  void Remove(const Key &key) { mRoot = Remove(mRoot, key); }
+  AVLTreeNode *Search(const Key &key) { return Search(mRoot, key); }
 
-    private:
-        void clear(AVLTreeNode * root) {
-            if (!root) return;
-            if (root->left) clear(root->left);
-            if (root->right) clear(root->right);
-            delete root;
-            root = nullptr;
-        }
-
-    public:
-        AVLTree() = default;
-
-        explicit AVLTree(Pairs pairs) {
-            for (auto pair : pairs) {
-                insert(pair.first, pair.second);
-            }
-        }
-
-        AVLTree(const AVLTree &) = delete;
-        AVLTree(AVLTree &&) = delete;
-        AVLTree &operator=(const AVLTree &) = delete;
-        AVLTree &operator=(AVLTree &&) = delete;
-
-        ~AVLTree() {
-            clear();
-        }
-
-    public:
-        void pre_order_traversal(Handler handler) {
-            pre_order_traversal(tree_root, handler);
-        }
-
-        void in_order_traversal(Handler handler) {
-            in_order_traversal(tree_root, handler);
-        }
-
-        void post_order_traversal(Handler handler) {
-            post_order_traversal(tree_root, handler);
-        }
-
-        void breadth_first_traversal(Handler handler) {
-            breadth_first_traversal(tree_root, handler);
-        }
-
-    public:
-        AVLTreeNode *minimum() {
-            return minimum(tree_root);
-        }
-
-        AVLTreeNode *maximum() {
-            return maximum(tree_root);
-        }
-
-    public:
-        unsigned height() {
-            return height(tree_root);
-        }
-
-        unsigned size() {
-            return size(tree_root);
-        }
-
-    public:
-        void insert(const Key & key, const Value & value) {
-            tree_root = insert(tree_root, key, value);
-        }
-
-        void remove(const Key & key) {
-            tree_root = remove(tree_root, key);
-        }
-
-        AVLTreeNode *search(const Key & key) {
-            return search(tree_root, key);
-        }
-
-    public:
-        void clear() {
-            clear(tree_root);
-            tree_root = nullptr;
-        }
-    };
-}
+ public:
+  void Clear() {
+    Clear(mRoot);
+    mRoot = nullptr;
+  }
+};
+}  // namespace forest
