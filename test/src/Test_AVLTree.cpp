@@ -46,13 +46,13 @@ SCENARIO("Test AVL Tree") {
       }
     }
     WHEN("Nodes are inserted in random order") {
-      AVLTree.Insert(Node(4, 0));
-      AVLTree.Insert(Node(2, 0));
-      AVLTree.Insert(Node(90, 0));
-      AVLTree.Insert(Node(3, 0));
-      AVLTree.Insert(Node(0, 0));
-      AVLTree.Insert(Node(14, 0));
-      AVLTree.Insert(Node(45, 0));
+      AVLTree.Insert(Node(4, ""));
+      AVLTree.Insert(Node(2, ""));
+      AVLTree.Insert(Node(90, ""));
+      AVLTree.Insert(Node(3, ""));
+      AVLTree.Insert(Node(0, ""));
+      AVLTree.Insert(Node(14, ""));
+      AVLTree.Insert(Node(45, ""));
       THEN("Test Size()") { REQUIRE(AVLTree.Size() == 7); }
       THEN("Test Height()") { REQUIRE(AVLTree.Height() == 3); }
       THEN("Test Maximum()") {

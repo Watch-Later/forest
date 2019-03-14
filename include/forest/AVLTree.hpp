@@ -124,18 +124,18 @@ class AVLTree {
       root->mRight = Insert(root->mRight, node);
     root->mHeight = std::max(Height(root->mLeft), Height(root->mRight)) + 1;
     if (Balance(root) > 1) {
-      if (node < root->mLeft) {
+      if (node < *root->mLeft) {
         return RotateRight(root);
       }
-      if (root->mLeft < node) {
+      if (*root->mLeft < node) {
         root->mLeft = RotateLeft(root->mLeft);
         return RotateRight(root);
       }
     } else if (Balance(root) < -1) {
-      if (root->mRight < node) {
+      if (*root->mRight < node) {
         return RotateLeft(root);
       }
-      if (node < root->mRight) {
+      if (node < *root->mRight) {
         root->mRight = RotateRight(root->mRight);
         return RotateLeft(root);
       }
