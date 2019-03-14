@@ -1,181 +1,164 @@
-/*
-    MIT License
-
-    Copyright(c) 2017 George Fotopoulos
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files(the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions :
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
-*/
-
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 #include <forest/BinarySearchTree.hpp>
 
-SCENARIO(
-    "Test Binary Search Tree"
-) {
-    GIVEN("A Binary Search Tree") {
-        forest::BinarySearchTree<int, int> BinarySearchTree;
-        WHEN("The Binary Search Tree is empty") {
-            THEN("Test height()") {
-                REQUIRE(BinarySearchTree.height() == 0);
-            }
-            THEN("Test size()") {
-                REQUIRE(BinarySearchTree.size() == 0);
-            }
-            THEN("Test maximum()") {
-                REQUIRE(BinarySearchTree.maximum() == nullptr);
-            }
-            THEN("Test minimum()") {
-                REQUIRE(BinarySearchTree.minimum() == nullptr);
-            }
-            THEN("Test search(555)") {
-                REQUIRE(BinarySearchTree.search(555) == nullptr);
-            }
-            THEN("Test clear()") {
-                BinarySearchTree.clear();
-                REQUIRE(BinarySearchTree.height() == 0);
-                REQUIRE(BinarySearchTree.size() == 0);
-            }
-        }
-        WHEN("Nodes are inserted in random order") {
-            BinarySearchTree.insert(4, 0);
-            BinarySearchTree.insert(2, 0);
-            BinarySearchTree.insert(90, 0);
-            BinarySearchTree.insert(3, 0);
-            BinarySearchTree.insert(0, 0);
-            BinarySearchTree.insert(14, 0);
-            BinarySearchTree.insert(45, 0);
-            THEN("Test height()") {
-                REQUIRE(BinarySearchTree.height() == 4);
-            }
-            THEN("Test size()") {
-                REQUIRE(BinarySearchTree.size() == 7);
-            }
-            THEN("Test maximum()") {
-                auto max = BinarySearchTree.maximum();
-                REQUIRE(max != nullptr);
-                REQUIRE(max->key == 90);
-            }
-            THEN("Test minimum()") {
-                auto min = BinarySearchTree.minimum();
-                REQUIRE(min != nullptr);
-                REQUIRE(min->key == 0);
-            }
-            THEN("Test search(1337)") {
-                REQUIRE(BinarySearchTree.search(1337) == nullptr);
-            }
-            THEN("Test search(3)") {
-                auto result = BinarySearchTree.search(3);
-                REQUIRE(result != nullptr);
-                REQUIRE(result->key == 3);
-            }
-            THEN("Test remove(45)") {
-                BinarySearchTree.remove(45);
-                REQUIRE(BinarySearchTree.search(45) == nullptr);
-                REQUIRE(BinarySearchTree.height() == 3);
-                REQUIRE(BinarySearchTree.size() == 6);
-            }
-            THEN("Test clear()") {
-                BinarySearchTree.clear();
-                REQUIRE(BinarySearchTree.height() == 0);
-                REQUIRE(BinarySearchTree.size() == 0);
-            }
-        }
-        WHEN("Nodes are inserted in ascending order") {
-            for (int i = 0; i < 10; ++i) {
-                BinarySearchTree.insert(i, 0);
-            }
-            THEN("Test height()") {
-                REQUIRE(BinarySearchTree.height() == 10);
-            }
-            THEN("Test size()") {
-                REQUIRE(BinarySearchTree.size() == 10);
-            }
-            THEN("Test maximum()") {
-                auto max = BinarySearchTree.maximum();
-                REQUIRE(max != nullptr);
-                REQUIRE(max->key == 9);
-            }
-            THEN("Test minimum()") {
-                auto min = BinarySearchTree.minimum();
-                REQUIRE(min != nullptr);
-                REQUIRE(min->key == 0);
-            }
-            THEN("Test search(1337)") {
-                REQUIRE(BinarySearchTree.search(1337) == nullptr);
-            }
-            THEN("Test search(3)") {
-                auto result = BinarySearchTree.search(3);
-                REQUIRE(result != nullptr);
-                REQUIRE(result->key == 3);
-            }
-            THEN("Test remove(0)") {
-                BinarySearchTree.remove(0);
-                REQUIRE(BinarySearchTree.search(0) == nullptr);
-                REQUIRE(BinarySearchTree.height() == 9);
-                REQUIRE(BinarySearchTree.size() == 9);
-            }
-            THEN("Test clear()") {
-                BinarySearchTree.clear();
-                REQUIRE(BinarySearchTree.height() == 0);
-                REQUIRE(BinarySearchTree.size() == 0);
-            }
-        }
-        WHEN("Nodes are inserted in descending order") {
-            for (int i = 9; i >= 0; --i) {
-                BinarySearchTree.insert(i, 0);
-            }
-            THEN("Test height()") {
-                REQUIRE(BinarySearchTree.height() == 10);
-            }
-            THEN("Test size()") {
-                REQUIRE(BinarySearchTree.size() == 10);
-            }
-            THEN("Test maximum()") {
-                auto max = BinarySearchTree.maximum();
-                REQUIRE(max != nullptr);
-                REQUIRE(max->key == 9);
-            }
-            THEN("Test minimum()") {
-                auto min = BinarySearchTree.minimum();
-                REQUIRE(min != nullptr);
-                REQUIRE(min->key == 0);
-            }
-            THEN("Test search(1337)") {
-                REQUIRE(BinarySearchTree.search(1337) == nullptr);
-            }
-            THEN("Test search(3)") {
-                auto result = BinarySearchTree.search(3);
-                REQUIRE(result != nullptr);
-                REQUIRE(result->key == 3);
-            }
-            THEN("Test remove(0)") {
-                BinarySearchTree.remove(0);
-                REQUIRE(BinarySearchTree.search(0) == nullptr);
-                REQUIRE(BinarySearchTree.height() == 9);
-                REQUIRE(BinarySearchTree.size() == 9);
-            }
-            THEN("Test clear()") {
-                BinarySearchTree.clear();
-                REQUIRE(BinarySearchTree.height() == 0);
-                REQUIRE(BinarySearchTree.size() == 0);
-            }
-        }
+class Node : public forest::BinarySearchTreeNodeBase<Node> {
+ public:
+  Node() = default;
+  Node(const int& KEY, const std::string& VALUE) : key(KEY), value(VALUE){};
+  ~Node() = default;
+
+ public:
+  bool operator<(const Node& other) const { return this->key < other.key; }
+
+ public:
+  void SetKey(int KEY) { key = KEY; }
+  void SetValue(std::string VALUE) { value = VALUE; }
+
+ public:
+  int GetKey() { return key; }
+  std::string GetValue() { return value; }
+
+ public:
+  friend bool operator<(const Node& lhs, int rhs);
+  friend bool operator<(int lhs, const Node& rhs);
+
+ private:
+  int key;
+  std::string value;
+};
+
+bool operator<(const Node& lhs, int rhs) { return lhs.key < rhs; }
+bool operator<(int lhs, const Node& rhs) { return lhs < rhs.key; }
+
+SCENARIO("Test Binary Search Tree") {
+  GIVEN("A Binary Search Tree") {
+    forest::BinarySearchTree<Node> BinarySearchTree;
+    WHEN("The Binary Search Tree is empty") {
+      THEN("Test Height()") { REQUIRE(BinarySearchTree.Height() == 0); }
+      THEN("Test Size()") { REQUIRE(BinarySearchTree.Size() == 0); }
+      THEN("Test Maximum()") { REQUIRE(BinarySearchTree.Maximum() == nullptr); }
+      THEN("Test Minimum()") { REQUIRE(BinarySearchTree.Minimum() == nullptr); }
+      THEN("Test Search(555)") {
+        REQUIRE(BinarySearchTree.Search(555) == nullptr);
+      }
+      THEN("Test Clear()") {
+        BinarySearchTree.Clear();
+        REQUIRE(BinarySearchTree.Height() == 0);
+        REQUIRE(BinarySearchTree.Size() == 0);
+      }
     }
+    WHEN("Nodes are inserted in random order") {
+      BinarySearchTree.Insert(Node(4, ""));
+      BinarySearchTree.Insert(Node(2, ""));
+      BinarySearchTree.Insert(Node(90, ""));
+      BinarySearchTree.Insert(Node(3, ""));
+      BinarySearchTree.Insert(Node(0, ""));
+      BinarySearchTree.Insert(Node(14, ""));
+      BinarySearchTree.Insert(Node(45, ""));
+      THEN("Test Height()") { REQUIRE(BinarySearchTree.Height() == 4); }
+      THEN("Test Size()") { REQUIRE(BinarySearchTree.Size() == 7); }
+      THEN("Test Maximum()") {
+        auto max = BinarySearchTree.Maximum();
+        REQUIRE(max != nullptr);
+        REQUIRE(max->GetKey() == 90);
+      }
+      THEN("Test Minimum()") {
+        auto min = BinarySearchTree.Minimum();
+        REQUIRE(min != nullptr);
+        REQUIRE(min->GetKey() == 0);
+      }
+      THEN("Test Search(1337)") {
+        REQUIRE(BinarySearchTree.Search(1337) == nullptr);
+      }
+      THEN("Test Search(3)") {
+        auto result = BinarySearchTree.Search(3);
+        REQUIRE(result != nullptr);
+        REQUIRE(result->GetKey() == 3);
+      }
+      THEN("Test Remove(45)") {
+        BinarySearchTree.Remove(45);
+        REQUIRE(BinarySearchTree.Search(45) == nullptr);
+        REQUIRE(BinarySearchTree.Height() == 3);
+        REQUIRE(BinarySearchTree.Size() == 6);
+      }
+      THEN("Test Clear()") {
+        BinarySearchTree.Clear();
+        REQUIRE(BinarySearchTree.Height() == 0);
+        REQUIRE(BinarySearchTree.Size() == 0);
+      }
+    }
+    WHEN("Nodes are inserted in ascending order") {
+      for (int i = 0; i < 10; ++i) {
+        BinarySearchTree.Insert(Node(i, ""));
+      }
+      THEN("Test Height()") { REQUIRE(BinarySearchTree.Height() == 10); }
+      THEN("Test Size()") { REQUIRE(BinarySearchTree.Size() == 10); }
+      THEN("Test Maximum()") {
+        auto max = BinarySearchTree.Maximum();
+        REQUIRE(max != nullptr);
+        REQUIRE(max->GetKey() == 9);
+      }
+      THEN("Test Minimum()") {
+        auto min = BinarySearchTree.Minimum();
+        REQUIRE(min != nullptr);
+        REQUIRE(min->GetKey() == 0);
+      }
+      THEN("Test Search(1337)") {
+        REQUIRE(BinarySearchTree.Search(1337) == nullptr);
+      }
+      THEN("Test Search(3)") {
+        auto result = BinarySearchTree.Search(3);
+        REQUIRE(result != nullptr);
+        REQUIRE(result->GetKey() == 3);
+      }
+      THEN("Test Remove(0)") {
+        BinarySearchTree.Remove(0);
+        REQUIRE(BinarySearchTree.Search(0) == nullptr);
+        REQUIRE(BinarySearchTree.Height() == 9);
+        REQUIRE(BinarySearchTree.Size() == 9);
+      }
+      THEN("Test Clear()") {
+        BinarySearchTree.Clear();
+        REQUIRE(BinarySearchTree.Height() == 0);
+        REQUIRE(BinarySearchTree.Size() == 0);
+      }
+    }
+    WHEN("Nodes are inserted in descending order") {
+      for (int i = 9; i >= 0; --i) {
+        BinarySearchTree.Insert(Node(i, ""));
+      }
+      THEN("Test Height()") { REQUIRE(BinarySearchTree.Height() == 10); }
+      THEN("Test Size()") { REQUIRE(BinarySearchTree.Size() == 10); }
+      THEN("Test Maximum()") {
+        auto max = BinarySearchTree.Maximum();
+        REQUIRE(max != nullptr);
+        REQUIRE(max->GetKey() == 9);
+      }
+      THEN("Test Minimum()") {
+        auto min = BinarySearchTree.Minimum();
+        REQUIRE(min != nullptr);
+        REQUIRE(min->GetKey() == 0);
+      }
+      THEN("Test Search(1337)") {
+        REQUIRE(BinarySearchTree.Search(1337) == nullptr);
+      }
+      THEN("Test Search(3)") {
+        auto result = BinarySearchTree.Search(3);
+        REQUIRE(result != nullptr);
+        REQUIRE(result->GetKey() == 3);
+      }
+      THEN("Test Remove(0)") {
+        BinarySearchTree.Remove(0);
+        REQUIRE(BinarySearchTree.Search(0) == nullptr);
+        REQUIRE(BinarySearchTree.Height() == 9);
+        REQUIRE(BinarySearchTree.Size() == 9);
+      }
+      THEN("Test Clear()") {
+        BinarySearchTree.Clear();
+        REQUIRE(BinarySearchTree.Height() == 0);
+        REQUIRE(BinarySearchTree.Size() == 0);
+      }
+    }
+  }
 }
