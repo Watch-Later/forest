@@ -41,28 +41,25 @@ class AVLTree {
   AVLTreeNode *mRoot{nullptr};
 
  private:
-  void PreOrderTraversal(AVLTreeNode *root, Callback callback) {
+  void PreOrderTraversal(AVLTreeNode *root, const Callback callback) {
     if (!root) return;
     callback(root->key, root->value);
     PreOrderTraversal(root->mLeft, callback);
     PreOrderTraversal(root->mRight, callback);
   }
-
-  void InOrderTraversal(AVLTreeNode *root, Callback callback) {
+  void InOrderTraversal(AVLTreeNode *root, const Callback callback) {
     if (!root) return;
     InOrderTraversal(root->mLeft, callback);
     callback(root->key, root->value);
     InOrderTraversal(root->mRight, callback);
   }
-
-  void PostOrderTraversal(AVLTreeNode *root, Callback callback) {
+  void PostOrderTraversal(AVLTreeNode *root, const Callback callback) {
     if (!root) return;
     PostOrderTraversal(root->mLeft, callback);
     PostOrderTraversal(root->mRight, callback);
     callback(root->key, root->value);
   }
-
-  void BreadthFirstTraversal(AVLTreeNode *root, Callback callback) {
+  void BreadthFirstTraversal(AVLTreeNode *root, const Callback callback) {
     if (!root) return;
     std::queue<AVLTreeNode *> queue;
     queue.push(root);
@@ -81,7 +78,6 @@ class AVLTree {
     while (root->mLeft) root = root->mLeft;
     return root;
   }
-
   AVLTreeNode *Maximum(AVLTreeNode *root) {
     if (!root) return nullptr;
     while (root->mRight) root = root->mRight;
@@ -99,7 +95,6 @@ class AVLTree {
     if (!root) return 0;
     return root->mHeight;
   }
-
   unsigned Size(const AVLTreeNode *root) {
     if (!root) return 0;
     return Size(root->mLeft) + Size(root->mRight) + 1;
@@ -115,7 +110,6 @@ class AVLTree {
     pivot->mHeight = std::max(Height(pivot->mLeft), Height(pivot->mRight)) + 1;
     return pivot;
   }
-
   AVLTreeNode *RotateLeft(AVLTreeNode *root) {
     AVLTreeNode *pivot{root->mRight};
     AVLTreeNode *orphan{pivot->mLeft};
@@ -228,20 +222,19 @@ class AVLTree {
   AVLTree(AVLTree &&) = delete;
   AVLTree &operator=(const AVLTree &) = delete;
   AVLTree &operator=(AVLTree &&) = delete;
-
   ~AVLTree() { Clear(); }
 
  public:
-  void PreOrderTraversal(Callback callback) {
+  void PreOrderTraversal(const Callback callback) {
     PreOrderTraversal(mRoot, callback);
   }
-  void InOrderTraversal(Callback callback) {
+  void InOrderTraversal(const Callback callback) {
     InOrderTraversal(mRoot, callback);
   }
-  void PostOrderTraversal(Callback callback) {
+  void PostOrderTraversal(const Callback callback) {
     PostOrderTraversal(mRoot, callback);
   }
-  void BreadthFirstTraversal(Callback callback) {
+  void BreadthFirstTraversal(const Callback callback) {
     BreadthFirstTraversal(mRoot, callback);
   }
 
