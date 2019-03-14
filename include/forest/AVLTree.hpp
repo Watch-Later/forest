@@ -7,35 +7,30 @@
 #include <utility>
 
 namespace forest {
-template <typename Key, typename Value>
-class AVLTree {
- public:
-  using Callback = std::function<void(const Key &, Value &)>;
+template <typename AVLTreeNode>
+class AVLTree;
+
+template <typename AVLTreeNode>
+class AVLTreeNodeBase {
+  template <typename T>
+  friend class AVLTree;
 
  private:
-  class AVLTreeNode {
-    friend class AVLTree;
+  AVLTreeNode *mLeft{nullptr};
+  AVLTreeNode *mRight{nullptr};
 
-   private:
-    AVLTreeNode *mLeft{nullptr};
-    AVLTreeNode *mRight{nullptr};
+ private:
+  unsigned mHeight{1};
 
-   private:
-    unsigned mHeight{1};
+ public:
+  AVLTreeNodeBase() = default;
+  ~AVLTreeNodeBase() = default;
+};
 
-   public:
-    Key key;
-    Value value;
-
-   public:
-    AVLTreeNode() = default;
-    AVLTreeNode(const Key &KEY, const Value &VALUE) : key(KEY), value(VALUE) {}
-    AVLTreeNode(const AVLTreeNode &) = delete;
-    AVLTreeNode(AVLTreeNode &&) = delete;
-    AVLTreeNode &operator=(const AVLTreeNode &) = delete;
-    AVLTreeNode &operator=(AVLTreeNode &&) = delete;
-    ~AVLTreeNode() = default;
-  };
+template <typename AVLTreeNode>
+class AVLTree {
+ public:
+  using Callback = std::function<void(AVLTreeNode &)>;
 
  private:
   AVLTreeNode *mRoot{nullptr};
@@ -43,21 +38,21 @@ class AVLTree {
  private:
   void PreOrderTraversal(AVLTreeNode *root, const Callback callback) {
     if (!root) return;
-    callback(root->key, root->value);
+    callback(*root);
     PreOrderTraversal(root->mLeft, callback);
     PreOrderTraversal(root->mRight, callback);
   }
   void InOrderTraversal(AVLTreeNode *root, const Callback callback) {
     if (!root) return;
     InOrderTraversal(root->mLeft, callback);
-    callback(root->key, root->value);
+    callback(*root);
     InOrderTraversal(root->mRight, callback);
   }
   void PostOrderTraversal(AVLTreeNode *root, const Callback callback) {
     if (!root) return;
     PostOrderTraversal(root->mLeft, callback);
     PostOrderTraversal(root->mRight, callback);
-    callback(root->key, root->value);
+    callback(*root);
   }
   void BreadthFirstTraversal(AVLTreeNode *root, const Callback callback) {
     if (!root) return;
@@ -65,7 +60,7 @@ class AVLTree {
     queue.push(root);
     while (!queue.empty()) {
       AVLTreeNode *current{queue.front()};
-      callback(current->key, current->value);
+      callback(*current);
       queue.pop();
       if (current->mLeft) queue.push(current->mLeft);
       if (current->mRight) queue.push(current->mRight);
@@ -121,39 +116,39 @@ class AVLTree {
   }
 
  private:
-  AVLTreeNode *Insert(AVLTreeNode *root, const Key &key, const Value &value) {
-    if (!root) return new AVLTreeNode(key, value);
-    if (key < root->key)
-      root->mLeft = Insert(root->mLeft, key, value);
-    else if (key > root->key)
-      root->mRight = Insert(root->mRight, key, value);
+  AVLTreeNode *Insert(AVLTreeNode *root, const AVLTreeNode &node) {
+    if (!root) return new AVLTreeNode(node);
+    if (node < *root)
+      root->mLeft = Insert(root->mLeft, node);
+    else if (*root < node)
+      root->mRight = Insert(root->mRight, node);
     root->mHeight = std::max(Height(root->mLeft), Height(root->mRight)) + 1;
     if (Balance(root) > 1) {
-      if (key < root->mLeft->key) {
+      if (node < root->mLeft) {
         return RotateRight(root);
       }
-      if (key > root->mLeft->key) {
+      if (root->mLeft < node) {
         root->mLeft = RotateLeft(root->mLeft);
         return RotateRight(root);
       }
     } else if (Balance(root) < -1) {
-      if (key > root->mRight->key) {
+      if (root->mRight < node) {
         return RotateLeft(root);
       }
-      if (key < root->mRight->key) {
+      if (node < root->mRight) {
         root->mRight = RotateRight(root->mRight);
         return RotateLeft(root);
       }
     }
     return root;
   }
-
-  AVLTreeNode *Remove(AVLTreeNode *root, const Key &key) {
+  template <typename Comparable>
+  AVLTreeNode *Remove(AVLTreeNode *root, const Comparable &query) {
     if (!root) return nullptr;
-    if (key < root->key)
-      root->mLeft = Remove(root->mLeft, key);
-    else if (key > root->key)
-      root->mRight = Remove(root->mRight, key);
+    if (query < *root)
+      root->mLeft = Remove(root->mLeft, query);
+    else if (*root < query)
+      root->mRight = Remove(root->mRight, query);
     else {
       if (!root->mLeft && !root->mRight) {
         delete root;
@@ -170,9 +165,8 @@ class AVLTree {
         tmp = nullptr;
       } else {
         AVLTreeNode *min{Minimum(root->mRight)};
-        root->key = min->key;
-        root->value = min->value;
-        root->mRight = Remove(root->mRight, min->key);
+        *root = *min;
+        root->mRight = Remove(root->mRight, min);
       }
     }
     if (!root) return nullptr;
@@ -193,12 +187,12 @@ class AVLTree {
     }
     return root;
   }
-
-  AVLTreeNode *Search(AVLTreeNode *root, const Key &key) {
+  template <typename Comparable>
+  AVLTreeNode *Search(AVLTreeNode *root, const Comparable &query) {
     while (root) {
-      if (key > root->key) {
+      if (*root < query) {
         root = root->mRight;
-      } else if (key < root->key) {
+      } else if (query < *root) {
         root = root->mLeft;
       } else {
         return root;
@@ -247,11 +241,15 @@ class AVLTree {
   unsigned Size() { return Size(mRoot); }
 
  public:
-  void Insert(const Key &key, const Value &value) {
-    mRoot = Insert(mRoot, key, value);
+  void Insert(const AVLTreeNode &node) { mRoot = Insert(mRoot, node); }
+  template <typename Comparable>
+  void Remove(const Comparable &query) {
+    mRoot = Remove(mRoot, query);
   }
-  void Remove(const Key &key) { mRoot = Remove(mRoot, key); }
-  AVLTreeNode *Search(const Key &key) { return Search(mRoot, key); }
+  template <typename Comparable>
+  AVLTreeNode *Search(const Comparable &query) {
+    return Search(mRoot, query);
+  }
 
  public:
   void Clear() {
