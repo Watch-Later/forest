@@ -24,6 +24,10 @@ class BinarySearchTreeNodeBase {
 
  public:
   BinarySearchTreeNodeBase() = default;
+  BinarySearchTreeNodeBase &operator=(const BinarySearchTreeNodeBase &other) {
+    mHeight = other.mHeight;
+    return *this;
+  }
   ~BinarySearchTreeNodeBase() = default;
 };
 

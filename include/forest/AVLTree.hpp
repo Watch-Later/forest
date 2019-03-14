@@ -3,9 +3,9 @@
 #include <algorithm>
 #include <functional>
 #include <initializer_list>
+#include <iostream>
 #include <queue>
 #include <utility>
-
 namespace forest {
 template <typename AVLTreeNode>
 class AVLTree;
@@ -24,6 +24,10 @@ class AVLTreeNodeBase {
 
  public:
   AVLTreeNodeBase() = default;
+  AVLTreeNodeBase &operator=(const AVLTreeNodeBase &other) {
+    mHeight = other.mHeight;
+    return *this;
+  };
   ~AVLTreeNodeBase() = default;
 };
 
