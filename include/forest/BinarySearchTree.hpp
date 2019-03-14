@@ -36,25 +36,26 @@ class BinarySearchTree {
   BinarySearchTreeNode *mRoot{nullptr};
 
  private:
-  void PreOrderTraversal(BinarySearchTreeNode *root, Callback callback) {
+  void PreOrderTraversal(BinarySearchTreeNode *root, const Callback callback) {
     if (!root) return;
     callback(*root);
     PreOrderTraversal(root->mLeft, callback);
     PreOrderTraversal(root->mRight, callback);
   }
-  void InOrderTraversal(BinarySearchTreeNode *root, Callback callback) {
+  void InOrderTraversal(BinarySearchTreeNode *root, const Callback callback) {
     if (!root) return;
     InOrderTraversal(root->mLeft, callback);
     callback(*root);
     InOrderTraversal(root->mRight, callback);
   }
-  void PostOrderTraversal(BinarySearchTreeNode *root, Callback callback) {
+  void PostOrderTraversal(BinarySearchTreeNode *root, const Callback callback) {
     if (!root) return;
     PostOrderTraversal(root->mLeft, callback);
     PostOrderTraversal(root->mRight, callback);
     callback(*root);
   }
-  void BreadthFirstTraversal(BinarySearchTreeNode *root, Callback callback) {
+  void BreadthFirstTraversal(BinarySearchTreeNode *root,
+                             const Callback callback) {
     if (!root) return;
     std::queue<BinarySearchTreeNode *> queue;
     queue.push(root);
@@ -166,16 +167,16 @@ class BinarySearchTree {
   BinarySearchTree &operator=(BinarySearchTree &&) = delete;
 
  public:
-  void PreOrderTraversal(Callback callback) {
+  void PreOrderTraversal(const Callback callback) {
     PreOrderTraversal(mRoot, callback);
   }
-  void InOrderTraversal(Callback callback) {
+  void InOrderTraversal(const Callback callback) {
     InOrderTraversal(mRoot, callback);
   }
-  void PostOrderTraversal(Callback callback) {
+  void PostOrderTraversal(const Callback callback) {
     PostOrderTraversal(mRoot, callback);
   }
-  void BreadthFirstTraversal(Callback callback) {
+  void BreadthFirstTraversal(const Callback callback) {
     BreadthFirstTraversal(mRoot, callback);
   }
 
