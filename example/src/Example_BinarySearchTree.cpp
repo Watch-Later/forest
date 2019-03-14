@@ -9,7 +9,7 @@ class Node : public forest::BinarySearchTreeNodeBase<Node> {
   ~Node() = default;
 
  public:
-  bool operator<(const Node& other) const { return this->key < other.key; }
+  bool operator<(const Node& other) const { return key < other.key; }
   friend bool operator<(const Node& lhs, int rhs);
   friend bool operator<(int lhs, const Node& rhs);
 

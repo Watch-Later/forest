@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 #include <forest/BinarySearchTree.hpp>
+#include <string>
 
 class Node : public forest::BinarySearchTreeNodeBase<Node> {
  public:
@@ -9,7 +10,9 @@ class Node : public forest::BinarySearchTreeNodeBase<Node> {
   ~Node() = default;
 
  public:
-  bool operator<(const Node& other) const { return this->key < other.key; }
+  bool operator<(const Node& other) const { return key < other.key; }
+  friend bool operator<(const Node& lhs, int rhs);
+  friend bool operator<(int lhs, const Node& rhs);
 
  public:
   void SetKey(int KEY) { key = KEY; }
@@ -18,10 +21,6 @@ class Node : public forest::BinarySearchTreeNodeBase<Node> {
  public:
   int GetKey() { return key; }
   std::string GetValue() { return value; }
-
- public:
-  friend bool operator<(const Node& lhs, int rhs);
-  friend bool operator<(int lhs, const Node& rhs);
 
  private:
   int key;
