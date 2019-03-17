@@ -78,6 +78,16 @@ int main() {
       [](auto& node) { std::cout << node.GetKey() << " "; });
   std::cout << std::endl;
 
+  /////////////////////////////
+  // Breadth First Traversal //
+  /////////////////////////////
+
+  std::cout << "BreadthFirstTraversal()";
+  std::cout << " = ";
+  BinarySearchTree.BreadthFirstTraversal(
+      [](auto& node) { std::cout << node.GetKey() << " "; });
+  std::cout << std::endl;
+
   ////////////
   // Remove //
   ////////////
