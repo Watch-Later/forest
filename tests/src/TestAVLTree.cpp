@@ -84,8 +84,8 @@ SCENARIO("Test AVL Tree") {
       }
     }
     WHEN("Nodes are inserted in ascending order") {
-      for (int i = 0; i < 10; ++i) {
-        AVLTree.Insert(Node(i, ""));
+      for (int key = 0; key < 10; ++key) {
+        AVLTree.Insert(Node(key, ""));
       }
       THEN("Test Size()") { REQUIRE(AVLTree.Size() == 10); }
       THEN("Test Height()") { REQUIRE(AVLTree.Height() == 4); }
@@ -118,8 +118,8 @@ SCENARIO("Test AVL Tree") {
       }
     }
     WHEN("Nodes are inserted in descending order") {
-      for (int i = 9; i >= 0; --i) {
-        AVLTree.Insert(Node(i, ""));
+      for (int key = 9; key >= 0; --key) {
+        AVLTree.Insert(Node(key, ""));
       }
       THEN("Test Size()") { REQUIRE(AVLTree.Size() == 10); }
       THEN("Test Height()") { REQUIRE(AVLTree.Height() == 4); }
@@ -139,12 +139,12 @@ SCENARIO("Test AVL Tree") {
         REQUIRE(result != nullptr);
         REQUIRE(result->GetKey() == 3);
       }
-      // THEN("Test Remove(6)") {
-      //  AVLTree.Remove(6);
-      //  REQUIRE(AVLTree.Search(6) == nullptr);
-      //  REQUIRE(AVLTree.Height() == 4);
-      //  REQUIRE(AVLTree.Size() == 9);
-      //}
+       THEN("Test Remove(6)") {
+        AVLTree.Remove(6);
+        REQUIRE(AVLTree.Search(6) == nullptr);
+        REQUIRE(AVLTree.Height() == 4);
+        REQUIRE(AVLTree.Size() == 9);
+      }
       THEN("Test Clear()") {
         AVLTree.Clear();
         REQUIRE(AVLTree.Height() == 0);
