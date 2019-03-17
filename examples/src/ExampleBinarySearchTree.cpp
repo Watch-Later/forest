@@ -2,6 +2,10 @@
 #include <iostream>
 #include <string>
 
+//////////
+// Node //
+//////////
+
 class Node : public forest::BinarySearchTreeNodeBase<Node> {
  public:
   Node() = default;
@@ -32,6 +36,10 @@ bool operator<(int lhs, const Node& rhs) { return lhs < rhs.key; }
 int main() {
   forest::BinarySearchTree<Node> BinarySearchTree;
 
+  ////////////
+  // Insert //
+  ////////////
+
   BinarySearchTree.Insert(Node(2, "Thor"));
   BinarySearchTree.Insert(Node(4, "Odin"));
   BinarySearchTree.Insert(Node(90, "Loki"));
@@ -40,49 +48,100 @@ int main() {
   BinarySearchTree.Insert(Node(14, "Eir"));
   BinarySearchTree.Insert(Node(45, "Heimdall"));
 
-  std::cout << "PreOrderTraversal() = ";
+  /////////////////////////
+  // Pre Order Traversal //
+  /////////////////////////
+
+  std::cout << "PreOrderTraversal()";
+  std::cout << " = ";
   BinarySearchTree.PreOrderTraversal(
       [](auto& node) { std::cout << node.GetKey() << " "; });
   std::cout << std::endl;
 
-  std::cout << "InOrderTraversal() = ";
+  ////////////////////////
+  // In Order Traversal //
+  ////////////////////////
+
+  std::cout << "InOrderTraversal()";
+  std::cout << " = ";
   BinarySearchTree.InOrderTraversal(
       [](auto& node) { std::cout << node.GetKey() << " "; });
   std::cout << std::endl;
 
-  std::cout << "PostOrderTraversal() = ";
+  //////////////////////////
+  // Post Order Traversal //
+  //////////////////////////
+
+  std::cout << "PostOrderTraversal()";
+  std::cout << " = ";
   BinarySearchTree.PostOrderTraversal(
       [](auto& node) { std::cout << node.GetKey() << " "; });
   std::cout << std::endl;
 
-  std::cout << "Remove(3)" << std::endl;
-  BinarySearchTree.Remove(3);
+  ////////////
+  // Remove //
+  ////////////
 
-  std::cout << "Search(3) = ";
+  BinarySearchTree.Remove(3);
+  std::cout << "Remove(3)" << std::endl;
+
+  ////////////
+  // Search //
+  ////////////
+
   auto result = BinarySearchTree.Search(3);
+  std::cout << "Search(3)";
+  std::cout << " = ";
   if (result) {
     std::cout << "Found" << std::endl;
   } else {
     std::cout << "Not Found" << std::endl;
   }
 
-  std::cout << "Minimum() = ";
+  /////////////
+  // Minimum //
+  /////////////
+
   auto min = BinarySearchTree.Minimum();
+  std::cout << "Minimum()";
+  std::cout << " = ";
   if (min) {
     std::cout << min->GetKey() << std::endl;
   }
 
-  std::cout << "Maximum() = ";
+  /////////////
+  // Maximum //
+  /////////////
+
   auto max = BinarySearchTree.Maximum();
+  std::cout << "Maximum()";
+  std::cout << " = ";
   if (max) {
     std::cout << max->GetKey() << std::endl;
   }
 
-  std::cout << "Height() = " << BinarySearchTree.Height() << std::endl;
-  std::cout << "Size() = " << BinarySearchTree.Size() << std::endl;
+  ////////////
+  // Height //
+  ////////////
 
-  std::cout << "Clear()" << std::endl;
+  std::cout << "Height()";
+  std::cout << " = ";
+  std::cout << BinarySearchTree.Height() << std::endl;
+
+  ////////////
+  // Height //
+  ////////////
+
+  std::cout << "Size()";
+  std::cout << " = ";
+  std::cout << BinarySearchTree.Size() << std::endl;
+
+  ///////////
+  // Clear //
+  ///////////
+
   BinarySearchTree.Clear();
+  std::cout << "Clear()" << std::endl;
 
   return 0;
 }

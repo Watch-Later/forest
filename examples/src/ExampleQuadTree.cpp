@@ -12,8 +12,7 @@ int main() {
   std::cout << std::endl;
 
   for (float i = 0; i < 15; ++i) {
-    std::cout << "search({ " << i << ", " << i << " })"
-              << " = ";
+    std::cout << "search({ " << i << ", " << i << " })" << std::endl;
     if (QuadTree.search({i, i})) {
       std::cout << "Found" << std::endl;
     } else {
@@ -30,13 +29,10 @@ int main() {
 
   std::cout << std::endl;
 
-  std::cout << "query({ 0, 0, 10, 10 })"
-            << " = {" << std::endl;
+  std::cout << "query({ 0, 0, 10, 10 })" << std::endl;
   QuadTree.query({{0, 0}, {10, 10}}, [](auto point) {
     std::cout << "(" << point[0] << ", " << point[1] << ")" << std::endl;
   });
-  std::cout << "}" << std::endl;
-
   std::cout << std::endl;
 
   std::cout << "clear()" << std::endl;
