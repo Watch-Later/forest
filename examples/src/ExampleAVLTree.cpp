@@ -7,31 +7,31 @@
 //////////
 
 class Node : public forest::AVLTreeNodeBase<Node> {
- public:
+public:
   Node() = default;
-  Node(const int& KEY, const std::string& VALUE) : key(KEY), value(VALUE){};
+  Node(const int &key, const std::string &value) : mKey(key), mValue(value){};
   ~Node() = default;
 
- public:
-  bool operator<(const Node& other) const { return key < other.key; }
-  friend bool operator<(const Node& lhs, int rhs);
-  friend bool operator<(int lhs, const Node& rhs);
+public:
+  bool operator<(const Node &other) const { return mKey < other.mKey; }
+  friend bool operator<(const Node &lhs, const int &rhs);
+  friend bool operator<(const int &lhs, const Node &rhs);
 
- public:
-  void SetKey(int KEY) { key = KEY; }
-  void SetValue(std::string VALUE) { value = VALUE; }
+public:
+  void SetKey(const int &key) { mKey = key; }
+  void SetValue(const std::string &value) { mValue = value; }
 
- public:
-  int GetKey() { return key; }
-  std::string GetValue() { return value; }
+public:
+  int GetKey() { return mKey; }
+  std::string GetValue() { return mValue; }
 
- private:
-  int key;
-  std::string value;
+private:
+  int mKey = 0;
+  std::string mValue;
 };
 
-bool operator<(const Node& lhs, int rhs) { return lhs.key < rhs; }
-bool operator<(int lhs, const Node& rhs) { return lhs < rhs.key; }
+bool operator<(const Node &lhs, const int &rhs) { return lhs.mKey < rhs; }
+bool operator<(const int &lhs, const Node &rhs) { return lhs < rhs.mKey; }
 
 int main() {
   forest::AVLTree<Node> AVLTree;
@@ -55,7 +55,7 @@ int main() {
   std::cout << "PreOrderTraversal()";
   std::cout << " = ";
   AVLTree.PreOrderTraversal(
-      [](auto& node) { std::cout << node.GetKey() << " "; });
+      [](auto &node) { std::cout << node.GetKey() << " "; });
   std::cout << std::endl;
 
   ////////////////////////
@@ -65,7 +65,7 @@ int main() {
   std::cout << "InOrderTraversal()";
   std::cout << " = ";
   AVLTree.InOrderTraversal(
-      [](auto& node) { std::cout << node.GetKey() << " "; });
+      [](auto &node) { std::cout << node.GetKey() << " "; });
   std::cout << std::endl;
 
   //////////////////////////
@@ -75,7 +75,7 @@ int main() {
   std::cout << "PostOrderTraversal()";
   std::cout << " = ";
   AVLTree.PostOrderTraversal(
-      [](auto& node) { std::cout << node.GetKey() << " "; });
+      [](auto &node) { std::cout << node.GetKey() << " "; });
   std::cout << std::endl;
 
   /////////////////////////////
@@ -85,7 +85,7 @@ int main() {
   std::cout << "BreadthFirstTraversal()";
   std::cout << " = ";
   AVLTree.BreadthFirstTraversal(
-      [](auto& node) { std::cout << node.GetKey() << " "; });
+      [](auto &node) { std::cout << node.GetKey() << " "; });
   std::cout << std::endl;
 
   ////////////

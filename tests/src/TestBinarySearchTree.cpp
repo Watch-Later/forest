@@ -4,159 +4,93 @@
 #include <string>
 
 class Node : public forest::BinarySearchTreeNodeBase<Node> {
- public:
+public:
   Node() = default;
-  Node(const int& KEY, const std::string& VALUE) : key(KEY), value(VALUE){};
+  Node(const int &key, const std::string &value) : mKey(key), mValue(value){};
   ~Node() = default;
 
- public:
-  bool operator<(const Node& other) const { return key < other.key; }
-  friend bool operator<(const Node& lhs, int rhs);
-  friend bool operator<(int lhs, const Node& rhs);
+public:
+  bool operator<(const Node &other) const { return mKey < other.mKey; }
+  friend bool operator<(const Node &lhs, const int &rhs);
+  friend bool operator<(const int &lhs, const Node &rhs);
 
- public:
-  void SetKey(int KEY) { key = KEY; }
-  void SetValue(std::string VALUE) { value = VALUE; }
+public:
+  void SetKey(const int &key) { mKey = key; }
+  void SetValue(const std::string &value) { mValue = value; }
 
- public:
-  int GetKey() { return key; }
-  std::string GetValue() { return value; }
+public:
+  int GetKey() { return mKey; }
+  std::string GetValue() { return mValue; }
 
- private:
-  int key;
-  std::string value;
+private:
+  int mKey = 0;
+  std::string mValue;
 };
 
-bool operator<(const Node& lhs, int rhs) { return lhs.key < rhs; }
-bool operator<(int lhs, const Node& rhs) { return lhs < rhs.key; }
+bool operator<(const Node &lhs, const int &rhs) { return lhs.mKey < rhs; }
+bool operator<(const int &lhs, const Node &rhs) { return lhs < rhs.mKey; }
 
 SCENARIO("Test Binary Search Tree") {
-  GIVEN("A Binary Search Tree") {
+  GIVEN("An empty Binary Search Tree") {
     forest::BinarySearchTree<Node> BinarySearchTree;
-    WHEN("The Binary Search Tree is empty") {
-      THEN("Test Height()") { REQUIRE(BinarySearchTree.Height() == 0); }
-      THEN("Test Size()") { REQUIRE(BinarySearchTree.Size() == 0); }
-      THEN("Test Maximum()") { REQUIRE(BinarySearchTree.Maximum() == nullptr); }
-      THEN("Test Minimum()") { REQUIRE(BinarySearchTree.Minimum() == nullptr); }
-      THEN("Test Search(555)") {
-        REQUIRE(BinarySearchTree.Search(555) == nullptr);
+    REQUIRE(BinarySearchTree.Height() == 0);
+    REQUIRE(BinarySearchTree.Size() == 0);
+    REQUIRE(BinarySearchTree.Minimum() == nullptr);
+    REQUIRE(BinarySearchTree.Maximum() == nullptr);
+    REQUIRE(BinarySearchTree.Search(GENERATE(-1, 0, 1)) == nullptr);
+    WHEN("I insert nodes with keys from 0 up to 9 inclusive") {
+      for (int key = 0; key < 10; ++key) {
+        BinarySearchTree.Insert(Node(key, ""));
       }
-      THEN("Test Clear()") {
-        BinarySearchTree.Clear();
-        REQUIRE(BinarySearchTree.Height() == 0);
-        REQUIRE(BinarySearchTree.Size() == 0);
-      }
-    }
-    WHEN("Nodes are inserted in random order") {
-      BinarySearchTree.Insert(Node(4, ""));
-      BinarySearchTree.Insert(Node(2, ""));
-      BinarySearchTree.Insert(Node(90, ""));
-      BinarySearchTree.Insert(Node(3, ""));
-      BinarySearchTree.Insert(Node(0, ""));
-      BinarySearchTree.Insert(Node(14, ""));
-      BinarySearchTree.Insert(Node(45, ""));
-      THEN("Test Height()") { REQUIRE(BinarySearchTree.Height() == 4); }
-      THEN("Test Size()") { REQUIRE(BinarySearchTree.Size() == 7); }
-      THEN("Test Maximum()") {
-        auto max = BinarySearchTree.Maximum();
-        REQUIRE(max != nullptr);
-        REQUIRE(max->GetKey() == 90);
-      }
-      THEN("Test Minimum()") {
+      REQUIRE(BinarySearchTree.Height() == 10);
+      REQUIRE(BinarySearchTree.Size() == 10);
+      AND_WHEN("I want the node with the minimum key") {
         auto min = BinarySearchTree.Minimum();
-        REQUIRE(min != nullptr);
-        REQUIRE(min->GetKey() == 0);
+        THEN("This node exists") {
+          REQUIRE(min != nullptr);
+          CHECK(min->GetKey() == 0);
+          CHECK(min->GetValue() == "");
+        }
       }
-      THEN("Test Search(1337)") {
-        REQUIRE(BinarySearchTree.Search(1337) == nullptr);
-      }
-      THEN("Test Search(3)") {
-        auto result = BinarySearchTree.Search(3);
-        REQUIRE(result != nullptr);
-        REQUIRE(result->GetKey() == 3);
-      }
-      THEN("Test Remove(45)") {
-        BinarySearchTree.Remove(45);
-        REQUIRE(BinarySearchTree.Search(45) == nullptr);
-        REQUIRE(BinarySearchTree.Height() == 3);
-        REQUIRE(BinarySearchTree.Size() == 6);
-      }
-      THEN("Test Clear()") {
-        BinarySearchTree.Clear();
-        REQUIRE(BinarySearchTree.Height() == 0);
-        REQUIRE(BinarySearchTree.Size() == 0);
-      }
-    }
-    WHEN("Nodes are inserted in ascending order") {
-      for (int i = 0; i < 10; ++i) {
-        BinarySearchTree.Insert(Node(i, ""));
-      }
-      THEN("Test Height()") { REQUIRE(BinarySearchTree.Height() == 10); }
-      THEN("Test Size()") { REQUIRE(BinarySearchTree.Size() == 10); }
-      THEN("Test Maximum()") {
+      AND_WHEN("I want the node with the maximum key") {
         auto max = BinarySearchTree.Maximum();
-        REQUIRE(max != nullptr);
-        REQUIRE(max->GetKey() == 9);
+        THEN("This node exists") {
+          REQUIRE(max != nullptr);
+          CHECK(max->GetKey() == 9);
+          CHECK(max->GetValue() == "");
+        }
       }
-      THEN("Test Minimum()") {
-        auto min = BinarySearchTree.Minimum();
-        REQUIRE(min != nullptr);
-        REQUIRE(min->GetKey() == 0);
+      AND_WHEN("I search for a node with a key that doesn't exist") {
+        int key = GENERATE(-1, 10);
+        auto result = BinarySearchTree.Search(key);
+		THEN("This node dosn't exist") {
+          REQUIRE(result == nullptr);
+        }
       }
-      THEN("Test Search(1337)") {
-        REQUIRE(BinarySearchTree.Search(1337) == nullptr);
+      AND_WHEN("I search for a node with a key that exists") {
+        int key = GENERATE(range(0, 9));
+        auto result = BinarySearchTree.Search(key);
+        THEN("This node exists") {
+          REQUIRE(result != nullptr);
+          CHECK(result->GetKey() == key);
+          CHECK(result->GetValue() == "");
+        }
       }
-      THEN("Test Search(3)") {
-        auto result = BinarySearchTree.Search(3);
-        REQUIRE(result != nullptr);
-        REQUIRE(result->GetKey() == 3);
+      AND_WHEN("I remove a node with a key that exists") {
+        int key = GENERATE(range(0, 9));
+        BinarySearchTree.Remove(key);
+        THEN("This node exists") {
+          REQUIRE(BinarySearchTree.Search(key) == nullptr);
+	      CHECK(BinarySearchTree.Height() == 9);
+          CHECK(BinarySearchTree.Size() == 9);
+        }
       }
-      THEN("Test Remove(0)") {
-        BinarySearchTree.Remove(0);
-        REQUIRE(BinarySearchTree.Search(0) == nullptr);
-        REQUIRE(BinarySearchTree.Height() == 9);
-        REQUIRE(BinarySearchTree.Size() == 9);
-      }
-      THEN("Test Clear()") {
+      AND_WHEN("I clear the Binary Search Tree") {
         BinarySearchTree.Clear();
-        REQUIRE(BinarySearchTree.Height() == 0);
-        REQUIRE(BinarySearchTree.Size() == 0);
-      }
-    }
-    WHEN("Nodes are inserted in descending order") {
-      for (int i = 9; i >= 0; --i) {
-        BinarySearchTree.Insert(Node(i, ""));
-      }
-      THEN("Test Height()") { REQUIRE(BinarySearchTree.Height() == 10); }
-      THEN("Test Size()") { REQUIRE(BinarySearchTree.Size() == 10); }
-      THEN("Test Maximum()") {
-        auto max = BinarySearchTree.Maximum();
-        REQUIRE(max != nullptr);
-        REQUIRE(max->GetKey() == 9);
-      }
-      THEN("Test Minimum()") {
-        auto min = BinarySearchTree.Minimum();
-        REQUIRE(min != nullptr);
-        REQUIRE(min->GetKey() == 0);
-      }
-      THEN("Test Search(1337)") {
-        REQUIRE(BinarySearchTree.Search(1337) == nullptr);
-      }
-      THEN("Test Search(3)") {
-        auto result = BinarySearchTree.Search(3);
-        REQUIRE(result != nullptr);
-        REQUIRE(result->GetKey() == 3);
-      }
-      THEN("Test Remove(0)") {
-        BinarySearchTree.Remove(0);
-        REQUIRE(BinarySearchTree.Search(0) == nullptr);
-        REQUIRE(BinarySearchTree.Height() == 9);
-        REQUIRE(BinarySearchTree.Size() == 9);
-      }
-      THEN("Test Clear()") {
-        BinarySearchTree.Clear();
-        REQUIRE(BinarySearchTree.Height() == 0);
-        REQUIRE(BinarySearchTree.Size() == 0);
+        THEN("The height and the size of the Binary Search Tree change") {
+          REQUIRE(BinarySearchTree.Height() == 0);
+          REQUIRE(BinarySearchTree.Size() == 0);
+        }
       }
     }
   }

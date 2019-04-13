@@ -6,40 +6,42 @@ std::random_device rd;
 std::mt19937 gen(rd());
 
 class Node : public forest::BinarySearchTreeNodeBase<Node> {
- public:
+public:
   Node() = default;
-  Node(const int& KEY, const int& VALUE) : key(KEY), value(VALUE){};
+  Node(const int &key, const int &value) : mKey(key), mValue(value){};
   ~Node() = default;
 
- public:
-  bool operator<(const Node& other) const { return key < other.key; }
-  friend bool operator<(const Node& lhs, int rhs);
-  friend bool operator<(int lhs, const Node& rhs);
+public:
+  bool operator<(const Node &other) const { return mKey < other.mKey; }
+  friend bool operator<(const Node &lhs, const int &rhs);
+  friend bool operator<(const int &lhs, const Node &rhs);
 
- public:
-  void SetKey(int KEY) { key = KEY; }
-  void SetValue(int VALUE) { value = VALUE; }
+public:
+  void SetKey(const int &key) { mKey = key; }
+  void SetValue(const int &value) { mValue = value; }
 
- public:
-  int GetKey() { return key; }
-  int GetValue() { return value; }
+public:
+  int GetKey() { return mKey; }
+  int GetValue() { return mValue; }
 
- private:
-  int key;
-  int value;
+private:
+  int mKey = 0;
+  int mValue = 0;
 };
 
-bool operator<(const Node& lhs, int rhs) { return lhs.key < rhs; }
-bool operator<(int lhs, const Node& rhs) { return lhs < rhs.key; }
+bool operator<(const Node &lhs, const int &rhs) { return lhs.mKey < rhs; }
+bool operator<(const int &lhs, const Node &rhs) { return lhs < rhs.mKey; }
 
-static void BM_BinarySearchTree_Create_Average_Case(benchmark::State& state) {
-  std::uniform_int_distribution<> dis(0, static_cast<int>(state.range(0)));
+static void BM_BinarySearchTree_Create_Average_Case(benchmark::State &state) {
+  int a = 0;
+  int b = static_cast<int>(state.range(0));
+  std::uniform_int_distribution<> dis(a, b);
   forest::BinarySearchTree<Node> BinarySearchTree;
   for (auto _ : state) {
     state.PauseTiming();
     BinarySearchTree.Clear();
     state.ResumeTiming();
-    for (int i = 0; i < state.range(0); ++i) {
+    for (int i = a; i < b; ++i) {
       BinarySearchTree.Insert(Node(dis(gen), 0));
     }
   }
@@ -50,13 +52,15 @@ BENCHMARK(BM_BinarySearchTree_Create_Average_Case)
     ->Range(1, 1 << 15)
     ->Complexity(benchmark::oNLogN);
 
-static void BM_BinarySearchTree_Create_Worst_Case(benchmark::State& state) {
+static void BM_BinarySearchTree_Create_Worst_Case(benchmark::State &state) {
+  int a = 0;
+  int b = static_cast<int>(state.range(0));
   forest::BinarySearchTree<Node> BinarySearchTree;
   for (auto _ : state) {
     state.PauseTiming();
     BinarySearchTree.Clear();
     state.ResumeTiming();
-    for (int i = 0; i < state.range(0); ++i) {
+    for (int i = a; i < b; ++i) {
       BinarySearchTree.Insert(Node(i, 0));
     }
   }
@@ -67,10 +71,12 @@ BENCHMARK(BM_BinarySearchTree_Create_Worst_Case)
     ->Range(1, 1 << 15)
     ->Complexity(benchmark::oNSquared);
 
-static void BM_BinarySearchTree_Search_Average_Case(benchmark::State& state) {
-  std::uniform_int_distribution<> dis(0, static_cast<int>(state.range(0)));
+static void BM_BinarySearchTree_Search_Average_Case(benchmark::State &state) {
+  int a = 0;
+  int b = static_cast<int>(state.range(0));
+  std::uniform_int_distribution<> dis(a, b);
   forest::BinarySearchTree<Node> BinarySearchTree;
-  for (int i = 0; i < state.range(0); ++i) {
+  for (int i = a; i < b; ++i) {
     BinarySearchTree.Insert(Node(dis(gen), 0));
   }
   for (auto _ : state) {
@@ -83,10 +89,12 @@ BENCHMARK(BM_BinarySearchTree_Search_Average_Case)
     ->Range(1, 1 << 15)
     ->Complexity(benchmark::oLogN);
 
-static void BM_BinarySearchTree_Search_Worst_Case(benchmark::State& state) {
-  std::uniform_int_distribution<> dis(0, static_cast<int>(state.range(0)));
+static void BM_BinarySearchTree_Search_Worst_Case(benchmark::State &state) {
+  int a = 0;
+  int b = static_cast<int>(state.range(0));
+  std::uniform_int_distribution<> dis(a, b);
   forest::BinarySearchTree<Node> BinarySearchTree;
-  for (int i = 0; i < state.range(0); ++i) {
+  for (int i = a; i < b; ++i) {
     BinarySearchTree.Insert(Node(i, 0));
   }
   for (auto _ : state) {
@@ -99,10 +107,12 @@ BENCHMARK(BM_BinarySearchTree_Search_Worst_Case)
     ->Range(1, 1 << 15)
     ->Complexity(benchmark::oN);
 
-static void BM_BinarySearchTree_Minimum_Average_Case(benchmark::State& state) {
-  std::uniform_int_distribution<> dis(0, static_cast<int>(state.range(0)));
+static void BM_BinarySearchTree_Minimum_Average_Case(benchmark::State &state) {
+  int a = 0;
+  int b = static_cast<int>(state.range(0));
+  std::uniform_int_distribution<> dis(a, b);
   forest::BinarySearchTree<Node> BinarySearchTree;
-  for (int i = 0; i < state.range(0); ++i) {
+  for (int i = a; i < b; ++i) {
     BinarySearchTree.Insert(Node(dis(gen), 0));
   }
   for (auto _ : state) {
@@ -115,10 +125,12 @@ BENCHMARK(BM_BinarySearchTree_Minimum_Average_Case)
     ->Range(1, 1 << 15)
     ->Complexity(benchmark::o1);
 
-static void BM_BinarySearchTree_Maximum_Average_Case(benchmark::State& state) {
-  std::uniform_int_distribution<> dis(0, static_cast<int>(state.range(0)));
+static void BM_BinarySearchTree_Maximum_Average_Case(benchmark::State &state) {
+  int a = 0;
+  int b = static_cast<int>(state.range(0));
+  std::uniform_int_distribution<> dis(a, b);
   forest::BinarySearchTree<Node> BinarySearchTree;
-  for (int i = 0; i < state.range(0); ++i) {
+  for (int i = a; i < b; ++i) {
     BinarySearchTree.Insert(Node(dis(gen), 0));
   }
   for (auto _ : state) {

@@ -8,5 +8,3 @@ project("forest_tests" LANGUAGES CXX)
 
 forest_add_test(TestAVLTree "src/TestAVLTree.cpp")
 forest_add_test(TestBinarySearchTree "src/TestBinarySearchTree.cpp")
-forest_add_test(TestKDTree "src/TestKDTree.cpp")
-forest_add_test(TestQuadTree "src/TestQuadTree.cpp")

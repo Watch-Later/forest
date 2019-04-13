@@ -8,5 +8,3 @@ project("forest_benchmarks" LANGUAGES CXX)
 
 forest_add_benchmark(BenchmarkAVLTree "src/BenchmarkAVLTree.cpp")
 forest_add_benchmark(BenchmarkBinarySearchTree "src/BenchmarkBinarySearchTree.cpp")
-forest_add_benchmark(BenchmarkKDTree "src/BenchmarkKDTree.cpp")
-forest_add_benchmark(BenchmarkQuadTree "src/BenchmarkQuadTree.cpp")

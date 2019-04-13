@@ -4,151 +4,93 @@
 #include <string>
 
 class Node : public forest::AVLTreeNodeBase<Node> {
- public:
+public:
   Node() = default;
-  Node(const int& KEY, const std::string& VALUE) : key(KEY), value(VALUE){};
+  Node(const int &key, const std::string &value) : mKey(key), mValue(value){};
   ~Node() = default;
 
- public:
-  bool operator<(const Node& other) const { return key < other.key; }
-  friend bool operator<(const Node& lhs, int rhs);
-  friend bool operator<(int lhs, const Node& rhs);
+public:
+  bool operator<(const Node &other) const { return mKey < other.mKey; }
+  friend bool operator<(const Node &lhs, const int &rhs);
+  friend bool operator<(const int &lhs, const Node &rhs);
 
- public:
-  void SetKey(int KEY) { key = KEY; }
-  void SetValue(std::string VALUE) { value = VALUE; }
+public:
+  void SetKey(const int &key) { mKey = key; }
+  void SetValue(const std::string &value) { mValue = value; }
 
- public:
-  int GetKey() { return key; }
-  std::string GetValue() { return value; }
+public:
+  int GetKey() { return mKey; }
+  std::string GetValue() { return mValue; }
 
- private:
-  int key;
-  std::string value;
+private:
+  int mKey = 0;
+  std::string mValue;
 };
 
-bool operator<(const Node& lhs, int rhs) { return lhs.key < rhs; }
-bool operator<(int lhs, const Node& rhs) { return lhs < rhs.key; }
+bool operator<(const Node &lhs, const int &rhs) { return lhs.mKey < rhs; }
+bool operator<(const int &lhs, const Node &rhs) { return lhs < rhs.mKey; }
 
 SCENARIO("Test AVL Tree") {
-  GIVEN("An AVL Tree") {
+  GIVEN("An empty AVL Tree") {
     forest::AVLTree<Node> AVLTree;
-    WHEN("The AVL Tree is empty") {
-      THEN("Test Size()") { REQUIRE(AVLTree.Size() == 0); }
-      THEN("Test Height()") { REQUIRE(AVLTree.Height() == 0); }
-      THEN("Test Maximum()") { REQUIRE(AVLTree.Maximum() == nullptr); }
-      THEN("Test Minimum()") { REQUIRE(AVLTree.Minimum() == nullptr); }
-      THEN("Test Search(555)") { REQUIRE(AVLTree.Search(555) == nullptr); }
-      THEN("Test Clear()") {
-        AVLTree.Clear();
-        REQUIRE(AVLTree.Height() == 0);
-        REQUIRE(AVLTree.Size() == 0);
-      }
-    }
-    WHEN("Nodes are inserted in random order") {
-      AVLTree.Insert(Node(4, ""));
-      AVLTree.Insert(Node(2, ""));
-      AVLTree.Insert(Node(90, ""));
-      AVLTree.Insert(Node(3, ""));
-      AVLTree.Insert(Node(0, ""));
-      AVLTree.Insert(Node(14, ""));
-      AVLTree.Insert(Node(45, ""));
-      THEN("Test Size()") { REQUIRE(AVLTree.Size() == 7); }
-      THEN("Test Height()") { REQUIRE(AVLTree.Height() == 3); }
-      THEN("Test Maximum()") {
-        auto max = AVLTree.Maximum();
-        REQUIRE(max != nullptr);
-        REQUIRE(max->GetKey() == 90);
-      }
-      THEN("Test Minimum()") {
-        auto min = AVLTree.Minimum();
-        REQUIRE(min != nullptr);
-        REQUIRE(min->GetKey() == 0);
-      }
-      THEN("Test Search(1337)") { REQUIRE(AVLTree.Search(1337) == nullptr); }
-      THEN("Test Search(3)") {
-        auto result = AVLTree.Search(3);
-        REQUIRE(result != nullptr);
-        REQUIRE(result->GetKey() == 3);
-      }
-      THEN("Test Remove(4)") {
-        AVLTree.Remove(4);
-        REQUIRE(AVLTree.Search(4) == nullptr);
-        REQUIRE(AVLTree.Height() == 3);
-        REQUIRE(AVLTree.Size() == 6);
-      }
-      THEN("Test Clear()") {
-        AVLTree.Clear();
-        REQUIRE(AVLTree.Height() == 0);
-        REQUIRE(AVLTree.Size() == 0);
-      }
-    }
-    WHEN("Nodes are inserted in ascending order") {
+    REQUIRE(AVLTree.Height() == 0);
+    REQUIRE(AVLTree.Size() == 0);
+    REQUIRE(AVLTree.Minimum() == nullptr);
+    REQUIRE(AVLTree.Maximum() == nullptr);
+    REQUIRE(AVLTree.Search(GENERATE(-1, 0, 1)) == nullptr);
+    WHEN("I insert nodes with keys from 0 up to 9 inclusive") {
       for (int key = 0; key < 10; ++key) {
         AVLTree.Insert(Node(key, ""));
       }
-      THEN("Test Size()") { REQUIRE(AVLTree.Size() == 10); }
-      THEN("Test Height()") { REQUIRE(AVLTree.Height() == 4); }
-      THEN("Test Maximum()") {
-        auto max = AVLTree.Maximum();
-        REQUIRE(max != nullptr);
-        REQUIRE(max->GetKey() == 9);
-      }
-      THEN("Test Minimum()") {
+      REQUIRE(AVLTree.Height() == 4);
+      REQUIRE(AVLTree.Size() == 10);
+      AND_WHEN("I want the node with the minimum key") {
         auto min = AVLTree.Minimum();
-        REQUIRE(min != nullptr);
-        REQUIRE(min->GetKey() == 0);
+        THEN("This node exists") {
+          REQUIRE(min != nullptr);
+		  CHECK(min->GetKey() == 0);
+          CHECK(min->GetValue() == "");
+        }
       }
-      THEN("Test Search(1337)") { REQUIRE(AVLTree.Search(1337) == nullptr); }
-      THEN("Test Search(3)") {
-        auto result = AVLTree.Search(3);
-        REQUIRE(result != nullptr);
-        REQUIRE(result->GetKey() == 3);
-      }
-       THEN("Test Remove(3)") {
-        AVLTree.Remove(3);
-        REQUIRE(AVLTree.Search(3) == nullptr);
-        REQUIRE(AVLTree.Height() == 4);
-        REQUIRE(AVLTree.Size() == 9);
-      }
-      THEN("Test Clear()") {
-        AVLTree.Clear();
-        REQUIRE(AVLTree.Height() == 0);
-        REQUIRE(AVLTree.Size() == 0);
-      }
-    }
-    WHEN("Nodes are inserted in descending order") {
-      for (int key = 9; key >= 0; --key) {
-        AVLTree.Insert(Node(key, ""));
-      }
-      THEN("Test Size()") { REQUIRE(AVLTree.Size() == 10); }
-      THEN("Test Height()") { REQUIRE(AVLTree.Height() == 4); }
-      THEN("Test Maximum()") {
+      AND_WHEN("I want the node with the maximum key") {
         auto max = AVLTree.Maximum();
-        REQUIRE(max != nullptr);
-        REQUIRE(max->GetKey() == 9);
+        THEN("This node exists") {
+          REQUIRE(max != nullptr);
+          CHECK(max->GetKey() == 9);
+          CHECK(max->GetValue() == "");
+        }
       }
-      THEN("Test Minimum()") {
-        auto min = AVLTree.Minimum();
-        REQUIRE(min != nullptr);
-        REQUIRE(min->GetKey() == 0);
+      AND_WHEN("I search for a node with a key that doesn't exist") {
+        int key = GENERATE(-1, 10);
+        auto result = AVLTree.Search(key);
+		THEN("This node doesn't exist") {
+          REQUIRE(result == nullptr);
+        }
       }
-      THEN("Test Search(1337)") { REQUIRE(AVLTree.Search(1337) == nullptr); }
-      THEN("Test Search(3)") {
-        auto result = AVLTree.Search(3);
-        REQUIRE(result != nullptr);
-        REQUIRE(result->GetKey() == 3);
+      AND_WHEN("I search for a node with a key that exists") {
+		int key = GENERATE(range(0, 9));
+		auto result = AVLTree.Search(key);
+        THEN("This node exists") {
+          REQUIRE(result != nullptr);
+          CHECK(result->GetKey() == key);
+          CHECK(result->GetValue() == "");
+        }
       }
-       THEN("Test Remove(6)") {
-        AVLTree.Remove(6);
-        REQUIRE(AVLTree.Search(6) == nullptr);
-        REQUIRE(AVLTree.Height() == 4);
-        REQUIRE(AVLTree.Size() == 9);
+      AND_WHEN("I remove a node with a key that exists") {
+        int key = GENERATE(range(0, 9));
+		AVLTree.Remove(key);
+        THEN("This node is successfully removed") {
+          REQUIRE(AVLTree.Search(key) == nullptr);
+          CHECK(AVLTree.Height() == 4);
+          CHECK(AVLTree.Size() == 9);
+        }
       }
-      THEN("Test Clear()") {
+      AND_WHEN("I clear the AVL Tree") {
         AVLTree.Clear();
-        REQUIRE(AVLTree.Height() == 0);
-        REQUIRE(AVLTree.Size() == 0);
+        THEN("The height and the size of the AVL Tree change") {
+          REQUIRE(AVLTree.Height() == 0);
+          REQUIRE(AVLTree.Size() == 0);
+        }
       }
     }
   }

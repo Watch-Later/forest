@@ -1,6 +1,6 @@
-﻿cmake_minimum_required(VERSION 3.1...3.13)
+﻿cmake_minimum_required(VERSION 3.7...3.13)
 
-project(forest LANGUAGES CXX VERSION 10.1.7)
+project("forest" LANGUAGES CXX VERSION 11.0.0)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -17,7 +17,7 @@ option(FOREST_BUILD_BENCHMARKS OFF)
 ###############################################################################
 
 if(MSVC)
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:10000000") # 10 MB
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:10000000")
 endif()
 
 ###############################################################################
@@ -89,7 +89,7 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
 # CPack
 ###############################################################################
 
-set(CPACK_PACKAGE_ICON "forest.svg")
+set(CPACK_PACKAGE_ICON "forest.png")
 set(CPACK_PACKAGE_VENDOR "George Fotopoulos")
 set(CPACK_PACKAGE_CONTACT "xorz57@protonmail.com")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Template Library of Tree Data Structures")
