@@ -1,276 +1,245 @@
-/*
-    MIT License
-
-    Copyright(c) 2017 George Fotopoulos
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files(the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions :
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
-*/
-
 #pragma once
 
 #include <algorithm>
+#include <cstddef>
 #include <functional>
-#include <initializer_list>
 #include <queue>
 #include <utility>
 
 namespace forest {
-    template <typename Key, typename Value>
-    class BinarySearchTree {
-    public:
-        using Keys = std::vector<Key>;
-        using Values = std::vector<Value>;
-        using Pair = std::pair<Key, Value>;
-        using Pairs = std::initializer_list<Pair>;
-        using Handler = std::function<void(const Key &, Value &)>;
+template <typename T> class BinarySearchTree;
 
-    private:
-        class BinarySearchTreeNode {
-            friend class BinarySearchTree;
+template <typename T> class BinarySearchTreeNodeBase {
+  template <typename U> friend class BinarySearchTree;
 
-        private:
-            BinarySearchTreeNode *left{ nullptr };
-            BinarySearchTreeNode *right{ nullptr };
+private:
+  T *mLeft{nullptr};
+  T *mRight{nullptr};
 
-        private:
-            unsigned height{ 1 };
+private:
+  std::size_t mHeight{1};
 
-        public:
-            Key key;
-            Value value;
+public:
+  BinarySearchTreeNodeBase() = default;
+  ~BinarySearchTreeNodeBase() = default;
+  BinarySearchTreeNodeBase(const BinarySearchTreeNodeBase &other) {
+    mHeight = other.mHeight;
+  }
+  BinarySearchTreeNodeBase(BinarySearchTreeNodeBase &&other) {
+    mHeight = other.mHeight;
+    other.mHeight = 1;
+  }
 
-        public:
-            BinarySearchTreeNode() = default;
+public:
+  BinarySearchTreeNodeBase &operator=(const BinarySearchTreeNodeBase &other) {
+    if (&other == this)
+      return *this;
+    mHeight = other.mHeight;
+    return *this;
+  }
+  BinarySearchTreeNodeBase &operator=(BinarySearchTreeNodeBase &&other) {
+    if (&other == this)
+      return *this;
+    mHeight = other.mHeight;
+    other.mHeight = 1;
+    return *this;
+  }
+};
 
-            BinarySearchTreeNode(const Key &KEY, const Value &VALUE) : key(KEY), value(VALUE) {
-            }
+template <typename T> class BinarySearchTree {
+public:
+  using Callback = std::function<void(T &)>;
 
-            BinarySearchTreeNode(const BinarySearchTreeNode &) = delete;
-            BinarySearchTreeNode(BinarySearchTreeNode &&) = delete;
-            ~BinarySearchTreeNode() = default;
+private:
+  T *mRoot{nullptr};
 
-        public:
-            BinarySearchTreeNode &operator=(const BinarySearchTreeNode &) = delete;
-            BinarySearchTreeNode &operator=(BinarySearchTreeNode &&) = delete;
-        };
+private:
+  void PreOrderTraversal(T *root, const Callback &callback) {
+    if (!root)
+      return;
+    callback(*root);
+    PreOrderTraversal(root->mLeft, callback);
+    PreOrderTraversal(root->mRight, callback);
+  }
+  void InOrderTraversal(T *root, const Callback &callback) {
+    if (!root)
+      return;
+    InOrderTraversal(root->mLeft, callback);
+    callback(*root);
+    InOrderTraversal(root->mRight, callback);
+  }
+  void PostOrderTraversal(T *root, const Callback &callback) {
+    if (!root)
+      return;
+    PostOrderTraversal(root->mLeft, callback);
+    PostOrderTraversal(root->mRight, callback);
+    callback(*root);
+  }
+  void BreadthFirstTraversal(T *root, const Callback &callback) {
+    if (!root)
+      return;
+    std::queue<T *> queue;
+    queue.push(root);
+    while (!queue.empty()) {
+      T *current{queue.front()};
+      callback(*current);
+      queue.pop();
+      if (current->mLeft)
+        queue.push(current->mLeft);
+      if (current->mRight)
+        queue.push(current->mRight);
+    }
+  }
 
-    private:
-        BinarySearchTreeNode *tree_root{ nullptr };
+private:
+  T *Minimum(T *root) {
+    if (!root)
+      return nullptr;
+    while (root->mLeft)
+      root = root->mLeft;
+    return root;
+  }
+  T *Maximum(T *root) {
+    if (!root)
+      return nullptr;
+    while (root->mRight)
+      root = root->mRight;
+    return root;
+  }
 
-    private:
-        void pre_order_traversal(BinarySearchTreeNode *root, Handler handler) {
-            if (!root) return;
-            handler(root->key, root->value);
-            pre_order_traversal(root->left, handler);
-            pre_order_traversal(root->right, handler);
-        }
+private:
+  std::size_t Height(const T *root) {
+    if (!root)
+      return 0;
+    return root->mHeight;
+  }
+  std::size_t Size(const T *root) {
+    if (!root)
+      return 0;
+    return Size(root->mLeft) + Size(root->mRight) + 1;
+  }
 
-        void in_order_traversal(BinarySearchTreeNode * root, Handler handler) {
-            if (!root) return;
-            in_order_traversal(root->left, handler);
-            handler(root->key, root->value);
-            in_order_traversal(root->right, handler);
-        }
+private:
+  T *Insert(T *root, const T &node) {
+    if (!root)
+      return new T(node);
+    if (node < *root)
+      root->mLeft = Insert(root->mLeft, node);
+    else if (*root < node)
+      root->mRight = Insert(root->mRight, node);
+    root->mHeight = std::max(Height(root->mLeft), Height(root->mRight)) + 1;
+    return root;
+  }
+  template <typename Comparable> T *Remove(T *root, const Comparable &key) {
+    if (!root)
+      return nullptr;
+    if (key < *root)
+      root->mLeft = Remove(root->mLeft, key);
+    else if (*root < key)
+      root->mRight = Remove(root->mRight, key);
+    else {
+      if (!root->mLeft && !root->mRight) {
+        delete root;
+        root = nullptr;
+      } else if (!root->mLeft) {
+        T *tmp{root};
+        root = root->mRight;
+        delete tmp;
+        tmp = nullptr;
+      } else if (!root->mRight) {
+        T *tmp{root};
+        root = root->mLeft;
+        delete tmp;
+        tmp = nullptr;
+      } else {
+        T *min{Minimum(root->mRight)};
+        *root = *min;
+        root->mRight = Remove(root->mRight, *min);
+      }
+    }
+    if (!root)
+      return nullptr;
+    root->mHeight = std::max(Height(root->mLeft), Height(root->mRight)) + 1;
+    return root;
+  }
+  template <typename Comparable> T *Search(T *root, const Comparable &key) {
+    while (root) {
+      if (key < *root)
+        root = root->mLeft;
+      else if (*root < key)
+        root = root->mRight;
+      else
+        return root;
+    }
+    return nullptr;
+  }
 
-        void post_order_traversal(BinarySearchTreeNode * root, Handler handler) {
-            if (!root) return;
-            post_order_traversal(root->left, handler);
-            post_order_traversal(root->right, handler);
-            handler(root->key, root->value);
-        }
+private:
+  void Clear(T *root) {
+    if (!root)
+      return;
+    if (root->mLeft)
+      Clear(root->mLeft);
+    if (root->mRight)
+      Clear(root->mRight);
+    delete root;
+    root = nullptr;
+  }
 
-        void breadth_first_traversal(BinarySearchTreeNode * root, Handler handler) {
-            if (!root) return;
-            std::queue<BinarySearchTreeNode *> queue;
-            queue.push(root);
-            while (!queue.empty()) {
-                BinarySearchTreeNode *current{ queue.front() };
-                handler(current->key, current->value);
-                queue.pop();
-                if (current->left) queue.push(current->left);
-                if (current->right) queue.push(current->right);
-            }
-        }
+public:
+  BinarySearchTree() = default;
+  ~BinarySearchTree() { Clear(); }
+  BinarySearchTree(const BinarySearchTree &) = delete;
+  BinarySearchTree(BinarySearchTree &&other) {
+    mRoot = other.mRoot;
+    other.mRoot = nullptr;
+  }
 
-    private:
-        BinarySearchTreeNode *minimum(BinarySearchTreeNode * root) {
-            if (!root) return nullptr;
-            while (root->left) root = root->left;
-            return root;
-        }
+public:
+  BinarySearchTree &operator=(const BinarySearchTree &) = delete;
+  BinarySearchTree &operator=(BinarySearchTree &&other) {
+    if (&other == this)
+      return *this;
+    mRoot = other.mRoot;
+    other.mRoot = nullptr;
+    return *this;
+  }
 
-        BinarySearchTreeNode *maximum(BinarySearchTreeNode * root) {
-            if (!root) return nullptr;
-            while (root->right) root = root->right;
-            return root;
-        }
+public:
+  void PreOrderTraversal(const Callback &callback) {
+    PreOrderTraversal(mRoot, callback);
+  }
+  void InOrderTraversal(const Callback &callback) {
+    InOrderTraversal(mRoot, callback);
+  }
+  void PostOrderTraversal(const Callback &callback) {
+    PostOrderTraversal(mRoot, callback);
+  }
+  void BreadthFirstTraversal(const Callback &callback) {
+    BreadthFirstTraversal(mRoot, callback);
+  }
 
-    private:
-        unsigned height(const BinarySearchTreeNode * root) {
-            if (!root) return 0;
-            return root->height;
-        }
+public:
+  T *Minimum() { return Minimum(mRoot); }
+  T *Maximum() { return Maximum(mRoot); }
 
-        unsigned size(const BinarySearchTreeNode * root) {
-            if (!root) return 0;
-            return size(root->left) + size(root->right) + 1;
-        }
+public:
+  std::size_t Height() { return Height(mRoot); }
+  std::size_t Size() { return Size(mRoot); }
 
-    private:
-        BinarySearchTreeNode *insert(BinarySearchTreeNode * root, const Key & key, const Value & value) {
-            if (!root) return new BinarySearchTreeNode(key, value);
-            if (key < root->key) root->left = insert(root->left, key, value);
-            else if (key > root->key) root->right = insert(root->right, key, value);
-            root->height = std::max(height(root->left), height(root->right)) + 1;
-            return root;
-        }
+public:
+  void Insert(const T &node) { mRoot = Insert(mRoot, node); }
+  template <typename Key> void Remove(const Key &key) {
+    mRoot = Remove(mRoot, key);
+  }
+  template <typename Key> T *Search(const Key &key) {
+    return Search(mRoot, key);
+  }
 
-        BinarySearchTreeNode * remove(BinarySearchTreeNode * root, const Key & key) {
-            if (!root) return nullptr;
-            if (key < root->key) root->left = remove(root->left, key);
-            else if (key > root->key) root->right = remove(root->right, key);
-            else {
-                if (!root->left && !root->right) {
-                    delete root;
-                    root = nullptr;
-                }
-                else if (!root->left) {
-                    BinarySearchTreeNode *tmp{ root };
-                    root = root->right;
-                    delete tmp;
-                    tmp = nullptr;
-                }
-                else if (!root->right) {
-                    BinarySearchTreeNode *tmp{ root };
-                    root = root->left;
-                    delete tmp;
-                    tmp = nullptr;
-                }
-                else {
-                    BinarySearchTreeNode *min{ minimum(root->right) };
-                    root->key = min->key;
-                    root->value = min->value;
-                    root->right = remove(root->right, min->key);
-                    //BinarySearchTreeNode * max{ maximum(root->left) };
-                    //root->key = max->key;
-                    //root->value = max->value;
-                    //root->left = remove(root->left, max->key);
-                }
-            }
-
-            if (!root) return nullptr;
-
-            root->height = std::max(height(root->left), height(root->right)) + 1;
-
-            return root;
-        }
-
-        BinarySearchTreeNode *search(BinarySearchTreeNode * root, const Key & key) {
-            while (root) {
-                if (key > root->key) root = root->right;
-                else if (key < root->key) root = root->left;
-                else return root;
-            }
-            return nullptr;
-        }
-
-    private:
-        void clear(BinarySearchTreeNode * root) {
-            if (!root) return;
-            if (root->left) clear(root->left);
-            if (root->right) clear(root->right);
-            delete root;
-            root = nullptr;
-        }
-
-    public:
-        BinarySearchTree() = default;
-
-        explicit BinarySearchTree(Pairs pairs) {
-            for (auto pair : pairs) {
-                insert(pair.first, pair.second);
-            }
-        }
-
-        BinarySearchTree(const BinarySearchTree &) = delete;
-        BinarySearchTree(BinarySearchTree &&) = delete;
-
-        ~BinarySearchTree() {
-            clear();
-        }
-
-    public:
-        BinarySearchTree &operator=(const BinarySearchTree &) = delete;
-        BinarySearchTree &operator=(BinarySearchTree &&) = delete;
-
-    public:
-        void pre_order_traversal(Handler handler) {
-            pre_order_traversal(tree_root, handler);
-        }
-
-        void in_order_traversal(Handler handler) {
-            in_order_traversal(tree_root, handler);
-        }
-
-        void post_order_traversal(Handler handler) {
-            post_order_traversal(tree_root, handler);
-        }
-
-        void breadth_first_traversal(Handler handler) {
-            breadth_first_traversal(tree_root, handler);
-        }
-
-    public:
-        BinarySearchTreeNode *minimum() {
-            return minimum(tree_root);
-        }
-
-        BinarySearchTreeNode *maximum() {
-            return maximum(tree_root);
-        }
-
-    public:
-        unsigned height() {
-            return height(tree_root);
-        }
-
-        unsigned size() {
-            return size(tree_root);
-        }
-
-    public:
-        void insert(const Key & key, const Value & value) {
-            tree_root = insert(tree_root, key, value);
-        }
-
-        void remove(const Key & key) noexcept {
-            tree_root = remove(tree_root, key);
-        }
-
-        BinarySearchTreeNode *search(const Key & key) {
-            return search(tree_root, key);
-        }
-
-    public:
-        void clear() {
-            clear(tree_root);
-            tree_root = nullptr;
-        }
-    };
-}
+public:
+  void Clear() {
+    Clear(mRoot);
+    mRoot = nullptr;
+  }
+};
+} // namespace forest
