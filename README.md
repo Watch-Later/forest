@@ -16,66 +16,63 @@
 ## Tree Classes
 
 ```cpp
-template <typename T> forest::AVLTree
-template <typename T> forest::BinarySearchTree
+template <typename T> forest::AVLTree;
+template <typename T> forest::BinarySearchTree;
 ```
 
 ## Node Base Classes
 
 ```cpp
-template <typename T> forest::AVLTreeNodeBase
-template <typename T> forest::BinarySearchTreeNodeBase
+template <typename T> forest::AVLTreeNodeBase;
+template <typename T> forest::BinarySearchTreeNodeBase;
 ```
 
-### Node Class Example #1
+## Tree Traversals
 
 ```cpp
-#include <forest/AVLTree.hpp>
-#include <string>
-
-class Node : public forest::AVLTreeNodeBase<Node> { // Inherit from Node Base
-public:
-  Node() = default;
-  Node(const int &key, const std::string &value) : mKey(key), mValue(value){};
-  ~Node() = default;
-
-public:
-  bool operator<(const Node &other) const { return mKey < other.mKey; }
-  friend bool operator<(const Node &lhs, const int &rhs);
-  friend bool operator<(const int &lhs, const Node &rhs);
-
-public:
-  void SetKey(const int &key) { mKey = key; }
-  void SetValue(const std::string &value) { mValue = value; }
-
-public:
-  int GetKey() { return mKey; }
-  std::string GetValue() { return mValue; }
-
-private:
-  int mKey = 0;
-  std::string mValue;
-};
-
-bool operator<(const Node &lhs, const int &rhs) { return lhs.mKey < rhs; }
-bool operator<(const int &lhs, const Node &rhs) { return lhs < rhs.mKey; }
-
-int main() {
-  forest::AVLTree<Node> AVLTree;
-
-  // TODO
-
-  return 0;
-}
+void PreOrderTraversal(const Callback &callback);
+void InOrderTraversal(const Callback &callback);
+void PostOrderTraversal(const Callback &callback);
+void BreadthFirstTraversal(const Callback &callback);
 ```
 
-### Node Class Example #2
+## Tree Minimum / Maximum
 
 ```cpp
+T *Minimum();
+T *Maximum();
+```
+
+## Tree Height / Size
+
+```cpp
+std::size_t Height();
+std::size_t Size();
+```
+
+## Tree Insert / Remove / Search
+```cpp
+void Insert(const T &node);
+template <typename Key> void Remove(const Key &key);
+template <typename Key> T *Search(const Key &key);
+```
+
+## Tree Clear
+```cpp
+void Clear();
+```
+
+# Examples
+
+## Node Class Example
+
+```cpp
+// #include <forest/AVLTree.hpp>
 #include <forest/BinarySearchTree.hpp>
 #include <string>
 
-class Node : public forest::BinarySearchTreeNodeBase<Node> { // Inherit from Node Base
+// class Node : public forest::AVLTreeNodeBase<Node> {
+class Node : public forest::BinarySearchTreeNodeBase<Node> {
 public:
   Node() = default;
   Node(const int &key, const std::string &value) : mKey(key), mValue(value){};
@@ -103,7 +100,8 @@ bool operator<(const Node &lhs, const int &rhs) { return lhs.mKey < rhs; }
 bool operator<(const int &lhs, const Node &rhs) { return lhs < rhs.mKey; }
 
 int main() {
-  forest::BinarySearchTree<Node> BinarySearchTree;
+  // forest::AVLTree<Node> Tree;
+  forest::BinarySearchTreeNodeBase<Node> Tree;
 
   // TODO
 
@@ -111,18 +109,7 @@ int main() {
 }
 ```
 
-## Tree Functions
-
-### Tree Traversals
-
-```cpp
-void PreOrderTraversal(const Callback &callback)
-void InOrderTraversal(const Callback &callback)
-void PostOrderTraversal(const Callback &callback)
-void BreadthFirstTraversal(const Callback &callback)
-```
-
-#### Example
+## Tree Traversals Example
 
 ```cpp
 Tree.PreOrderTraversal([](auto &node) {
@@ -139,42 +126,21 @@ Tree.BreadthFirstTraversal([](auto &node) {
 });
 ```
 
-### Tree Minimum / Maximum
-
-```cpp
-T *Minimum()
-T *Maximum()
-```
-
-#### Example
+## Tree Minimum / Maximum Example
 
 ```cpp
 auto min = Tree.Minimum();
 auto max = Tree.Maximum();
 ```
 
-### Tree Height / Size
-
-```cpp
-std::size_t Height()
-std::size_t Size()
-```
-
-#### Example
+## Tree Height / Size Example
 
 ```cpp
 auto height = Tree.Height();
 auto size = Tree.Size();
 ```
 
-### Tree Insert / Remove / Search
-```cpp
-void Insert(const T &node)
-template <typename Key> void Remove(const Key &key)
-template <typename Key> T *Search(const Key &key)
-```
-
-#### Example
+## Tree Insert / Remove / Search Example
 
 ```cpp
 Tree.Insert(Node(key, value));
@@ -187,12 +153,7 @@ if (result) {
 }
 ```
 
-### Tree Clear
-```cpp
-void Clear()
-```
-
-#### Example
+## Tree Clear Example
 
 ```cpp
 Tree.Clear();
