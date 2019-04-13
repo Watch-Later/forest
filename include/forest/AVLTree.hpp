@@ -170,13 +170,13 @@ private:
     }
     return root;
   }
-  template <typename Comparable> T *Remove(T *root, const Comparable &query) {
+  template <typename Key> T *Remove(T *root, const Key &key) {
     if (!root)
       return nullptr;
-    if (query < *root)
-      root->mLeft = Remove(root->mLeft, query);
-    else if (*root < query)
-      root->mRight = Remove(root->mRight, query);
+    if (key < *root)
+      root->mLeft = Remove(root->mLeft, key);
+    else if (*root < key)
+      root->mRight = Remove(root->mRight, key);
     else {
       if (!root->mLeft && !root->mRight) {
         delete root;
@@ -215,11 +215,11 @@ private:
     }
     return root;
   }
-  template <typename Comparable> T *Search(T *root, const Comparable &query) {
+  template <typename Key> T *Search(T *root, const Key &key) {
     while (root) {
-      if (*root < query) {
+      if (*root < key) {
         root = root->mRight;
-      } else if (query < *root) {
+      } else if (key < *root) {
         root = root->mLeft;
       } else {
         return root;
@@ -283,11 +283,11 @@ public:
 
 public:
   void Insert(const T &node) { mRoot = Insert(mRoot, node); }
-  template <typename Comparable> void Remove(const Comparable &query) {
-    mRoot = Remove(mRoot, query);
+  template <typename Key> void Remove(const Key &key) {
+    mRoot = Remove(mRoot, key);
   }
-  template <typename Comparable> T *Search(const Comparable &query) {
-    return Search(mRoot, query);
+  template <typename Key> T *Search(const Key &key) {
+    return Search(mRoot, key);
   }
 
 public:
