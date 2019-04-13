@@ -13,13 +13,6 @@
 #include <forest/BinarySearchTree.hpp>
 ```
 
-## Node Base Classes
-
-```cpp
-template <typename T> forest::AVLTreeNodeBase
-template <typename T> forest::BinarySearchTreeNodeBase
-```
-
 ## Tree Classes
 
 ```cpp
@@ -27,97 +20,20 @@ template <typename T> forest::AVLTree
 template <typename T> forest::BinarySearchTree
 ```
 
-## Tree Functions
-
-### Tree Traversals
+## Node Base Classes
 
 ```cpp
-void PreOrderTraversal(const Callback &callback)
-void InOrderTraversal(const Callback &callback)
-void PostOrderTraversal(const Callback &callback)
-void BreadthFirstTraversal(const Callback &callback)
+template <typename T> forest::AVLTreeNodeBase
+template <typename T> forest::BinarySearchTreeNodeBase
 ```
 
-```cpp
-Tree.PreOrderTraversal([](auto &node) {
-  // TODO
-});
-
-Tree.InOrderTraversal([](auto &node) {
-  // TODO
-});
-
-Tree.PostOrderTraversal([](auto &node) {
-  // TODO
-});
-
-Tree.BreadthFirstTraversal([](auto &node) {
-  // TODO
-});
-```
-
-### Tree Minimum / Maximum
-
-```cpp
-T *Minimum()
-T *Maximum()
-```
-
-```cpp
-auto min = Tree.Minimum();
-auto max = Tree.Maximum();
-```
-
-### Tree Height / Size
-
-```cpp
-std::size_t Height()
-std::size_t Size()
-```
-
-```cpp
-auto height = Tree.Height();
-auto size = Tree.Size();
-```
-
-### Tree Insert / Remove / Search
-```cpp
-void Insert(const T &node)
-template <typename Key> void Remove(const Key &key)
-template <typename Key> T *Search(const Key &key)
-```
-
-```cpp
-Tree.Insert(Node(key, value));
-
-Tree.Remove(key);
-
-auto result = Tree.Search(key);
-if (result) {
-  std::cout << "Found" << std::endl;
-} else {
-  std::cout << "Not Found" << std::endl;
-}
-```
-
-### Tree Clear
-```cpp
-void Clear()
-```
-
-```cpp
-Tree.Clear();
-```
-
-# Examples
-
-## AVL Tree Example
+### Node Class Example #1
 
 ```cpp
 #include <forest/AVLTree.hpp>
 #include <string>
 
-class Node : public forest::AVLTreeNodeBase<Node> {
+class Node : public forest::AVLTreeNodeBase<Node> { // Inherit from Node Base
 public:
   Node() = default;
   Node(const int &key, const std::string &value) : mKey(key), mValue(value){};
@@ -153,13 +69,13 @@ int main() {
 }
 ```
 
-## Binary Search Tree Example
+### Node Class Example #2
 
 ```cpp
 #include <forest/BinarySearchTree.hpp>
 #include <string>
 
-class Node : public forest::BinarySearchTreeNodeBase<Node> {
+class Node : public forest::BinarySearchTreeNodeBase<Node> { // Inherit from Node Base
 public:
   Node() = default;
   Node(const int &key, const std::string &value) : mKey(key), mValue(value){};
@@ -193,6 +109,93 @@ int main() {
 
   return 0;
 }
+```
+
+## Tree Functions
+
+### Tree Traversals
+
+```cpp
+void PreOrderTraversal(const Callback &callback)
+void InOrderTraversal(const Callback &callback)
+void PostOrderTraversal(const Callback &callback)
+void BreadthFirstTraversal(const Callback &callback)
+```
+
+#### Example
+
+```cpp
+Tree.PreOrderTraversal([](auto &node) {
+  // TODO
+});
+Tree.InOrderTraversal([](auto &node) {
+  // TODO
+});
+Tree.PostOrderTraversal([](auto &node) {
+  // TODO
+});
+Tree.BreadthFirstTraversal([](auto &node) {
+  // TODO
+});
+```
+
+### Tree Minimum / Maximum
+
+```cpp
+T *Minimum()
+T *Maximum()
+```
+
+#### Example
+
+```cpp
+auto min = Tree.Minimum();
+auto max = Tree.Maximum();
+```
+
+### Tree Height / Size
+
+```cpp
+std::size_t Height()
+std::size_t Size()
+```
+
+#### Example
+
+```cpp
+auto height = Tree.Height();
+auto size = Tree.Size();
+```
+
+### Tree Insert / Remove / Search
+```cpp
+void Insert(const T &node)
+template <typename Key> void Remove(const Key &key)
+template <typename Key> T *Search(const Key &key)
+```
+
+#### Example
+
+```cpp
+Tree.Insert(Node(key, value));
+Tree.Remove(key);
+auto result = Tree.Search(key);
+if (result) {
+  std::cout << "Found" << std::endl;
+} else {
+  std::cout << "Not Found" << std::endl;
+}
+```
+
+### Tree Clear
+```cpp
+void Clear()
+```
+
+#### Example
+
+```cpp
+Tree.Clear();
 ```
 
 # Credits
