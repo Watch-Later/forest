@@ -1,6 +1,6 @@
-﻿cmake_minimum_required(VERSION 3.1...3.13)
+﻿cmake_minimum_required(VERSION 3.7...3.13)
 
-project(forest LANGUAGES CXX VERSION 10.1.7)
+project("forest" LANGUAGES CXX VERSION 11.0.0)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -17,7 +17,7 @@ option(FOREST_BUILD_BENCHMARKS OFF)
 ###############################################################################
 
 if(MSVC)
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:10000000") # 10 MB
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:10000000")
 endif()
 
 ###############################################################################
@@ -31,25 +31,21 @@ target_include_directories(forest INTERFACE
 	$<INSTALL_INTERFACE:include>)
 
 ###############################################################################
-# CTest
-###############################################################################
-
-include(CTest)
-
-###############################################################################
 # Build Tests
 ###############################################################################
 
 if(FOREST_BUILD_TESTS)
 	add_library(Catch2 INTERFACE)
 	target_include_directories(Catch2 INTERFACE ${CMAKE_SOURCE_DIR}/vendor/catchorg/Catch2/single_include)
+	enable_testing()
 	macro(forest_add_test TESTNAME)
 		add_executable(${TESTNAME} ${ARGN})
-		target_link_libraries(${TESTNAME} PRIVATE forest::forest PRIVATE Catch2)
+		target_link_libraries(${TESTNAME} PRIVATE forest::forest)
+		target_link_libraries(${TESTNAME} PRIVATE Catch2) 
 		add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
 		set_target_properties(${TESTNAME} PROPERTIES FOLDER tests)
 	endmacro()
-	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
 endif()
 
 ###############################################################################
@@ -60,9 +56,9 @@ if(FOREST_BUILD_EXAMPLES)
 	macro(forest_add_example EXAMPLENAME)
 		add_executable(${EXAMPLENAME} ${ARGN})
 		target_link_libraries(${EXAMPLENAME} PRIVATE forest::forest)
-		set_target_properties(${EXAMPLENAME} PROPERTIES FOLDER example)
+		set_target_properties(${EXAMPLENAME} PROPERTIES FOLDER examples)
 	endmacro()
-	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/example)
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
 endif()
 
 ###############################################################################
@@ -74,10 +70,11 @@ if(FOREST_BUILD_BENCHMARKS)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/google/benchmark)
 	macro(forest_add_benchmark BENCHMARKNAME)
 		add_executable(${BENCHMARKNAME} ${ARGN})
-		target_link_libraries(${BENCHMARKNAME} PRIVATE forest::forest PRIVATE benchmark)
-		set_target_properties(${BENCHMARKNAME} PROPERTIES FOLDER benchmark)
+		target_link_libraries(${BENCHMARKNAME} PRIVATE forest::forest)
+		target_link_libraries(${BENCHMARKNAME} PRIVATE benchmark)
+		set_target_properties(${BENCHMARKNAME} PROPERTIES FOLDER benchmarks)
 	endmacro()
-	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/benchmark)
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/benchmarks)
 endif()
 
 ###############################################################################
@@ -92,7 +89,7 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
 # CPack
 ###############################################################################
 
-set(CPACK_PACKAGE_ICON "forest.svg")
+set(CPACK_PACKAGE_ICON "forest.png")
 set(CPACK_PACKAGE_VENDOR "George Fotopoulos")
 set(CPACK_PACKAGE_CONTACT "xorz57@protonmail.com")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Template Library of Tree Data Structures")
