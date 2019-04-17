@@ -130,7 +130,17 @@ Tree.BreadthFirstTraversal([](auto &node) {
 
 ```cpp
 auto min = Tree.Minimum();
+if (min) {
+  std::cout << "Found" << std::endl;
+} else {
+  std::cout << "Not Found" << std::endl;
+}
 auto max = Tree.Maximum();
+if (max) {
+  std::cout << "Found" << std::endl;
+} else {
+  std::cout << "Not Found" << std::endl;
+}
 ```
 
 ## Tree Height / Size Example
