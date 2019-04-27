@@ -48,7 +48,7 @@ SCENARIO("Test AVL Tree") {
         auto min = AVLTree.Minimum();
         THEN("This node exists") {
           REQUIRE(min != nullptr);
-		  CHECK(min->GetKey() == 0);
+          CHECK(min->GetKey() == 0);
           CHECK(min->GetValue() == "");
         }
       }
@@ -63,13 +63,11 @@ SCENARIO("Test AVL Tree") {
       AND_WHEN("I search for a node with a key that doesn't exist") {
         int key = GENERATE(-1, 10);
         auto result = AVLTree.Search(key);
-		THEN("This node doesn't exist") {
-          REQUIRE(result == nullptr);
-        }
+        THEN("This node doesn't exist") { REQUIRE(result == nullptr); }
       }
       AND_WHEN("I search for a node with a key that exists") {
-		int key = GENERATE(range(0, 9));
-		auto result = AVLTree.Search(key);
+        int key = GENERATE(range(0, 9));
+        auto result = AVLTree.Search(key);
         THEN("This node exists") {
           REQUIRE(result != nullptr);
           CHECK(result->GetKey() == key);
@@ -78,7 +76,7 @@ SCENARIO("Test AVL Tree") {
       }
       AND_WHEN("I remove a node with a key that exists") {
         int key = GENERATE(range(0, 9));
-		AVLTree.Remove(key);
+        AVLTree.Remove(key);
         THEN("This node is successfully removed") {
           REQUIRE(AVLTree.Search(key) == nullptr);
           CHECK(AVLTree.Height() == 4);
