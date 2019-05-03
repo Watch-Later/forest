@@ -66,7 +66,7 @@ endif()
 ###############################################################################
 
 if(FOREST_BUILD_BENCHMARKS)
-	set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Suppressing Google Benchmark's Tests" FORCE)
+	set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/google/benchmark)
 	macro(forest_add_benchmark BENCHMARKNAME)
 		add_executable(${BENCHMARKNAME} ${ARGN})
