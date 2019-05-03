@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1...3.13)
 
-project("forest_examples" LANGUAGES CXX)
+project("Forest Examples" LANGUAGES CXX)
 
 ###############################################################################
 # Add Examples

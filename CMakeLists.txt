@@ -1,6 +1,6 @@
-﻿cmake_minimum_required(VERSION 3.7...3.13)
+﻿cmake_minimum_required(VERSION 3.8.0)
 
-project("forest" LANGUAGES CXX VERSION 11.0.0)
+project("Forest" LANGUAGES CXX VERSION 11.0.1)
 
 set(CMAKE_CXX_STANDARD 14)
 
