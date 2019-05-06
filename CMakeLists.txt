@@ -1,6 +1,6 @@
-﻿cmake_minimum_required(VERSION 3.7...3.13)
+﻿cmake_minimum_required(VERSION 3.8.0)
 
-project("forest" LANGUAGES CXX VERSION 11.0.0)
+project("Forest" LANGUAGES CXX VERSION 11.0.1)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -66,7 +66,7 @@ endif()
 ###############################################################################
 
 if(FOREST_BUILD_BENCHMARKS)
-	set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Suppressing Google Benchmark's Tests" FORCE)
+	set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/google/benchmark)
 	macro(forest_add_benchmark BENCHMARKNAME)
 		add_executable(${BENCHMARKNAME} ${ARGN})
