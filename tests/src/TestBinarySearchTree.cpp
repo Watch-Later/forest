@@ -63,9 +63,7 @@ SCENARIO("Test Binary Search Tree") {
       AND_WHEN("I search for a node with a key that doesn't exist") {
         int key = GENERATE(-1, 10);
         auto result = BinarySearchTree.Search(key);
-		THEN("This node dosn't exist") {
-          REQUIRE(result == nullptr);
-        }
+        THEN("This node dosn't exist") { REQUIRE(result == nullptr); }
       }
       AND_WHEN("I search for a node with a key that exists") {
         int key = GENERATE(range(0, 9));
@@ -81,7 +79,7 @@ SCENARIO("Test Binary Search Tree") {
         BinarySearchTree.Remove(key);
         THEN("This node exists") {
           REQUIRE(BinarySearchTree.Search(key) == nullptr);
-	      CHECK(BinarySearchTree.Height() == 9);
+          CHECK(BinarySearchTree.Height() == 9);
           CHECK(BinarySearchTree.Size() == 9);
         }
       }

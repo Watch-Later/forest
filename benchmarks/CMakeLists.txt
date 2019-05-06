@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1...3.13)
 
-project("forest_benchmarks" LANGUAGES CXX)
+project("Forest Benchmarks" LANGUAGES CXX)
 
 ###############################################################################
 # Add Benchmarks
