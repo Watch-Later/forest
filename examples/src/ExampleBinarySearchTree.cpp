@@ -2,156 +2,73 @@
 #include <iostream>
 #include <string>
 
-//////////
-// Node //
-//////////
-
-class Node : public forest::BinarySearchTreeNodeBase<Node> {
+class Node {
 public:
   Node() = default;
-  Node(const int &key, const std::string &value) : mKey(key), mValue(value){};
+  Node(int key, const std::string &value) : mKey(key), mValue(value){};
   ~Node() = default;
 
 public:
   bool operator<(const Node &other) const { return mKey < other.mKey; }
-  friend bool operator<(const Node &lhs, const int &rhs);
-  friend bool operator<(const int &lhs, const Node &rhs);
+  friend bool operator<(const Node &lhs, const int rhs);
+  friend bool operator<(const int lhs, const Node &rhs);
+  friend std::ostream &operator<<(std::ostream &os, const Node &dt);
 
 public:
-  void SetKey(const int &key) { mKey = key; }
-  void SetValue(const std::string &value) { mValue = value; }
+  void setKey(int key) { mKey = key; }
+  void setValue(const std::string &value) { mValue = value; }
 
 public:
-  int GetKey() { return mKey; }
-  std::string GetValue() { return mValue; }
+  int getKey() { return mKey; }
+  std::string getValue() { return mValue; }
 
 private:
   int mKey = 0;
   std::string mValue;
 };
 
-bool operator<(const Node &lhs, const int &rhs) { return lhs.mKey < rhs; }
-bool operator<(const int &lhs, const Node &rhs) { return lhs < rhs.mKey; }
+bool operator<(const Node &lhs, const int rhs) { return lhs.mKey < rhs; }
+bool operator<(const int lhs, const Node &rhs) { return lhs < rhs.mKey; }
+std::ostream &operator<<(std::ostream &os, const Node &node) {
+  os << "(" << node.mKey << ", " << node.mValue << ")" << std::endl;
+  return os;
+}
 
 int main() {
-  forest::BinarySearchTree<Node> BinarySearchTree;
+  forest::BinarySearchTree<Node> Tree;
 
-  ////////////
-  // Insert //
-  ////////////
+  Tree.insert(Node(2, "Thor"));
+  Tree.insert(Node(4, "Odin"));
+  Tree.insert(Node(90, "Loki"));
+  Tree.insert(Node(3, "Baldr"));
+  Tree.insert(Node(0, "Frigg"));
+  Tree.insert(Node(14, "Eir"));
+  Tree.insert(Node(45, "Heimdall"));
 
-  BinarySearchTree.Insert(Node(2, "Thor"));
-  BinarySearchTree.Insert(Node(4, "Odin"));
-  BinarySearchTree.Insert(Node(90, "Loki"));
-  BinarySearchTree.Insert(Node(3, "Baldr"));
-  BinarySearchTree.Insert(Node(0, "Frigg"));
-  BinarySearchTree.Insert(Node(14, "Eir"));
-  BinarySearchTree.Insert(Node(45, "Heimdall"));
+  Tree.pre_order_traversal([](auto node) { std::cout << node << std::endl; });
 
-  /////////////////////////
-  // Pre Order Traversal //
-  /////////////////////////
+  Tree.in_order_traversal([](auto node) { std::cout << node << std::endl; });
 
-  std::cout << "PreOrderTraversal()";
-  std::cout << " = ";
-  BinarySearchTree.PreOrderTraversal(
-      [](auto &node) { std::cout << node.GetKey() << " "; });
-  std::cout << std::endl;
+  Tree.post_order_traversal([](auto node) { std::cout << node << std::endl; });
 
-  ////////////////////////
-  // In Order Traversal //
-  ////////////////////////
+  Tree.breadth_first_traversal(
+      [](auto node) { std::cout << node << std::endl; });
 
-  std::cout << "InOrderTraversal()";
-  std::cout << " = ";
-  BinarySearchTree.InOrderTraversal(
-      [](auto &node) { std::cout << node.GetKey() << " "; });
-  std::cout << std::endl;
-
-  //////////////////////////
-  // Post Order Traversal //
-  //////////////////////////
-
-  std::cout << "PostOrderTraversal()";
-  std::cout << " = ";
-  BinarySearchTree.PostOrderTraversal(
-      [](auto &node) { std::cout << node.GetKey() << " "; });
-  std::cout << std::endl;
-
-  /////////////////////////////
-  // Breadth First Traversal //
-  /////////////////////////////
-
-  std::cout << "BreadthFirstTraversal()";
-  std::cout << " = ";
-  BinarySearchTree.BreadthFirstTraversal(
-      [](auto &node) { std::cout << node.GetKey() << " "; });
-  std::cout << std::endl;
-
-  ////////////
-  // Remove //
-  ////////////
-
-  BinarySearchTree.Remove(3);
-  std::cout << "Remove(3)" << std::endl;
-
-  ////////////
-  // Search //
-  ////////////
-
-  auto result = BinarySearchTree.Search(3);
-  std::cout << "Search(3)";
-  std::cout << " = ";
-  if (result) {
-    std::cout << "Found" << std::endl;
-  } else {
-    std::cout << "Not Found" << std::endl;
+  if (auto min = Tree.minimum()) {
+    std::cout << "min: " << min->get() << std::endl;
   }
 
-  /////////////
-  // Minimum //
-  /////////////
-
-  auto min = BinarySearchTree.Minimum();
-  std::cout << "Minimum()";
-  std::cout << " = ";
-  if (min) {
-    std::cout << min->GetKey() << std::endl;
+  if (auto max = Tree.maximum()) {
+    std::cout << "max: " << max->get() << std::endl;
   }
 
-  /////////////
-  // Maximum //
-  /////////////
+  Tree.remove(2);
 
-  auto max = BinarySearchTree.Maximum();
-  std::cout << "Maximum()";
-  std::cout << " = ";
-  if (max) {
-    std::cout << max->GetKey() << std::endl;
+  if (auto res = Tree.search(2)) {
+    std::cout << "res: " << res->get() << std::endl;
   }
 
-  ////////////
-  // Height //
-  ////////////
-
-  std::cout << "Height()";
-  std::cout << " = ";
-  std::cout << BinarySearchTree.Height() << std::endl;
-
-  ////////////
-  // Height //
-  ////////////
-
-  std::cout << "Size()";
-  std::cout << " = ";
-  std::cout << BinarySearchTree.Size() << std::endl;
-
-  ///////////
-  // Clear //
-  ///////////
-
-  BinarySearchTree.Clear();
-  std::cout << "Clear()" << std::endl;
+  Tree.clear();
 
   return 0;
 }

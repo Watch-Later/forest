@@ -1,8 +1,6 @@
-﻿cmake_minimum_required(VERSION 3.8.0)
+﻿cmake_minimum_required(VERSION 3.10)
 
-project("Forest" LANGUAGES CXX VERSION 11.0.1)
-
-set(CMAKE_CXX_STANDARD 14)
+project("Forest" LANGUAGES CXX VERSION 12.0.0)
 
 ###############################################################################
 # CMake Options
@@ -40,12 +38,13 @@ if(FOREST_BUILD_TESTS)
 	enable_testing()
 	macro(forest_add_test TESTNAME)
 		add_executable(${TESTNAME} ${ARGN})
+		target_compile_features(${TESTNAME} PRIVATE cxx_std_17)
 		target_link_libraries(${TESTNAME} PRIVATE forest::forest)
-		target_link_libraries(${TESTNAME} PRIVATE Catch2) 
+		target_link_libraries(${TESTNAME} PRIVATE Catch2)
 		add_test(NAME ${TESTNAME} COMMAND ${TESTNAME})
 		set_target_properties(${TESTNAME} PROPERTIES FOLDER tests)
 	endmacro()
-	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/tests")
 endif()
 
 ###############################################################################
@@ -55,10 +54,11 @@ endif()
 if(FOREST_BUILD_EXAMPLES)
 	macro(forest_add_example EXAMPLENAME)
 		add_executable(${EXAMPLENAME} ${ARGN})
+		target_compile_features(${EXAMPLENAME} PRIVATE cxx_std_17)
 		target_link_libraries(${EXAMPLENAME} PRIVATE forest::forest)
 		set_target_properties(${EXAMPLENAME} PROPERTIES FOLDER examples)
 	endmacro()
-	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/examples")
 endif()
 
 ###############################################################################
@@ -70,11 +70,12 @@ if(FOREST_BUILD_BENCHMARKS)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/google/benchmark)
 	macro(forest_add_benchmark BENCHMARKNAME)
 		add_executable(${BENCHMARKNAME} ${ARGN})
+		target_compile_features(${BENCHMARKNAME} PRIVATE cxx_std_17)
 		target_link_libraries(${BENCHMARKNAME} PRIVATE forest::forest)
 		target_link_libraries(${BENCHMARKNAME} PRIVATE benchmark)
 		set_target_properties(${BENCHMARKNAME} PROPERTIES FOLDER benchmarks)
 	endmacro()
-	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/benchmarks)
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/benchmarks")
 endif()
 
 ###############################################################################
