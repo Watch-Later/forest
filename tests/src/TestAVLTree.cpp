@@ -1,93 +1,62 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 #include <forest/AVLTree.hpp>
-#include <string>
-
-class Node : public forest::AVLTreeNodeBase<Node> {
-public:
-  Node() = default;
-  Node(const int &key, const std::string &value) : mKey(key), mValue(value){};
-  ~Node() = default;
-
-public:
-  bool operator<(const Node &other) const { return mKey < other.mKey; }
-  friend bool operator<(const Node &lhs, const int &rhs);
-  friend bool operator<(const int &lhs, const Node &rhs);
-
-public:
-  void SetKey(const int &key) { mKey = key; }
-  void SetValue(const std::string &value) { mValue = value; }
-
-public:
-  int GetKey() { return mKey; }
-  std::string GetValue() { return mValue; }
-
-private:
-  int mKey = 0;
-  std::string mValue;
-};
-
-bool operator<(const Node &lhs, const int &rhs) { return lhs.mKey < rhs; }
-bool operator<(const int &lhs, const Node &rhs) { return lhs < rhs.mKey; }
 
 SCENARIO("Test AVL Tree") {
   GIVEN("An empty AVL Tree") {
-    forest::AVLTree<Node> AVLTree;
-    REQUIRE(AVLTree.Height() == 0);
-    REQUIRE(AVLTree.Size() == 0);
-    REQUIRE(AVLTree.Minimum() == nullptr);
-    REQUIRE(AVLTree.Maximum() == nullptr);
-    REQUIRE(AVLTree.Search(GENERATE(-1, 0, 1)) == nullptr);
+    forest::AVLTree<int> AVLTree;
+    REQUIRE(AVLTree.height() == 0);
+    REQUIRE(AVLTree.size() == 0);
+    REQUIRE(AVLTree.minimum() == std::nullopt);
+    REQUIRE(AVLTree.maximum() == std::nullopt);
+    REQUIRE(AVLTree.search(GENERATE(-1, 0, 1)) == std::nullopt);
     WHEN("I insert nodes with keys from 0 up to 9 inclusive") {
       for (int key = 0; key < 10; ++key) {
-        AVLTree.Insert(Node(key, ""));
+        AVLTree.insert(key);
       }
-      REQUIRE(AVLTree.Height() == 4);
-      REQUIRE(AVLTree.Size() == 10);
+      REQUIRE(AVLTree.height() == 4);
+      REQUIRE(AVLTree.size() == 10);
       AND_WHEN("I want the node with the minimum key") {
-        auto min = AVLTree.Minimum();
+        auto min = AVLTree.minimum();
         THEN("This node exists") {
-          REQUIRE(min != nullptr);
-          CHECK(min->GetKey() == 0);
-          CHECK(min->GetValue() == "");
+          REQUIRE(min != std::nullopt);
+          CHECK(min->get() == 0);
         }
       }
       AND_WHEN("I want the node with the maximum key") {
-        auto max = AVLTree.Maximum();
+        auto max = AVLTree.maximum();
         THEN("This node exists") {
-          REQUIRE(max != nullptr);
-          CHECK(max->GetKey() == 9);
-          CHECK(max->GetValue() == "");
+          REQUIRE(max != std::nullopt);
+          CHECK(max->get() == 9);
         }
       }
       AND_WHEN("I search for a node with a key that doesn't exist") {
         int key = GENERATE(-1, 10);
-        auto result = AVLTree.Search(key);
-        THEN("This node doesn't exist") { REQUIRE(result == nullptr); }
+        auto result = AVLTree.search(key);
+        THEN("This node doesn't exist") { REQUIRE(result == std::nullopt); }
       }
       AND_WHEN("I search for a node with a key that exists") {
         int key = GENERATE(range(0, 9));
-        auto result = AVLTree.Search(key);
+        auto result = AVLTree.search(key);
         THEN("This node exists") {
-          REQUIRE(result != nullptr);
-          CHECK(result->GetKey() == key);
-          CHECK(result->GetValue() == "");
+          REQUIRE(result != std::nullopt);
+          CHECK(result->get() == key);
         }
       }
       AND_WHEN("I remove a node with a key that exists") {
         int key = GENERATE(range(0, 9));
-        AVLTree.Remove(key);
+        AVLTree.remove(key);
         THEN("This node is successfully removed") {
-          REQUIRE(AVLTree.Search(key) == nullptr);
-          CHECK(AVLTree.Height() == 4);
-          CHECK(AVLTree.Size() == 9);
+          REQUIRE(AVLTree.search(key) == std::nullopt);
+          CHECK(AVLTree.height() == 4);
+          CHECK(AVLTree.size() == 9);
         }
       }
       AND_WHEN("I clear the AVL Tree") {
-        AVLTree.Clear();
+        AVLTree.clear();
         THEN("The height and the size of the AVL Tree change") {
-          REQUIRE(AVLTree.Height() == 0);
-          REQUIRE(AVLTree.Size() == 0);
+          REQUIRE(AVLTree.height() == 0);
+          REQUIRE(AVLTree.size() == 0);
         }
       }
     }

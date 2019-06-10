@@ -2,156 +2,73 @@
 #include <iostream>
 #include <string>
 
-//////////
-// Node //
-//////////
-
-class Node : public forest::AVLTreeNodeBase<Node> {
+class Node {
 public:
   Node() = default;
-  Node(const int &key, const std::string &value) : mKey(key), mValue(value){};
+  Node(int key, const std::string &value) : mKey(key), mValue(value){};
   ~Node() = default;
 
 public:
   bool operator<(const Node &other) const { return mKey < other.mKey; }
-  friend bool operator<(const Node &lhs, const int &rhs);
-  friend bool operator<(const int &lhs, const Node &rhs);
+  friend bool operator<(const Node &lhs, const int rhs);
+  friend bool operator<(const int lhs, const Node &rhs);
+  friend std::ostream &operator<<(std::ostream &os, const Node &dt);
 
 public:
-  void SetKey(const int &key) { mKey = key; }
-  void SetValue(const std::string &value) { mValue = value; }
+  void setKey(int key) { mKey = key; }
+  void setValue(const std::string &value) { mValue = value; }
 
 public:
-  int GetKey() { return mKey; }
-  std::string GetValue() { return mValue; }
+  int getKey() { return mKey; }
+  std::string getValue() { return mValue; }
 
 private:
   int mKey = 0;
   std::string mValue;
 };
 
-bool operator<(const Node &lhs, const int &rhs) { return lhs.mKey < rhs; }
-bool operator<(const int &lhs, const Node &rhs) { return lhs < rhs.mKey; }
+bool operator<(const Node &lhs, const int rhs) { return lhs.mKey < rhs; }
+bool operator<(const int lhs, const Node &rhs) { return lhs < rhs.mKey; }
+std::ostream &operator<<(std::ostream &os, const Node &node) {
+  os << "(" << node.mKey << ", " << node.mValue << ")" << std::endl;
+  return os;
+}
 
 int main() {
-  forest::AVLTree<Node> AVLTree;
+  forest::AVLTree<Node> Tree;
 
-  ////////////
-  // Insert //
-  ////////////
+  Tree.insert(Node(2, "Thor"));
+  Tree.insert(Node(4, "Odin"));
+  Tree.insert(Node(90, "Loki"));
+  Tree.insert(Node(3, "Baldr"));
+  Tree.insert(Node(0, "Frigg"));
+  Tree.insert(Node(14, "Eir"));
+  Tree.insert(Node(45, "Heimdall"));
 
-  AVLTree.Insert(Node(2, "Thor"));
-  AVLTree.Insert(Node(4, "Odin"));
-  AVLTree.Insert(Node(90, "Loki"));
-  AVLTree.Insert(Node(3, "Baldr"));
-  AVLTree.Insert(Node(0, "Frigg"));
-  AVLTree.Insert(Node(14, "Eir"));
-  AVLTree.Insert(Node(45, "Heimdall"));
+  Tree.pre_order_traversal([](auto node) { std::cout << node << std::endl; });
 
-  /////////////////////////
-  // Pre Order Traversal //
-  /////////////////////////
+  Tree.in_order_traversal([](auto node) { std::cout << node << std::endl; });
 
-  std::cout << "PreOrderTraversal()";
-  std::cout << " = ";
-  AVLTree.PreOrderTraversal(
-      [](auto &node) { std::cout << node.GetKey() << " "; });
-  std::cout << std::endl;
+  Tree.post_order_traversal([](auto node) { std::cout << node << std::endl; });
 
-  ////////////////////////
-  // In Order Traversal //
-  ////////////////////////
+  Tree.breadth_first_traversal(
+      [](auto node) { std::cout << node << std::endl; });
 
-  std::cout << "InOrderTraversal()";
-  std::cout << " = ";
-  AVLTree.InOrderTraversal(
-      [](auto &node) { std::cout << node.GetKey() << " "; });
-  std::cout << std::endl;
-
-  //////////////////////////
-  // Post Order Traversal //
-  //////////////////////////
-
-  std::cout << "PostOrderTraversal()";
-  std::cout << " = ";
-  AVLTree.PostOrderTraversal(
-      [](auto &node) { std::cout << node.GetKey() << " "; });
-  std::cout << std::endl;
-
-  /////////////////////////////
-  // Breadth First Traversal //
-  /////////////////////////////
-
-  std::cout << "BreadthFirstTraversal()";
-  std::cout << " = ";
-  AVLTree.BreadthFirstTraversal(
-      [](auto &node) { std::cout << node.GetKey() << " "; });
-  std::cout << std::endl;
-
-  ////////////
-  // Remove //
-  ////////////
-
-  AVLTree.Remove(3);
-  std::cout << "Remove(3)" << std::endl;
-
-  ////////////
-  // Search //
-  ////////////
-
-  auto result = AVLTree.Search(3);
-  std::cout << "Search(3)";
-  std::cout << " = ";
-  if (result) {
-    std::cout << "Found" << std::endl;
-  } else {
-    std::cout << "Not Found" << std::endl;
+  if (auto min = Tree.minimum()) {
+    std::cout << "min: " << min->get() << std::endl;
   }
 
-  /////////////
-  // Minimum //
-  /////////////
-
-  auto min = AVLTree.Minimum();
-  std::cout << "Minimum()";
-  std::cout << " = ";
-  if (min) {
-    std::cout << min->GetKey() << std::endl;
+  if (auto max = Tree.maximum()) {
+    std::cout << "max: " << max->get() << std::endl;
   }
 
-  /////////////
-  // Maximum //
-  /////////////
+  Tree.remove(2);
 
-  auto max = AVLTree.Maximum();
-  std::cout << "Maximum()";
-  std::cout << " = ";
-  if (max) {
-    std::cout << max->GetKey() << std::endl;
+  if (auto res = Tree.search(2)) {
+    std::cout << "res: " << res->get() << std::endl;
   }
 
-  ////////////
-  // Height //
-  ////////////
-
-  std::cout << "Height()";
-  std::cout << " = ";
-  std::cout << AVLTree.Height() << std::endl;
-
-  ////////////
-  // Height //
-  ////////////
-
-  std::cout << "Size()";
-  std::cout << " = ";
-  std::cout << AVLTree.Size() << std::endl;
-
-  ///////////
-  // Clear //
-  ///////////
-
-  AVLTree.Clear();
-  std::cout << "Clear()" << std::endl;
+  Tree.clear();
 
   return 0;
 }
