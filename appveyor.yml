@@ -4,6 +4,7 @@ install:
 - sh: git submodule update --init --recursive
 - sh: sudo apt-get update
 - sh: sudo apt-get install -y rpm
+- sh: sudo update-alternatives --set gcc /usr/bin/gcc-8
 build_script:
 - sh: mkdir build
 - sh: cd build

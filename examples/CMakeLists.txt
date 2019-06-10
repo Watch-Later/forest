@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1...3.13)
+cmake_minimum_required(VERSION 3.10)
 
 project("Forest Examples" LANGUAGES CXX)
 
