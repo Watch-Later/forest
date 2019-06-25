@@ -1,6 +1,6 @@
 [submodule "vendor/google/benchmark"]
-	path = vendor/google/benchmark
-	url = https://github.com/google/benchmark
+	path = vendor/benchmark
+	url = https://github.com/google/benchmark.git
 [submodule "vendor/catchorg/Catch2"]
-	path = vendor/catchorg/Catch2
+	path = vendor/Catch2
 	url = https://github.com/catchorg/Catch2.git

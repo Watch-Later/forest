@@ -26,7 +26,7 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 # Build Tests
 
 if(FOREST_BUILD_TESTS)
-	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/catchorg/Catch2")
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/Catch2")
 	enable_testing()
 	macro(forest_add_test TESTNAME)
 		add_executable(${TESTNAME} ${ARGN})
@@ -53,7 +53,7 @@ endif()
 
 if(FOREST_BUILD_BENCHMARKS)
 	set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
-	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/google/benchmark")
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/benchmark")
 	macro(forest_add_benchmark BENCHMARKNAME)
 		add_executable(${BENCHMARKNAME} ${ARGN})
 		target_link_libraries(${BENCHMARKNAME} PRIVATE ${PROJECT_NAME}::${PROJECT_NAME})
