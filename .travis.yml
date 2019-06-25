@@ -11,7 +11,6 @@ matrix:
             - g++-7
       env:
         - MATRIX_EVAL="CXX=g++-7"
-
     - os: linux
       dist: xenial
       addons:
@@ -22,10 +21,28 @@ matrix:
             - g++-8
       env:
          - MATRIX_EVAL="CXX=g++-8"
-
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-7
+          packages:
+            - clang-7
+      env:
+        - MATRIX_EVAL="CXX=clang++-7"
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-xenial-8
+          packages:
+            - clang-8
+      env:
+        - MATRIX_EVAL="CXX=clang++-8"
     - os: osx
       osx_image: xcode10.1
-
     - os: osx
       osx_image: xcode10.2
 before_install:
@@ -36,4 +53,3 @@ script:
   - cmake .. -DFOREST_BUILD_TESTS=ON
   - cmake --build .
   - ctest --output-on-failure
-
