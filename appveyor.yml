@@ -11,7 +11,7 @@ before_build:
 - sh: git submodule update --init --recursive
 - sh: mkdir build
 - sh: cd build
-- sh: cmake .. -DFOREST_BUILD_TESTS=ON
+- sh: cmake .. -DCMAKE_BUILD_TYPE=$CONFIGURATION -DFOREST_BUILD_TESTS=ON
 build_script:
 - sh: cmake --build .
 test_script:
