@@ -26,8 +26,7 @@ target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_17)
 # Build Tests
 
 if(FOREST_BUILD_TESTS)
-	add_library(Catch2 INTERFACE)
-	target_include_directories(Catch2 INTERFACE ${CMAKE_SOURCE_DIR}/vendor/catchorg/Catch2/single_include)
+	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/catchorg/Catch2")
 	enable_testing()
 	macro(forest_add_test TESTNAME)
 		add_executable(${TESTNAME} ${ARGN})
