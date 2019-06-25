@@ -26,5 +26,5 @@ deploy:
     secure: AtDbVKW82I4iP+STKQ9ZEHEjzZZDYN/GqxC4mPfejyDyKs8Nozo3gYEHVLJUaZup
   force_update: true
   on:
-    configuration: Release
+    CONFIGURATION: Release
     APPVEYOR_REPO_TAG: true
