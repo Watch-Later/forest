@@ -1,25 +1,30 @@
 version: '{build}'
-image: Ubuntu
+image:
+- Ubuntu
+configuration:
+- Debug
+- Release
 install:
-- sh: git submodule update --init --recursive
 - sh: sudo apt-get update
-- sh: sudo apt-get install -y rpm
 - sh: sudo update-alternatives --set gcc /usr/bin/gcc-8
-build_script:
+before_build:
+- sh: git submodule update --init --recursive
 - sh: mkdir build
 - sh: cd build
-- sh: cmake .. -DCMAKE_BUILD_TYPE=Release -DFOREST_BUILD_TESTS=ON
-- sh: make -j2
-- sh: ctest
+- sh: cmake .. -DCMAKE_BUILD_TYPE=$CONFIGURATION -DFOREST_BUILD_TESTS=ON
+build_script:
+- sh: cmake --build .
+test_script:
+- sh: ctest --output-on-failure
+after_test:
 - sh: cpack -G DEB
-- sh: cpack -G RPM
 artifacts:
 - path: build/*.deb
-- path: build/*.rpm
 deploy:
 - provider: GitHub
   auth_token:
     secure: AtDbVKW82I4iP+STKQ9ZEHEjzZZDYN/GqxC4mPfejyDyKs8Nozo3gYEHVLJUaZup
   force_update: true
   on:
+    CONFIGURATION: Release
     APPVEYOR_REPO_TAG: true

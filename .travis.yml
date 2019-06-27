@@ -11,7 +11,6 @@ matrix:
             - g++-7
       env:
         - MATRIX_EVAL="CXX=g++-7"
-
     - os: linux
       dist: xenial
       addons:
@@ -22,10 +21,8 @@ matrix:
             - g++-8
       env:
          - MATRIX_EVAL="CXX=g++-8"
-
     - os: osx
       osx_image: xcode10.1
-
     - os: osx
       osx_image: xcode10.2
 before_install:
@@ -33,6 +30,6 @@ before_install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=Release -DFOREST_BUILD_TESTS=ON
-  - make -j2
-  - ctest
+  - cmake .. -DFOREST_BUILD_TESTS=ON
+  - cmake --build .
+  - ctest --output-on-failure
