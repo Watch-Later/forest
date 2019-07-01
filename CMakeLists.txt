@@ -14,7 +14,7 @@ if(MSVC)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:10000000")
 endif()
 
-# Add forest Library
+# Add Library
 
 add_library(${PROJECT_NAME} INTERFACE)
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
@@ -69,9 +69,8 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
         DESTINATION include
         FILES_MATCHING PATTERN "*.hpp")
 
-# CPack
+# Package Library
 
-set(CPACK_PACKAGE_ICON "forest.png")
 set(CPACK_PACKAGE_VENDOR "George Fotopoulos")
 set(CPACK_PACKAGE_CONTACT "xorz57@protonmail.com")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Template Library of Tree Data Structures")
@@ -84,4 +83,3 @@ set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
 
 include(CPack)
-
