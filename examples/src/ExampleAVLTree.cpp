@@ -12,7 +12,7 @@ public:
   bool operator<(const Node &other) const { return mKey < other.mKey; }
   friend bool operator<(const Node &lhs, const int rhs);
   friend bool operator<(const int lhs, const Node &rhs);
-  friend std::ostream &operator<<(std::ostream &os, const Node &dt);
+  friend std::ostream &operator<<(std::ostream &os, const Node &node);
 
 public:
   void setKey(int key) { mKey = key; }
