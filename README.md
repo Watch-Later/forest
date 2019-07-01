@@ -20,8 +20,10 @@ public:
 
 public:
   bool operator<(const Node &other) const { return mKey < other.mKey; }
+
   friend bool operator<(const Node &lhs, const int rhs);
   friend bool operator<(const int lhs, const Node &rhs);
+
   friend std::ostream &operator<<(std::ostream &os, const Node &dt);
 
 public:
@@ -39,6 +41,7 @@ private:
 
 bool operator<(const Node &lhs, const int rhs) { return lhs.mKey < rhs; }
 bool operator<(const int lhs, const Node &rhs) { return lhs < rhs.mKey; }
+
 std::ostream &operator<<(std::ostream &os, const Node &node) {
   os << "(" << node.mKey << ", " << node.mValue << ")" << std::endl;
   return os;
