@@ -21,10 +21,10 @@ public:
 public:
   bool operator<(const Node &other) const { return mKey < other.mKey; }
 
-  friend bool operator<(const Node &lhs, const int rhs);
-  friend bool operator<(const int lhs, const Node &rhs);
+  friend bool operator<(const Node &, const int);
+  friend bool operator<(const int, const Node &);
 
-  friend std::ostream &operator<<(std::ostream &os, const Node &node);
+  friend std::ostream &operator<<(std::ostream &, const Node &);
 
 public:
   void setKey(int key) { mKey = key; }
