@@ -48,11 +48,11 @@ int main() {
   forest::AVLTree<Node> Tree;
   // forest::BinarySearchTree<Node> Tree;
 
-  Tree.insert(Node(2, "Thor"));
-  Tree.insert(Node(4, "Odin"));
+  Tree.insert(Node(2 , "Thor"));
+  Tree.insert(Node(4 , "Odin"));
   Tree.insert(Node(90, "Loki"));
-  Tree.insert(Node(3, "Baldr"));
-  Tree.insert(Node(0, "Frigg"));
+  Tree.insert(Node(3 , "Baldr"));
+  Tree.insert(Node(0 , "Frigg"));
   Tree.insert(Node(14, "Eir"));
   Tree.insert(Node(45, "Heimdall"));
 
