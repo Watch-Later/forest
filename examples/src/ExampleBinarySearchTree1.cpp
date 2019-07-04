@@ -12,14 +12,21 @@ int main() {
   Tree.insert(14);
   Tree.insert(45);
 
-  Tree.pre_order_traversal([](auto node) { std::cout << node << std::endl; });
+  Tree.pre_order_traversal([](auto node) {
+    std::cout << node << std::endl;
+  });
 
-  Tree.in_order_traversal([](auto node) { std::cout << node << std::endl; });
+  Tree.in_order_traversal([](auto node) {
+    std::cout << node << std::endl;
+  });
 
-  Tree.post_order_traversal([](auto node) { std::cout << node << std::endl; });
+  Tree.post_order_traversal([](auto node) {
+    std::cout << node << std::endl;
+  });
 
-  Tree.breadth_first_traversal(
-      [](auto node) { std::cout << node << std::endl; });
+  Tree.breadth_first_traversal([](auto node) {
+    std::cout << node << std::endl;
+  });
 
   if (auto min = Tree.minimum()) {
     std::cout << "min: " << min->get() << std::endl;
