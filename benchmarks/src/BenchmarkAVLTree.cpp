@@ -15,9 +15,7 @@ static void BM_AVLTree_Create_Average_Case(benchmark::State &state) {
     for (int i = a; i < b; ++i) {
       AVLTree.insert(dis(gen));
     }
-    state.PauseTiming();
     AVLTree.clear();
-    state.ResumeTiming();
   }
   state.SetComplexityN(state.range(0));
 }
@@ -35,7 +33,7 @@ static void BM_AVLTree_Search_Average_Case(benchmark::State &state) {
     AVLTree.insert(dis(gen));
   }
   for (auto _ : state) {
-    benchmark::DoNotOptimize(AVLTree.search(dis(gen)));
+    AVLTree.search(dis(gen));
   }
   state.SetComplexityN(state.range(0));
 }

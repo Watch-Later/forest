@@ -15,9 +15,7 @@ static void BM_BinarySearchTree_Create_Average_Case(benchmark::State &state) {
     for (int i = a; i < b; ++i) {
       BinarySearchTree.insert(dis(gen));
     }
-    state.PauseTiming();
     BinarySearchTree.clear();
-    state.ResumeTiming();
   }
   state.SetComplexityN(state.range(0));
 }
@@ -35,7 +33,7 @@ static void BM_BinarySearchTree_Search_Average_Case(benchmark::State &state) {
     BinarySearchTree.insert(dis(gen));
   }
   for (auto _ : state) {
-    benchmark::DoNotOptimize(BinarySearchTree.search(dis(gen)));
+    BinarySearchTree.search(dis(gen));
   }
   state.SetComplexityN(state.range(0));
 }
