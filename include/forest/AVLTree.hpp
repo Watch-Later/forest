@@ -19,7 +19,7 @@ private:
     AVLTreeNode *mRight{nullptr};
 
   private:
-    unsigned height{1};
+    int height{1};
 
   public:
     T mKey;
@@ -98,20 +98,20 @@ private:
   }
 
 private:
-  int balance(const AVLTreeNode *root) {
+  auto balance(const AVLTreeNode *root) {
     if (!root)
       return 0;
     return height(root->mLeft) - height(root->mRight);
   }
 
 private:
-  unsigned height(const AVLTreeNode *root) {
+  auto height(const AVLTreeNode *root) {
     if (!root)
       return 0;
     return root->height;
   }
 
-  unsigned size(const AVLTreeNode *root) {
+  auto size(const AVLTreeNode *root) {
     if (!root)
       return 0;
     return size(root->mLeft) + size(root->mRight) + 1;
@@ -296,9 +296,9 @@ public:
   }
 
 public:
-  unsigned height() { return height(mRoot); }
+  auto height() { return height(mRoot); }
 
-  unsigned size() { return size(mRoot); }
+  auto size() { return size(mRoot); }
 
 public:
   void insert(const T &key) { mRoot = insert(mRoot, key); }
