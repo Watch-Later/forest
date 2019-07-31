@@ -18,17 +18,13 @@ SCENARIO("Test AVL Tree") {
       REQUIRE(AVLTree.size() == 10);
       AND_WHEN("I want the node with the minimum key") {
         auto min = AVLTree.minimum();
-        THEN("This node exists") {
-          REQUIRE(min != std::nullopt);
-          CHECK(min->get() == 0);
-        }
+        REQUIRE(min != std::nullopt);
+        CHECK(min->get() == 0);
       }
       AND_WHEN("I want the node with the maximum key") {
         auto max = AVLTree.maximum();
-        THEN("This node exists") {
-          REQUIRE(max != std::nullopt);
-          CHECK(max->get() == 9);
-        }
+        REQUIRE(max != std::nullopt);
+        CHECK(max->get() == 9);
       }
       AND_WHEN("I search for a node with a key that doesn't exist") {
         int key = GENERATE(-1, 10);
@@ -38,26 +34,20 @@ SCENARIO("Test AVL Tree") {
       AND_WHEN("I search for a node with a key that exists") {
         int key = GENERATE(range(0, 9));
         auto result = AVLTree.search(key);
-        THEN("This node exists") {
-          REQUIRE(result != std::nullopt);
-          CHECK(result->get() == key);
-        }
+        REQUIRE(result != std::nullopt);
+        CHECK(result->get() == key);
       }
       AND_WHEN("I remove a node with a key that exists") {
         int key = GENERATE(range(0, 9));
         AVLTree.remove(key);
-        THEN("This node is successfully removed") {
-          REQUIRE(AVLTree.search(key) == std::nullopt);
-          CHECK(AVLTree.height() == 4);
-          CHECK(AVLTree.size() == 9);
-        }
+        REQUIRE(AVLTree.search(key) == std::nullopt);
+        CHECK(AVLTree.height() == 4);
+        CHECK(AVLTree.size() == 9);
       }
       AND_WHEN("I clear the AVL Tree") {
         AVLTree.clear();
-        THEN("The height and the size of the AVL Tree change") {
-          REQUIRE(AVLTree.height() == 0);
-          REQUIRE(AVLTree.size() == 0);
-        }
+        REQUIRE(AVLTree.height() == 0);
+        REQUIRE(AVLTree.size() == 0);
       }
     }
   }

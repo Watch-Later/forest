@@ -18,17 +18,13 @@ SCENARIO("Test Binary Search Tree") {
       REQUIRE(BinarySearchTree.size() == 10);
       AND_WHEN("I want the node with the minimum key") {
         auto min = BinarySearchTree.minimum();
-        THEN("This node exists") {
-          REQUIRE(min != std::nullopt);
-          CHECK(min->get() == 0);
-        }
+        REQUIRE(min != std::nullopt);
+        CHECK(min->get() == 0);
       }
       AND_WHEN("I want the node with the maximum key") {
         auto max = BinarySearchTree.maximum();
-        THEN("This node exists") {
-          REQUIRE(max != std::nullopt);
-          CHECK(max->get() == 9);
-        }
+        REQUIRE(max != std::nullopt);
+        CHECK(max->get() == 9);
       }
       AND_WHEN("I search for a node with a key that doesn't exist") {
         int key = GENERATE(-1, 10);
@@ -38,26 +34,20 @@ SCENARIO("Test Binary Search Tree") {
       AND_WHEN("I search for a node with a key that exists") {
         int key = GENERATE(range(0, 9));
         auto result = BinarySearchTree.search(key);
-        THEN("This node exists") {
-          REQUIRE(result != std::nullopt);
-          CHECK(result->get() == key);
-        }
+        REQUIRE(result != std::nullopt);
+        CHECK(result->get() == key);
       }
       AND_WHEN("I remove a node with a key that exists") {
         int key = GENERATE(range(0, 9));
         BinarySearchTree.remove(key);
-        THEN("This node exists") {
-          REQUIRE(BinarySearchTree.search(key) == std::nullopt);
-          CHECK(BinarySearchTree.height() == 9);
-          CHECK(BinarySearchTree.size() == 9);
-        }
+        REQUIRE(BinarySearchTree.search(key) == std::nullopt);
+        CHECK(BinarySearchTree.height() == 9);
+        CHECK(BinarySearchTree.size() == 9);
       }
       AND_WHEN("I clear the Binary Search Tree") {
         BinarySearchTree.clear();
-        THEN("The height and the size of the Binary Search Tree change") {
-          REQUIRE(BinarySearchTree.height() == 0);
-          REQUIRE(BinarySearchTree.size() == 0);
-        }
+        REQUIRE(BinarySearchTree.height() == 0);
+        REQUIRE(BinarySearchTree.size() == 0);
       }
     }
   }
