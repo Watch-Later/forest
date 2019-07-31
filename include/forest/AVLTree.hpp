@@ -118,7 +118,7 @@ private:
   }
 
 private:
-  AVLTreeNode *rotate_mRight(AVLTreeNode *root) {
+  AVLTreeNode *rotate_right(AVLTreeNode *root) {
     AVLTreeNode *pivot{root->mLeft};
     AVLTreeNode *orphan{pivot->mRight};
 
@@ -131,7 +131,7 @@ private:
     return pivot;
   }
 
-  AVLTreeNode *rotate_mLeft(AVLTreeNode *root) {
+  AVLTreeNode *rotate_left(AVLTreeNode *root) {
     AVLTreeNode *pivot{root->mRight};
     AVLTreeNode *orphan{pivot->mLeft};
 
@@ -157,19 +157,19 @@ private:
 
     if (balance(root) > 1) {
       if (key < root->mLeft->mKey) {
-        return rotate_mRight(root);
+        return rotate_right(root);
       }
       if (root->mLeft->mKey < key) {
-        root->mLeft = rotate_mLeft(root->mLeft);
-        return rotate_mRight(root);
+        root->mLeft = rotate_left(root->mLeft);
+        return rotate_right(root);
       }
     } else if (balance(root) < -1) {
       if (root->mRight->mKey < key) {
-        return rotate_mLeft(root);
+        return rotate_left(root);
       }
       if (key < root->mRight->mKey) {
-        root->mRight = rotate_mRight(root->mRight);
-        return rotate_mLeft(root);
+        root->mRight = rotate_right(root->mRight);
+        return rotate_left(root);
       }
     }
 
@@ -214,17 +214,17 @@ private:
 
     if (balance(root) > 1) {
       if (balance(root->mLeft) >= 0) {
-        return rotate_mRight(root);
+        return rotate_right(root);
       }
-      root->mLeft = rotate_mLeft(root->mLeft);
-      return rotate_mRight(root);
+      root->mLeft = rotate_left(root->mLeft);
+      return rotate_right(root);
     }
     if (balance(root) < -1) {
       if (balance(root->mRight) <= 0) {
-        return rotate_mLeft(root);
+        return rotate_left(root);
       }
-      root->mRight = rotate_mRight(root->mRight);
-      return rotate_mLeft(root);
+      root->mRight = rotate_right(root->mRight);
+      return rotate_left(root);
     }
 
     return root;
