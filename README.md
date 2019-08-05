@@ -1,11 +1,10 @@
-![Logo](https://user-images.githubusercontent.com/1548352/60423586-329eb500-9bf7-11e9-927c-7513a6700fd1.png)
+![image](https://user-images.githubusercontent.com/1548352/62436431-4c786e00-b748-11e9-92de-e810f1fb6d09.png)
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/8e5jutnq0a8b458f/branch/master?svg=true)](https://ci.appveyor.com/project/xorz57/forest/branch/master)
 [![Build Status](https://travis-ci.org/xorz57/forest.svg?branch=master)](https://travis-ci.org/xorz57/forest)
 [![CodeFactor](https://www.codefactor.io/repository/github/xorz57/forest/badge/master)](https://www.codefactor.io/repository/github/xorz57/forest/overview/master)
 
 # Example 1
-
 ```cpp
 #include <forest/AVLTree.hpp>
 // #include <forest/BinarySearchTree.hpp>
@@ -60,7 +59,6 @@ int main() {
 ```
 
 # Example 2
-
 ```cpp
 #include <forest/AVLTree.hpp>
 // #include <forest/BinarySearchTree.hpp>
@@ -148,5 +146,4 @@ int main() {
 ```
 
 # Credits
-
-- Icon made by Freepik from www.flaticon.com
+- Icon made by prettycons from www.flaticon.com
