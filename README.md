@@ -1,4 +1,4 @@
-![image](https://user-images.githubusercontent.com/1548352/62436431-4c786e00-b748-11e9-92de-e810f1fb6d09.png)
+# :deciduous_tree: Template Library of Tree Data Structures in C++17 :deciduous_tree:
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/8e5jutnq0a8b458f/branch/master?svg=true)](https://ci.appveyor.com/project/xorz57/forest/branch/master)
 [![Build Status](https://travis-ci.org/xorz57/forest.svg?branch=master)](https://travis-ci.org/xorz57/forest)
@@ -144,6 +144,3 @@ int main() {
   return 0;
 }
 ```
-
-# Credits
-- Icon made by prettycons from www.flaticon.com
