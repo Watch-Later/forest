@@ -1,4 +1,4 @@
-# :deciduous_tree: Template Library of Tree Data Structures in C++17 :deciduous_tree:
+# :deciduous_tree: Template Library of Tree Data Structures in C++17
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/8e5jutnq0a8b458f/branch/master?svg=true)](https://ci.appveyor.com/project/xorz57/forest/branch/master)
 [![Build Status](https://travis-ci.org/xorz57/forest.svg?branch=master)](https://travis-ci.org/xorz57/forest)
