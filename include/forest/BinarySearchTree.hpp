@@ -19,7 +19,7 @@ private:
     BinarySearchTreeNode *mRight{nullptr};
 
   private:
-    unsigned mHeight{1};
+    int mHeight{1};
 
   public:
     T mKey;
@@ -100,13 +100,13 @@ private:
   }
 
 private:
-  unsigned height(const BinarySearchTreeNode *root) {
+  auto height(const BinarySearchTreeNode *root) {
     if (!root)
       return 0;
     return root->mHeight;
   }
 
-  unsigned size(const BinarySearchTreeNode *root) {
+  auto size(const BinarySearchTreeNode *root) {
     if (!root)
       return 0;
     return size(root->mLeft) + size(root->mRight) + 1;
@@ -232,9 +232,9 @@ public:
   }
 
 public:
-  unsigned height() { return height(mRoot); }
+  auto height() { return height(mRoot); }
 
-  unsigned size() { return size(mRoot); }
+  auto size() { return size(mRoot); }
 
 public:
   void insert(const T &key) { mRoot = insert(mRoot, key); }

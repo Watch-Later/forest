@@ -10,14 +10,12 @@ static void BM_AVLTree_Create_Average_Case(benchmark::State &state) {
   int a = 0;
   int b = static_cast<int>(state.range(0));
   std::uniform_int_distribution<> dis(a, b);
-  forest::AVLTree<int> AVLTree;
+  forest::AVLTree<int> tree;
   for (auto _ : state) {
     for (int i = a; i < b; ++i) {
-      AVLTree.insert(dis(gen));
+      tree.insert(dis(gen));
     }
-    state.PauseTiming();
-    AVLTree.clear();
-    state.ResumeTiming();
+    tree.clear();
   }
   state.SetComplexityN(state.range(0));
 }
@@ -30,12 +28,12 @@ static void BM_AVLTree_Search_Average_Case(benchmark::State &state) {
   int a = 0;
   int b = static_cast<int>(state.range(0));
   std::uniform_int_distribution<> dis(a, b);
-  forest::AVLTree<int> AVLTree;
+  forest::AVLTree<int> tree;
   for (int i = a; i < b; ++i) {
-    AVLTree.insert(dis(gen));
+    tree.insert(dis(gen));
   }
   for (auto _ : state) {
-    benchmark::DoNotOptimize(AVLTree.search(dis(gen)));
+    tree.search(dis(gen));
   }
   state.SetComplexityN(state.range(0));
 }
