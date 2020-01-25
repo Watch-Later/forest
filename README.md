@@ -1,4 +1,7 @@
 # Template Library of Tree Data Structures in C++17
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Build Status](https://ci.appveyor.com/api/projects/status/8e5jutnq0a8b458f/branch/master?svg=true)](https://ci.appveyor.com/project/xorz57/forest/branch/master)
 [![Build Status](https://travis-ci.org/xorz57/forest.svg?branch=master)](https://travis-ci.org/xorz57/forest)
@@ -144,3 +147,22 @@ int main() {
   return 0;
 }
 ```
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/xorz57"><img src="https://avatars0.githubusercontent.com/u/1548352?v=4" width="100px;" alt=""/><br /><sub><b>George Fotopoulos</b></sub></a><br /><a href="#infra-xorz57" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/xorz57/forest/commits?author=xorz57" title="Tests">⚠️</a> <a href="https://github.com/xorz57/forest/commits?author=xorz57" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
