@@ -6,6 +6,16 @@
   "commit": false,
   "contributors": [
     {
+      "login": "xorz57",
+      "name": "George Fotopoulos",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1548352?v=4",
+      "profile": "https://github.com/xorz57",
+      "contributions": [
+        "infra",
+        "test",
+      ]
+    },
+    {
       "login": "MatusKysel",
       "name": "Matus Kysel",
       "avatar_url": "https://avatars3.githubusercontent.com/u/6115866?v=4",

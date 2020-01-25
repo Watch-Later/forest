@@ -157,6 +157,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
+    <td align="center"><a href="https://github.com/xorz57"><img src="https://avatars0.githubusercontent.com/u/1548352?v=4" width="100px;" alt=""/><br /><sub><b>George Fotopoulos</b></sub></a><br /><a href="#infra-xorz57" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/xorz57/forest/commits?author=xorz57" title="Tests">⚠️</a> <a href="https://github.com/xorz57/forest/commits?author=xorz57" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/MatusKysel"><img src="https://avatars3.githubusercontent.com/u/6115866?v=4" width="100px;" alt=""/><br /><sub><b>Matus Kysel</b></sub></a><br /><a href="https://github.com/xorz57/forest/commits?author=MatusKysel" title="Code">💻</a></td>
   </tr>
 </table>
