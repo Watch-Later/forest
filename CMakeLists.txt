@@ -6,7 +6,6 @@ project(forest LANGUAGES CXX VERSION 12.0.4)
 
 option(FOREST_BUILD_TESTS OFF)
 option(FOREST_BUILD_EXAMPLES OFF)
-option(FOREST_BUILD_BENCHMARKS OFF)
 
 # Increase Stack on Windows
 
@@ -47,20 +46,6 @@ if(FOREST_BUILD_EXAMPLES)
 		set_target_properties(${EXAMPLENAME} PROPERTIES FOLDER examples)
 	endmacro()
 	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/examples")
-endif()
-
-# Build Benchmarks
-
-if(FOREST_BUILD_BENCHMARKS)
-	set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
-	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/benchmark")
-	macro(forest_add_benchmark BENCHMARKNAME)
-		add_executable(${BENCHMARKNAME} ${ARGN})
-		target_link_libraries(${BENCHMARKNAME} PRIVATE ${PROJECT_NAME}::${PROJECT_NAME})
-		target_link_libraries(${BENCHMARKNAME} PRIVATE benchmark)
-		set_target_properties(${BENCHMARKNAME} PROPERTIES FOLDER benchmarks)
-	endmacro()
-	add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/benchmarks")
 endif()
 
 # Install Library
