@@ -1,6 +1,6 @@
 /**
- * Trie Data Structure
- * Methods Implemented: insert, search, remove 
+ * Trie Container
+ * Methods Implemented: insert, search, remove, size
 */
 
 #pragma once
@@ -11,33 +11,51 @@
 #include <stack>
 
 namespace forest{
-template <typename T> class trie {
+template <typename T> class Trie {
 private:
 
-  struct Node { // TrieNode  
-    std::unordered_map<T, std::shared_ptr<Node>> children;
+  struct TrieNode { // TrieNode  
+    std::unordered_map<T, std::shared_ptr<TrieNode>> children;
     bool end = false; // If True, prefix ending with this Node is a word.
-    T val;
-    Node() : val(0), end(false) {}
-    Node(const T& val, const bool& end) : val(val), end(end) {}
   };
 
-  std::shared_ptr<Node> root = std::make_shared<Node>();
+  std::shared_ptr<TrieNode> root = std::make_shared<TrieNode>();
+
+  int numWords = 0;
 
 public:
 
-  void insert(const std::basic_string<T> &key) {
-    std::shared_ptr<Node> current = root;
-    for (const T &c : key) {
-      if (current->children.find(c) == current->children.end())
-        current->children[c] = std::make_shared<Node>(new Node(c, false));
-      current = current->children[c];
-    }
-    current->end = true;
+  Trie() = default; // Default Constructor;
+
+  /**
+   * Number of Legit Words in the Trie
+   */ 
+  int size(){
+    return this->numWords;
   }
 
+  /**
+   * Inserts an Element into the Trie
+   */ 
+  void insert(const std::basic_string<T> &key) {
+    std::shared_ptr<TrieNode> current = root;
+    for (const T &c : key) {
+      if (current->children.find(c) == current->children.end())
+        current->children[c] = std::make_shared<TrieNode>();
+      current = current->children[c];
+    }
+    if (!current->end) {
+       current->end = true;
+       ++this->numWords;
+    }
+  }
+
+  /**
+   * Returns True if the String is Found
+   *         False Otherwise
+   */
   bool search(const std::basic_string<T> &key) {
-    std::shared_ptr<Node> current = root;
+    std::shared_ptr<TrieNode> current = root;
     for (const T &c : key) {
       if (current->children.empty())
         return false;
@@ -48,14 +66,16 @@ public:
     return current->end;
   }
 
+  /**
+   * Iterative Implementation of remove using a Stack.
+   * Returns True if the String is Found & Deletes it.
+   *         False Otherwise
+   */
   bool remove(const std::basic_string<T> &key) {
-    std::shared_ptr<Node> current = root;
-    char c;
-    int i;
+    std::shared_ptr<TrieNode> current = root;
+    std::stack<std::shared_ptr<TrieNode>> stk;
 
-    std::stack<shared_ptr<TrieNode>> stk;
-
-    stk.push(root);
+    stk.push(current); // push the Root into the Stack.
 
     for(const T &c : key){
         if (current->children.empty())
@@ -63,19 +83,22 @@ public:
         current = current->children[c];
         if (!current)
           return false;
-        stk.push(current);
+        stk.push(current); // Push all the Node Pointers if Present
     }
 
+    if (stk.size() <= 1 || !stk.top()->end) return false;
+
     stk.top()->end = false;
+    auto r_itr = key.rbegin();
 
-    std::basic_string<T>::r_itr = key.rbegin();
-
-    while (!stk.top()->end && !stk.top()->children.empty() && r_itr != key.rend()){
+    // Remove a Node Iteratively when it is not a word and it has no children.
+    while (!stk.top()->end && stk.top()->children.empty() && r_itr != key.rend()){
         stk.pop();
-        stk.top()->erase(*r_itr);
+        stk.top()->children.erase(*r_itr);
         ++r_itr;
     }
 
+    --this->numWords;
     return true;
   }
 
