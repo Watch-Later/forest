@@ -2,7 +2,43 @@
 #include <catch2/catch.hpp>
 #include <forest/Trie.hpp>
 
-SCENARIO("Test Insert/Search methods in Trie Data Structure") {
+SCENARIO("Empty Trie Tests") {
+  GIVEN("An empty Trie") {
+    THEN("Test for multibyte characters"){
+        forest::Trie<char16_t> trie;
+        REQUIRE(trie.size() == 0);
+
+        trie.insert(u"");
+
+        REQUIRE(trie.size() == 0);
+        REQUIRE(trie.search(u"") == false);
+        REQUIRE(trie.search(u"computer") == false);
+        REQUIRE(trie.search(u" ") == false);
+        REQUIRE(trie.remove(u"Computer") == false);
+        trie.insert(u"");
+        REQUIRE(trie.remove(u"") == false);
+        REQUIRE(trie.size() == 0);
+    }
+
+    THEN("Test for unicode characters"){
+        forest::Trie<char> trie;
+        REQUIRE(trie.size() == 0);
+        trie.insert("");
+
+        REQUIRE(trie.size() == 0);
+        REQUIRE(trie.search("") == false);
+        REQUIRE(trie.search("computer") == false);
+        REQUIRE(trie.search(" ") == false);
+        REQUIRE(trie.remove("Computer") == false);
+        trie.insert("");
+        REQUIRE(trie.remove("") == false);
+        REQUIRE(trie.size() == 0);
+    }
+   
+  }
+}
+
+SCENARIO("Test Insert/Search methods in Trie Container") {
   GIVEN("An empty Trie") {
     forest::Trie<char16_t> trie;
     REQUIRE(trie.search(u"computer") == false);
@@ -35,7 +71,7 @@ SCENARIO("Test Insert/Search methods in Trie Data Structure") {
     }
   }
 
-SCENARIO("Test Remove method in Trie Data Structure") {
+SCENARIO("Test Remove method in Trie Container") {
 
     forest::Trie<char16_t> trie;
     REQUIRE(trie.size() == 0);

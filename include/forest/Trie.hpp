@@ -9,6 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <stack>
+#include <iostream>
 
 namespace forest{
 template <typename T> class Trie {
@@ -21,7 +22,7 @@ private:
 
   std::shared_ptr<TrieNode> root = std::make_shared<TrieNode>();
 
-  int numWords = 0;
+  long long numWords = 0;
 
 public:
 
@@ -30,7 +31,7 @@ public:
   /**
    * Number of Legit Words in the Trie
    */ 
-  int size(){
+  auto size(){
     return this->numWords;
   }
 
@@ -44,7 +45,7 @@ public:
         current->children[c] = std::make_shared<TrieNode>();
       current = current->children[c];
     }
-    if (!current->end) {
+    if (!current->end && current != root) {
        current->end = true;
        ++this->numWords;
     }
@@ -72,6 +73,11 @@ public:
    *         False Otherwise
    */
   bool remove(const std::basic_string<T> &key) {
+    
+    // If Trie is Empty, Immediately Return False
+    if (root->children.empty())
+        return false;
+
     std::shared_ptr<TrieNode> current = root;
     std::stack<std::shared_ptr<TrieNode>> stk;
 
@@ -86,6 +92,7 @@ public:
         stk.push(current); // Push all the Node Pointers if Present
     }
 
+    // If No Prefix is matched or The prefix is not a Legit word. 
     if (stk.size() <= 1 || !stk.top()->end) return false;
 
     stk.top()->end = false;
