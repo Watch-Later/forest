@@ -1,10 +1,10 @@
 #pragma once
 
 #include <algorithm>
+#include <cstdint>
 #include <functional>
 #include <optional>
 #include <queue>
-#include <cstdint>
 
 namespace forest {
 template <typename T> class BinarySearchTree {

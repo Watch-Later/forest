@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <stack>
 #include <string>
@@ -15,7 +16,7 @@ private:
 
 private:
   std::shared_ptr<Node> mRoot = std::make_shared<Node>();
-  std::size_t mSize = 0;
+  std::uintmax_t mSize = 0;
 
 public:
   Trie() = default;
