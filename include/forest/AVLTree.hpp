@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cstdint>
 #include <functional>
 #include <optional>
 #include <queue>
@@ -19,7 +20,7 @@ private:
     AVLTreeNode *mRight{nullptr};
 
   private:
-    int height{1};
+    std::uintmax_t mHeight{1};
 
   public:
     T mKey;
@@ -100,21 +101,21 @@ private:
 private:
   auto balance(const AVLTreeNode *root) {
     if (!root)
-      return 0;
-    return height(root->mLeft) - height(root->mRight);
+      return std::intmax_t(0);
+    return std::intmax_t(height(root->mLeft) - height(root->mRight));
   }
 
 private:
   auto height(const AVLTreeNode *root) {
     if (!root)
-      return 0;
-    return root->height;
+      return std::uintmax_t(0);
+    return std::uintmax_t(root->mHeight);
   }
 
   auto size(const AVLTreeNode *root) {
     if (!root)
-      return 0;
-    return size(root->mLeft) + size(root->mRight) + 1;
+      return std::uintmax_t(0);
+    return std::uintmax_t(size(root->mLeft) + size(root->mRight) + 1);
   }
 
 private:
@@ -125,8 +126,8 @@ private:
     pivot->mRight = root;
     root->mLeft = orphan;
 
-    root->height = std::max(height(root->mLeft), height(root->mRight)) + 1;
-    pivot->height = std::max(height(pivot->mLeft), height(pivot->mRight)) + 1;
+    root->mHeight = std::max(height(root->mLeft), height(root->mRight)) + 1;
+    pivot->mHeight = std::max(height(pivot->mLeft), height(pivot->mRight)) + 1;
 
     return pivot;
   }
@@ -138,8 +139,8 @@ private:
     pivot->mLeft = root;
     root->mRight = orphan;
 
-    root->height = std::max(height(root->mLeft), height(root->mRight)) + 1;
-    pivot->height = std::max(height(pivot->mLeft), height(pivot->mRight)) + 1;
+    root->mHeight = std::max(height(root->mLeft), height(root->mRight)) + 1;
+    pivot->mHeight = std::max(height(pivot->mLeft), height(pivot->mRight)) + 1;
 
     return pivot;
   }
@@ -153,7 +154,7 @@ private:
     else if (root->mKey < key)
       root->mRight = insert(root->mRight, key);
 
-    root->height = std::max(height(root->mLeft), height(root->mRight)) + 1;
+    root->mHeight = std::max(height(root->mLeft), height(root->mRight)) + 1;
 
     if (balance(root) > 1) {
       if (key < root->mLeft->mKey) {
@@ -210,7 +211,7 @@ private:
     if (!root)
       return nullptr;
 
-    root->height = std::max(height(root->mLeft), height(root->mRight)) + 1;
+    root->mHeight = std::max(height(root->mLeft), height(root->mRight)) + 1;
 
     if (balance(root) > 1) {
       if (balance(root->mLeft) >= 0) {

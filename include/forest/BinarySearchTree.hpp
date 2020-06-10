@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cstdint>
 #include <functional>
 #include <optional>
 #include <queue>
@@ -19,7 +20,7 @@ private:
     BinarySearchTreeNode *mRight{nullptr};
 
   private:
-    int mHeight{1};
+    std::uintmax_t mHeight{1};
 
   public:
     T mKey;
@@ -102,14 +103,14 @@ private:
 private:
   auto height(const BinarySearchTreeNode *root) {
     if (!root)
-      return 0;
-    return root->mHeight;
+      return std::uintmax_t(0);
+    return std::uintmax_t(root->mHeight);
   }
 
   auto size(const BinarySearchTreeNode *root) {
     if (!root)
-      return 0;
-    return size(root->mLeft) + size(root->mRight) + 1;
+      return std::uintmax_t(0);
+    return std::uintmax_t(size(root->mLeft) + size(root->mRight) + 1);
   }
 
 private:
