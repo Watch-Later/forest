@@ -15,15 +15,15 @@ private:
   };
 
 private:
-  std::shared_ptr<Node> mRoot = std::make_shared<Node>();
-  std::uintmax_t mSize = 0;
+  std::shared_ptr<Node> mRoot{std::make_shared<Node>()};
+  std::uintmax_t mSize{0};
 
 public:
   Trie() = default;
 
 public:
   void insert(const std::basic_string<T> &key) {
-    std::shared_ptr<Node> current = mRoot;
+    std::shared_ptr<Node> current{mRoot};
     for (const T &c : key) {
       if (current->children.find(c) == current->children.end())
         current->children[c] = std::make_shared<Node>();
@@ -36,7 +36,7 @@ public:
   }
 
   bool search(const std::basic_string<T> &key) {
-    std::shared_ptr<Node> current = mRoot;
+    std::shared_ptr<Node> current{mRoot};
     for (const T &c : key) {
       if (current->children.empty())
         return false;
@@ -50,7 +50,7 @@ public:
   bool remove(const std::basic_string<T> &key) {
     if (mRoot->children.empty())
       return false;
-    std::shared_ptr<Node> current = mRoot;
+    std::shared_ptr<Node> current{mRoot};
     std::stack<std::shared_ptr<Node>> stack;
     stack.push(current);
     for (const T &c : key) {
