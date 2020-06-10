@@ -13,15 +13,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: mkdir build
-      run: mkdir build
-    - name: cd build
-      run: cd build
-    - name: cmake ..
-      run: cmake ..
-    - name: cpack -G DEB
-      run: cpack -G DEB
-    - name: Upload a Build Artifact
+    - name: Step 1
+      run: mkdir build && cd build && cmake .. && cpack -G DEB
+    - name: Step 2
       uses: actions/upload-artifact@v2
       with:
         path: build/*.deb
