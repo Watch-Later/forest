@@ -48,8 +48,6 @@ public:
   }
 
   bool remove(const std::basic_string<T> &key) {
-    if (mRoot->children.empty())
-      return false;
     std::shared_ptr<Node> current{mRoot};
     std::stack<std::shared_ptr<Node>> stack;
     stack.push(current);
