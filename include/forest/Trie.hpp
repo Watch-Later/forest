@@ -12,29 +12,30 @@ private:
     std::unordered_map<T, std::shared_ptr<Node>> children;
     bool end = false;
   };
-  std::shared_ptr<Node> root = std::make_shared<Node>();
+
+private:
+  std::shared_ptr<Node> mRoot = std::make_shared<Node>();
   std::size_t mSize = 0;
 
 public:
   Trie() = default;
 
-  auto size() { return this->mSize; }
-
+public:
   void insert(const std::basic_string<T> &key) {
-    std::shared_ptr<Node> current = root;
+    std::shared_ptr<Node> current = mRoot;
     for (const T &c : key) {
       if (current->children.find(c) == current->children.end())
         current->children[c] = std::make_shared<Node>();
       current = current->children[c];
     }
-    if (!current->end && current != root) {
+    if (!current->end && current != mRoot) {
       current->end = true;
       ++this->mSize;
     }
   }
 
   bool search(const std::basic_string<T> &key) {
-    std::shared_ptr<Node> current = root;
+    std::shared_ptr<Node> current = mRoot;
     for (const T &c : key) {
       if (current->children.empty())
         return false;
@@ -46,9 +47,9 @@ public:
   }
 
   bool remove(const std::basic_string<T> &key) {
-    if (root->children.empty())
+    if (mRoot->children.empty())
       return false;
-    std::shared_ptr<Node> current = root;
+    std::shared_ptr<Node> current = mRoot;
     std::stack<std::shared_ptr<Node>> stack;
     stack.push(current);
     for (const T &c : key) {
@@ -74,6 +75,9 @@ public:
     --this->mSize;
     return true;
   }
+
+public:
+  auto size() { return this->mSize; }
 };
 
 } // namespace forest
