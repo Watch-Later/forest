@@ -4,7 +4,6 @@
 using namespace std;
 
 int main(){
-
     forest::Trie<char16_t> Trie;
 
     Trie.insert(u"కంప్యూటర్");

@@ -4,7 +4,6 @@
 using namespace std;
 
 int main(){
-
     forest::Trie<wchar_t> Trie;
 
     Trie.insert(L"కంప్యూటర్");
