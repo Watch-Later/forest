@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: configure
-      run: mkdir build && cd build && cmake ..
+      run: mkdir build && cd build && cmake .. -DFOREST_BUILD_TESTS=ON
     - name: build
       run: cmake --build build --config Debug
     - name: test
