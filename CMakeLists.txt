@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.10)
 
-project(forest LANGUAGES CXX VERSION 12.0.4)
+project(forest LANGUAGES CXX VERSION 12.1.0)
 
 # CMake Options
 
