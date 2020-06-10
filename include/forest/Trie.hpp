@@ -9,7 +9,6 @@
 #include <string>
 #include <unordered_map>
 #include <stack>
-#include <iostream>
 
 namespace forest{
 template <typename T> class Trie {
