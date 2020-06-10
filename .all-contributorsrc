@@ -1,0 +1,45 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "VivekReddy98",
+      "name": "Vivek Reddy",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/25481823?v=4",
+      "profile": "https://linkedin.com/in/vivek-reddy-karri/",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "MatusKysel",
+      "name": "Matus Kysel",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6115866?v=4",
+      "profile": "https://github.com/MatusKysel",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "xorz57",
+      "name": "George Fotopoulos",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1548352?v=4",
+      "profile": "https://github.com/xorz57",
+      "contributions": [
+        "code",
+        "infra",
+        "test"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "forest",
+  "projectOwner": "xorz57",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
