@@ -77,6 +77,15 @@ public:
 
 public:
   auto size() { return this->mSize; }
+
+public:
+  std::vector<std::basic_string<T>> predict(const std::basic_string<T> &key){
+      std::shared_ptr<Node> current{mRoot};
+
+      return {};
+  }
+
 };
+
 
 } // namespace forest
