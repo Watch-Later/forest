@@ -33,7 +33,7 @@ SCENARIO("Empty Trie Tests") {
         REQUIRE(trie.search("computer") == false);
         REQUIRE(trie.search(" ") == false);
         REQUIRE(trie.remove("Computer") == false);
-        
+
         trie.insert("");
         REQUIRE(trie.remove("") == false);
         REQUIRE(trie.size() == 0);
@@ -169,7 +169,6 @@ SCENARIO("Testing Predict Method of Trie Container") {
         }
         
         AND_THEN("Test for Size and Contents of the Container => General Case"){
-
             std::vector<std::basic_string<char16_t>> test_vec{u"Computer",
                                                               u"Computer Architecture", 
                                                               u"Computer Engineering", 
@@ -182,7 +181,6 @@ SCENARIO("Testing Predict Method of Trie Container") {
         } 
 
         AND_THEN("Test for Size and Contents of the Container => General Case"){
-
             std::vector<std::basic_string<char16_t>> test_vec{u"Chemical",
                                                               u"Computer",
                                                               u"Computer Architecture", 
@@ -196,8 +194,6 @@ SCENARIO("Testing Predict Method of Trie Container") {
         } 
 
         AND_THEN("Test for Size and Contents of the Container => Special Case: Input Prefix Should not be returned, even if its a legit word"){
-                                                                 
-            
             std::vector<std::basic_string<char16_t>> test_vec{u"Computer Architecture", 
                                                               u"Computer Engineering", 
                                                               u"Computer Networking", 
@@ -208,9 +204,7 @@ SCENARIO("Testing Predict Method of Trie Container") {
             REQUIRE(std::equal(vec.begin(), vec.end(), test_vec.begin()));
         }
         
-        AND_THEN("Test for Size and Contents of the Container => Special Case:  Any Legit Prefixes found: Should be returned even without the node being the leaf"){
-                                                                
-                                            
+        AND_THEN("Test for Size and Contents of the Container => Special Case:  Any Legit Prefixes found: Should be returned even without the node being the leaf"){                                         
             trie.insert(u"Computer Network");
             trie.insert(u"Computer Engineer");
             trie.insert(u"Computer Scientist");
@@ -228,8 +222,7 @@ SCENARIO("Testing Predict Method of Trie Container") {
             REQUIRE(std::equal(vec.begin(), vec.end(), test_vec.begin()));
         } 
 
-        AND_THEN("Test for Size and Contents of the Container => Special Case: Case Sensitivity is Tested") {
-                                                                 
+        AND_THEN("Test for Size and Contents of the Container => Special Case: Case Sensitivity is Tested") {                                                           
             trie.insert(u"computer modelling");
             trie.insert(u"computer ");
             auto vec = trie.predict(u"c");
@@ -237,8 +230,6 @@ SCENARIO("Testing Predict Method of Trie Container") {
             std::sort(vec.begin(), vec.end());
             REQUIRE(vec[0] == u"computer ");
             REQUIRE(vec[1] == u"computer modelling");
-        }  
-
-        
+        }    
     }
 } 

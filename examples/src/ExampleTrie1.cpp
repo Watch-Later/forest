@@ -48,5 +48,4 @@ int main() {
   // Check for Size
   cout << Trie.size() << endl;
   cout << Trie.search("కంప్యూటర్") << endl;
-
 }

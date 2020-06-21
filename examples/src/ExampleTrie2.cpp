@@ -23,5 +23,4 @@ int main() {
   Trie.insert(u"Computer Science");
   cout << Trie.size() << endl;
   cout << Trie.search(u"संगणक") << endl;
-
 }
