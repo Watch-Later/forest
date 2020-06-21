@@ -134,8 +134,6 @@ public:
 
     return result;
   }
-
 };
-
 
 } // namespace forest

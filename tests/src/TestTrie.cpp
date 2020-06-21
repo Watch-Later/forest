@@ -152,7 +152,6 @@ SCENARIO("Testing Clear Method of Trie Container") {
 
 
 SCENARIO("Testing Predict Method of Trie Container") {
-
     forest::Trie<char16_t> trie;
     trie.insert(u"Chemical");
     trie.insert(u"Computer");
@@ -162,7 +161,6 @@ SCENARIO("Testing Predict Method of Trie Container") {
     trie.insert(u"Computer Architecture");
 
     GIVEN("A Partially filled trie"){
-
         AND_THEN("Test for the size a Prefix with no Entries"){
             auto vec = trie.predict(u"Electrical");
             REQUIRE(vec.size() == 0);
