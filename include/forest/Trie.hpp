@@ -23,6 +23,12 @@ private:
 public:
   Trie() = default;
 
+  Trie(const Trie&) = delete;
+  Trie(Trie &&) = delete;
+  Trie& operator=(const Trie &) = delete;
+  Trie& operator=(Trie &&) = delete;
+
+
 public:
   void insert(const std::basic_string<T> &key) {
     std::shared_ptr<Node> current{mRoot};
@@ -77,12 +83,13 @@ public:
     return true;
   }
 
+
+public:
   void clear(){
      this->mRoot->children.clear();
      this->mSize = 0;
   }
 
-public:
   auto size() { return this->mSize; }
 
 private:
