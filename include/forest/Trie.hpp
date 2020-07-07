@@ -5,6 +5,8 @@
 #include <stack>
 #include <string>
 #include <unordered_map>
+#include <vector>
+#include <algorithm>
 
 namespace forest {
 template <typename T> class Trie {
@@ -20,6 +22,12 @@ private:
 
 public:
   Trie() = default;
+
+  Trie(const Trie&) = delete;
+  Trie(Trie &&) = delete;
+  Trie& operator=(const Trie &) = delete;
+  Trie& operator=(Trie &&) = delete;
+
 
 public:
   void insert(const std::basic_string<T> &key) {
@@ -75,8 +83,64 @@ public:
     return true;
   }
 
+
 public:
+  void clear(){
+     this->mRoot->children.clear();
+     this->mSize = 0;
+  }
+
   auto size() { return this->mSize; }
+
+private:
+  static std::vector<std::basic_string<T>> recursive_predict(const std::pair<const T, std::shared_ptr<Node>>& map_entry) {   
+    std::vector<std::basic_string<T>> result;
+    if (!map_entry.second->children.empty()) {
+        std::vector<std::vector<std::basic_string<T>>> result2d;
+        std::transform(map_entry.second->children.begin(), map_entry.second->children.end(),  
+                                                std::back_inserter(result2d), forest::Trie<T>::recursive_predict);
+        std::for_each(result2d.begin(), result2d.end(), [&result](std::vector<std::basic_string<T>>& d) 
+                                                {std::move(d.begin(), d.end(), std::back_inserter(result));});
+        std::for_each(result.begin(), result.end(), [&map_entry](std::basic_string<T>& d) {d.insert(0, &(map_entry.first), 1);});
+    }
+
+    // If the suffix ending at this node is a legit word by itself and also has other children. 
+    // Eg (cat, cattle) If Prefix = ca, Output should also include cat & cattle.
+    if (map_entry.second->end) { 
+        std::basic_string<T> str(1, map_entry.first);
+        result.push_back(str);
+    }
+    return result; 
+  }  
+
+public:
+  std::vector<std::basic_string<T>> predict(const std::basic_string<T> &key) {
+    std::shared_ptr<Node> current{mRoot};
+    for (const T &c : key) {
+      if (current->children.empty())
+        return {};
+      current = current->children[c];
+      if (!current)
+        return {};
+    }
+    if (current->children.empty()) return {}; 
+    std::vector<std::basic_string<T>> result;
+    std::vector<std::vector<std::basic_string<T>>> result2d;
+
+    // Recursively return all the Legit Words of every direct child in this node (i.e. a vector for every node & 
+    // thus a 2D vector to collect all the Predicted Suffixes.
+    std::transform(current->children.begin(), current->children.end(),  
+                                    std::back_inserter(result2d), forest::Trie<T>::recursive_predict);
+    
+    // Flatten out the 2D-Array.
+    std::for_each(result2d.begin(), result2d.end(), [&result](std::vector<std::basic_string<T>>& d) 
+                                    {std::move(d.begin(), d.end(), std::back_inserter(result));});
+    
+    // Append the input prefix to the found suffixes.
+    std::for_each(result.begin(), result.end(), [&key](std::basic_string<T>& d) { d.insert(0, key);});
+
+    return result;
+  }
 };
 
 } // namespace forest

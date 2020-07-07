@@ -1,6 +1,8 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 #include <forest/Trie.hpp>
+#include <vector>
+#include <algorithm>
 
 SCENARIO("Empty Trie Tests") {
   GIVEN("An empty Trie") {
@@ -15,6 +17,7 @@ SCENARIO("Empty Trie Tests") {
         REQUIRE(trie.search(u"computer") == false);
         REQUIRE(trie.search(u" ") == false);
         REQUIRE(trie.remove(u"Computer") == false);
+
         trie.insert(u"");
         REQUIRE(trie.remove(u"") == false);
         REQUIRE(trie.size() == 0);
@@ -30,6 +33,7 @@ SCENARIO("Empty Trie Tests") {
         REQUIRE(trie.search("computer") == false);
         REQUIRE(trie.search(" ") == false);
         REQUIRE(trie.remove("Computer") == false);
+
         trie.insert("");
         REQUIRE(trie.remove("") == false);
         REQUIRE(trie.size() == 0);
@@ -118,7 +122,112 @@ SCENARIO("Test Remove method in Trie Container") {
             REQUIRE(trie.search(u"Computer") == false);
             REQUIRE(trie.search(u"Computer Networkin") == false);     
         }
-    }   
-            
-        
+    }         
 }     
+
+SCENARIO("Testing Clear Method of Trie Container") {
+    forest::Trie<char16_t> trie;
+    trie.insert(u"Chemical");
+    trie.insert(u"Computer");
+    trie.insert(u"Computer Science");
+    trie.insert(u"Computer Engineering");
+    trie.insert(u"Computer Networking");
+    trie.insert(u"Computer Architecture");
+    
+    THEN(" Test Currently for Size & Number of Words"){
+        REQUIRE(trie.size() == 6);
+        REQUIRE(trie.search(u"Computer") == true);
+        REQUIRE(trie.search(u"Computer Networking") == true);
+        REQUIRE(trie.remove(u"Computer Architecture") == true);
+
+        AND_THEN("Erase the Contents and Test"){
+            trie.clear();
+            REQUIRE(trie.size() == 0);
+            REQUIRE(trie.search(u"Computer") == false);
+            REQUIRE(trie.search(u"Computer Networking") == false);
+            REQUIRE(trie.remove(u"Computer Architecture") == false);
+        }
+    }
+} 
+
+
+SCENARIO("Testing Predict Method of Trie Container") {
+    forest::Trie<char16_t> trie;
+    trie.insert(u"Chemical");
+    trie.insert(u"Computer");
+    trie.insert(u"Computer Science");
+    trie.insert(u"Computer Engineering");
+    trie.insert(u"Computer Networking");
+    trie.insert(u"Computer Architecture");
+
+    GIVEN("A Partially filled trie"){
+        AND_THEN("Test for the size a Prefix with no Entries"){
+            auto vec = trie.predict(u"Electrical");
+            REQUIRE(vec.size() == 0);
+        }
+        
+        AND_THEN("Test for Size and Contents of the Container => General Case"){
+            std::vector<std::basic_string<char16_t>> test_vec{u"Computer",
+                                                              u"Computer Architecture", 
+                                                              u"Computer Engineering", 
+                                                              u"Computer Networking", 
+                                                              u"Computer Science"};
+            auto vec = trie.predict(u"Comp");
+            REQUIRE(vec.size() == test_vec.size());
+            std::sort(vec.begin(), vec.end());
+            REQUIRE(std::equal(vec.begin(), vec.end(), test_vec.begin()));  
+        } 
+
+        AND_THEN("Test for Size and Contents of the Container => General Case"){
+            std::vector<std::basic_string<char16_t>> test_vec{u"Chemical",
+                                                              u"Computer",
+                                                              u"Computer Architecture", 
+                                                              u"Computer Engineering", 
+                                                              u"Computer Networking", 
+                                                              u"Computer Science"};
+            auto vec = trie.predict(u"C");
+            REQUIRE(vec.size() == test_vec.size());
+            std::sort(vec.begin(), vec.end());
+            REQUIRE(std::equal(vec.begin(), vec.end(), test_vec.begin()));
+        } 
+
+        AND_THEN("Test for Size and Contents of the Container => Special Case: Input Prefix Should not be returned, even if its a legit word"){
+            std::vector<std::basic_string<char16_t>> test_vec{u"Computer Architecture", 
+                                                              u"Computer Engineering", 
+                                                              u"Computer Networking", 
+                                                              u"Computer Science"};
+            auto vec = trie.predict(u"Computer");
+            REQUIRE(vec.size() == test_vec.size());
+            std::sort(vec.begin(), vec.end());
+            REQUIRE(std::equal(vec.begin(), vec.end(), test_vec.begin()));
+        }
+        
+        AND_THEN("Test for Size and Contents of the Container => Special Case:  Any Legit Prefixes found: Should be returned even without the node being the leaf"){                                         
+            trie.insert(u"Computer Network");
+            trie.insert(u"Computer Engineer");
+            trie.insert(u"Computer Scientist");
+            trie.remove(u"Computer Science");
+            
+            std::vector<std::basic_string<char16_t>> test_vec{u"Computer Architecture",
+                                                              u"Computer Engineer",  
+                                                              u"Computer Engineering",
+                                                              u"Computer Network",
+                                                              u"Computer Networking",
+                                                              u"Computer Scientist"};
+            auto vec = trie.predict(u"Computer");
+            REQUIRE(vec.size() == test_vec.size());
+            std::sort(vec.begin(), vec.end());
+            REQUIRE(std::equal(vec.begin(), vec.end(), test_vec.begin()));
+        } 
+
+        AND_THEN("Test for Size and Contents of the Container => Special Case: Case Sensitivity is Tested") {                                                           
+            trie.insert(u"computer modelling");
+            trie.insert(u"computer ");
+            auto vec = trie.predict(u"c");
+            REQUIRE(vec.size() == 2); 
+            std::sort(vec.begin(), vec.end());
+            REQUIRE(vec[0] == u"computer ");
+            REQUIRE(vec[1] == u"computer modelling");
+        }    
+    }
+} 
