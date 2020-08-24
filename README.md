@@ -5,7 +5,7 @@
 ![C/C++ CI](https://github.com/xorz57/forest/workflows/C/C++%20CI/badge.svg)
 [![Build Status](https://travis-ci.org/xorz57/forest.svg?branch=master)](https://travis-ci.org/xorz57/forest)
 [![CodeFactor](https://www.codefactor.io/repository/github/xorz57/forest/badge/master)](https://www.codefactor.io/repository/github/xorz57/forest/overview/master)
-[![bitcoin](https://img.shields.io/badge/bitcoin-bc1q2z7trf4d95tz6nvn28uf2hnx0r7z7zy5q0y2hy-yellow)](https://blockchair.com/bitcoin/address/bc1q2z7trf4d95tz6nvn28uf2hnx0r7z7zy5q0y2hy)
+[![bitcoin](https://img.shields.io/badge/bitcoin-bc1q9prxfgj05mf24a2rnn25pqj4fj0qrma6kqwlrg-yellow)](https://blockchair.com/bitcoin/address/bc1q9prxfgj05mf24a2rnn25pqj4fj0qrma6kqwlrg)
 
 # Example 1
 ```cpp
